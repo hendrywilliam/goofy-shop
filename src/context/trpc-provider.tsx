@@ -8,7 +8,9 @@ import superjson from "superjson";
 import { getBaseUrl } from "@/lib/api";
 
 /**
- * create a TRPC client and wrap the application in tRPC Provider
+ * create a TRPC client and wrap the entire application in tRPC Provider
+ *
+ * using useState in the creation of queryClient and TRPC Client is to ensure each request (in SSR) gets an unique client.
  */
 
 const TRPCProvider = ({ children }: PropsWithChildren) => {
