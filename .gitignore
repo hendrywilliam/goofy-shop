@@ -36,3 +36,6 @@ next-env.d.ts
 
 #prisma-client
 prisma/prisma-client
+
+#env
+.env
