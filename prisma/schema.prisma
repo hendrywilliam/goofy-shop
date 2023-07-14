@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId 
+  email           String    @unique
+  password        String
+  name            String? 
+  emailVerified   Boolean?
+  reviews         Int?
+  stars           String?
+  description     String?
+  avatar          String?
+  createdAt       DateTime  @default(now()) @map(name: "created_at")
+  updatedAt       DateTime  @default(now()) @map(name: "updated_at")
+  products        Product[] @relation("products")
+
+  //@@map will create "users" collection instead of "user"
+  @@map(name: "users")
+}
+
+model Product{
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String  
+  price       String
+  description String
+  isAvailable Boolean   @map(name: "is_available")
+  region      String
+  photos      String[]
+  //features like wifi, kitchen,  pets allowed, etc.
+  features    String[]
+  //extra rooms, tropical, luxe, amazing pools, amazing views, etc.
+  tags        String[]
+  author      User      @relation("products", fields: [authorId], references: [id])
+  authorId    String    @db.ObjectId
+  createdAt   DateTime  @default(now()) @map(name: "created_at")
+  updatedAt   DateTime  @default(now()) @map(name: "updated_at")
+
+  @@map(name: "products")
+}
+
+model Review {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  avatar    String
+  comment   String
+  createdAt DateTime  @default(now()) @map(name: "created_at")
+  updatedAt DateTime  @default(now()) @map(name: "updated_at")
+
+  @@map(name: "reviews")
+}
