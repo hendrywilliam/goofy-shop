@@ -20,4 +20,8 @@ export const getBaseUrl = () => {
  * @see https://github.com/trpc/trpc/discussions/3185
  */
 
+/**
+ * Create a set of strongly-typed React hooks from appRoute type signature.
+ * appRouter comes from @/server/api/root.ts
+ */
 export const api = createTRPCReact<AppRouter>();
