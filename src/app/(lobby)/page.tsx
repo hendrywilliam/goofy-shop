@@ -1,4 +1,7 @@
+"use client";
+
 import HelloWorld from "@/components/hello-world";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
@@ -8,6 +11,9 @@ export default function Home() {
         of tRPC
       </p>
       <HelloWorld />
+      <Button color="destructive" size="md">
+        Button
+      </Button>
     </main>
   );
 }

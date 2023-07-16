@@ -5,6 +5,7 @@ import { z } from "zod";
 import { authValidation } from "@/lib/validation/auth";
 import { useSignUp } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@/components/ui/button";
 
 type RegistrationInput = z.infer<typeof authValidation>;
 
@@ -62,8 +63,6 @@ export default function RegistrationForm() {
             name="email"
           />
           <p>{errors.email?.message}</p>
-        </fieldset>
-        <fieldset className="flex flex-col">
           <label htmlFor="password">Password</label>
           <input
             className="border"
@@ -73,7 +72,7 @@ export default function RegistrationForm() {
           />
           <p>{errors.password?.message}</p>
         </fieldset>
-        <input type="submit" value="Register" />
+        <input type="Submit" value="Submit" />
       </form>
     </div>
   );
