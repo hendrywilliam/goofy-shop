@@ -40,18 +40,25 @@ export interface ButtonProps
 export type Ref = HTMLButtonElement;
 
 /*eslint-disable*/
-export const Button = forwardRef<Ref, ButtonProps>((props, ref) => (
-  <button ref={ref} className={button({ color: props.color })} {...props}>
-    {props.children}
-  </button>
-));
+export const Button = forwardRef<Ref, ButtonProps>((props, ref) => {
+  return (
+    <button
+      ref={ref}
+      className={button({ color: props.color, size: props.size })}
+      {...props}
+    >
+      {props.children}
+    </button>
+  );
+});
 
 /**
+ * Example usage:
  * import { Button } from "@/components/ui/button"
  *
  * fn greetMom() {
  *  alert("hi mom")
  * }
  *
- * usage: <Button @click="greetMom">hi mom</Button>
+ * usage: <Button onClick="greetMom">hi mom</Button>
  */
