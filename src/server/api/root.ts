@@ -1,7 +1,5 @@
 import { createTRPCRouter } from "./trpc";
-import { helloRouter } from "./routers/hello";
-import { productsRouter } from "./routers/products";
-import { userRouter } from "./routers/user";
+import { spaceRouter } from "./routers/space";
 
 /**
  * merge all child routes into the "root" routes.
@@ -9,9 +7,7 @@ import { userRouter } from "./routers/user";
  */
 
 export const appRouter = createTRPCRouter({
-  hello: helloRouter,
-  products: productsRouter,
-  user: userRouter,
+  space: spaceRouter,
 });
 
 export type AppRouter = typeof appRouter;

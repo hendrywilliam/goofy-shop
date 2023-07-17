@@ -1,14 +1,15 @@
 import { z } from "zod";
 
-export const productValidation = z.object({
-  name: z.string().min(3).max(255),
-  //price from string -> number
-  price: z.string(),
-  description: z.string().min(5).max(255),
-  isAvailable: z.boolean().default(true),
-  region: z.string(),
-  photos: z.string().array(),
-  features: z.string().array(),
-  tags: z.string().array(),
+export const spaceValidation = z.object({
+  id: z.string().optional(),
   authorId: z.string(),
+  name: z.string().min(10).max(30),
+  cityId: z.string(),
+  description: z.string().min(25).max(500),
+  numberRooms: z.number().positive().default(0),
+  numberBathrooms: z.number().positive().default(0),
+  maxGuest: z.number().positive().default(0),
+  price: z.number().positive().default(0),
+  longitude: z.string().optional().nullable(),
+  latitude: z.string().optional().nullable(),
 });
