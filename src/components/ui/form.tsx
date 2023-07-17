@@ -73,10 +73,6 @@ export const FormInput = forwardRef<FormInputRef, FormInput>((props, ref) => {
 
 FormInput.displayName = "FormInput";
 
-/** form message (error message)
- * HTML Attributes <T> extends AriaAttributes, DOMAttributes
- * DOM Attributes contain children
- */
 export interface FormMessage
   extends Omit<HTMLAttributes<HTMLParagraphElement>, "color">,
     VariantProps<typeof FormMessageVariant> {}
@@ -99,8 +95,3 @@ export const FormMessage = forwardRef<FormMessageRef, FormMessage>(
 );
 
 FormMessage.displayName = "FormMessage";
-
-/**
- * DisplayName allows you to name your component. This name is used by React in debugging messages.
- * @see https://github.com/jsx-eslint/eslint-plugin-react/blob/master/docs/rules/display-name.md
- */

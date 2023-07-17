@@ -21,22 +21,10 @@ export const button = tv({
   },
 });
 
-/**
- * ButtonHTMLAttributes<T> is an interface for giving special attributes
- * for element <button>.
- * it accepts <T> as generic parameter, which accepts a HTML element.
- */
-
-/**
- * omit is used to exclude "color" property from ButtonHTMLAttributes
- * we are unable to simultaneously extends 2 interface with the same property.
- * color property comes from ButtonHTMLAttributes extending HTMLAttributes
- */
 export interface ButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "color">,
     VariantProps<typeof button> {}
 
-//or you could easily add replace <T> in forwardRef with HTMLButtonElement
 export type Ref = HTMLButtonElement;
 
 /*eslint-disable*/
@@ -51,14 +39,3 @@ export const Button = forwardRef<Ref, ButtonProps>((props, ref) => {
     </button>
   );
 });
-
-/**
- * Example usage:
- * import { Button } from "@/components/ui/button"
- *
- * fn greetMom() {
- *  alert("hi mom")
- * }
- *
- * usage: <Button onClick="greetMom">hi mom</Button>
- */
