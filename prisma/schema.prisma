@@ -7,26 +7,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id              String    @id @default(auto()) @map("_id") @db.ObjectId 
-  email           String    @unique
-  password        String
-  name            String? 
-  emailVerified   Boolean?
-  reviews         Int?
-  stars           String?
-  description     String?
-  avatar          String?
-  createdAt       DateTime  @default(now()) @map(name: "created_at")
-  updatedAt       DateTime  @default(now()) @map(name: "updated_at")
-  products        Product[] @relation("products")
-
-  //@@map will create "users" collection instead of "user"
-  @@map(name: "users")
-}
-
 model Product{
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  //obtained id from auth, no need to add new collections.
+  authorId    String    @map("author_id")
   name        String  
   price       String
   description String
@@ -37,8 +21,6 @@ model Product{
   features    String[]
   //extra rooms, tropical, luxe, amazing pools, amazing views, etc.
   tags        String[]
-  author      User      @relation("products", fields: [authorId], references: [id])
-  authorId    String    @db.ObjectId
   createdAt   DateTime  @default(now()) @map(name: "created_at")
   updatedAt   DateTime  @default(now()) @map(name: "updated_at")
 

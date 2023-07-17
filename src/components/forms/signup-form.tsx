@@ -5,7 +5,6 @@ import { z } from "zod";
 import { authValidation } from "@/lib/validation/auth";
 import { useSignUp } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "../ui/input";
 
 type RegistrationInput = z.infer<typeof authValidation>;
 
@@ -43,6 +42,7 @@ export default function RegistrationForm() {
       console.log(res);
       // await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
     } catch (e) {
+      console.log(e);
       if (e instanceof Error) {
         console.log(e.message);
       }
@@ -52,7 +52,6 @@ export default function RegistrationForm() {
   return (
     <div className="w-max h-max p-6 border rounded-md">
       <p className="">Sign up</p>
-
       <form onSubmit={handleSubmit(onSubmit)}>
         <fieldset className="flex flex-col">
           <label htmlFor="email">Email</label>
@@ -74,7 +73,7 @@ export default function RegistrationForm() {
           />
           <p>{errors.password?.message}</p>
         </fieldset>
-        <input type="Submit" value="Submit" />
+        <input type="submit" value="Submit" />
       </form>
     </div>
   );
