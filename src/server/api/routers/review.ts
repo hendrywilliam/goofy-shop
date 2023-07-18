@@ -2,7 +2,7 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
 import { reviewValidation, idReviewValidation } from "@/lib/validation/review";
 
-export const reviewRouters = createTRPCRouter({
+export const reviewRouter = createTRPCRouter({
   createReview: publicProcedure
     .input(reviewValidation)
     .mutation(async (context) => {

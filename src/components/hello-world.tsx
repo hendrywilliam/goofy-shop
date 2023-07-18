@@ -12,6 +12,8 @@ export default function HelloWorld() {
   const delAmenity = api.amenity.deleteAmenity.useMutation();
   const addReview = api.review.createReview.useMutation();
   const delReview = api.review.deleteReview.useMutation();
+  const addCity = api.city.createCity.useMutation();
+  const delCity = api.city.deleteCity.useMutation();
 
   //example crud for space
   //@ts-ignore
@@ -78,6 +80,20 @@ export default function HelloWorld() {
     console.log(deletedData);
   }
 
+  async function createCity() {
+    const createCity = await addCity.mutateAsync({
+      name: "Jakarta",
+    });
+    console.log(createCity);
+  }
+
+  async function deleteCity() {
+    const deleteCity = await delCity.mutateAsync({
+      id: "64b641c26cd7e63cf2265f95",
+    });
+    console.log(deleteCity);
+  }
+
   return (
     <div>
       <Button onClick={addNewSpace}>Add new space</Button>
@@ -85,6 +101,8 @@ export default function HelloWorld() {
       <Button onClick={deleteAmenity}>Delete amenity</Button>
       <Button onClick={addNewReview}>Add new review</Button>
       <Button onClick={deleteReview}>Delete review</Button>
+      <Button onClick={createCity}>Create City</Button>
+      <Button onClick={deleteCity}>Delete City</Button>
     </div>
   );
 }
