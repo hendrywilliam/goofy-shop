@@ -11,7 +11,8 @@ model Space {
   id                String    @id @default(auto()) @map(name: "_id") @db.ObjectId
   //obtained id from auth, no need to add new collections.
   authorId          String    @map("author_id")
-  name              String  
+  name              String
+  city              City      @relation(fields: [cityId], references: [id])
   cityId            String    @db.ObjectId @map(name: "city_id")
   description       String
   numberRooms       Int?      @map(name: "number_rooms") @default(0)
@@ -20,6 +21,8 @@ model Space {
   price             Int?      @map(name: "price_per_night") @default(0)
   longitude         String?
   latitude          String?
+  reviews           Review[]
+  amenity           Amenity[]
   createdAt         DateTime  @default(now()) @map(name: "created_at")
   updatedAt         DateTime  @default(now()) @map(name: "updated_at")
 
@@ -30,7 +33,8 @@ model Review {
   id        String    @id @default(auto()) @map(name: "_id") @db.ObjectId
   //obtained from Auth clerk
   userId    String    @db.ObjectId @map(name: "user_id")
-  placeId   String    @db.ObjectId @map(name: "place_id")
+  space     Space     @relation(fields: [spaceId], references: [id])
+  spaceId   String    @db.ObjectId @map(name: "place_id")
   content   String    
   stars     Int       @default(5)
   createdAt DateTime  @default(now()) @map(name: "created_at")
@@ -42,6 +46,8 @@ model Review {
 model Amenity {
   id          String    @id @default(auto()) @map(name: "_id") @db.ObjectId
   name        String
+  space       Space     @relation(fields: [spaceId], references: [id])
+  spaceId     String    @db.ObjectId
   createdAt   DateTime  @default(now()) @map(name:"created_at")
   updatedAt   DateTime  @default(now()) @map(name:"updated_at")
 
@@ -51,6 +57,7 @@ model Amenity {
 model City {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   name        String
+  space       Space[]
   createdAt   DateTime  @default(now()) @map(name: "created_at")
   updatedAt   DateTime  @default(now()) @map(name: "updated_at")
 

@@ -43,7 +43,8 @@ export default function RegistrationForm() {
       console.log(res);
       // await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
     } catch (e) {
-      console.log(e);
+      //@ts-ignore
+      console.log(e.errors[0].longMessage);
       if (e instanceof Error) {
         console.log(e.message);
       }
@@ -55,7 +56,7 @@ export default function RegistrationForm() {
       <p className="">Sign up</p>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <FormField className="flex flex-col">
-          <FormLabel htmlFor="email">Email:</FormLabel>
+          <FormLabel htmlFor="email">Email</FormLabel>
           <FormInput
             className="border p-2 rounded-md"
             {...register("email")}
@@ -67,7 +68,7 @@ export default function RegistrationForm() {
           </FormMessage>
         </FormField>
         <FormField className="flex flex-col">
-          <FormLabel htmlFor="password">Password:</FormLabel>
+          <FormLabel htmlFor="password">Password</FormLabel>
           <FormInput
             className="border p-2 rounded-md"
             {...register("password")}

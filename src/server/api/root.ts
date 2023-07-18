@@ -1,5 +1,6 @@
 import { createTRPCRouter } from "./trpc";
 import { spaceRouter } from "./routers/space";
+import { amenityRouter } from "./routers/amenity";
 
 /**
  * merge all child routes into the "root" routes.
@@ -8,6 +9,7 @@ import { spaceRouter } from "./routers/space";
 
 export const appRouter = createTRPCRouter({
   space: spaceRouter,
+  amenity: amenityRouter,
 });
 
 export type AppRouter = typeof appRouter;
