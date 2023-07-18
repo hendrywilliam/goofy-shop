@@ -3,7 +3,6 @@
 //api obtained from /api/api hook createTRPCReact
 import { api } from "@/lib/api/api";
 import { Button } from "./ui/button";
-import { useState } from "react";
 
 export default function HelloWorld() {
   // const hello = api.hello.hello.useQuery();
@@ -11,7 +10,8 @@ export default function HelloWorld() {
   const delSpace = api.space.deleteSpace.useMutation();
   const addAmenity = api.amenity.createAmenity.useMutation();
   const delAmenity = api.amenity.deleteAmenity.useMutation();
-  const [data, setData] = useState();
+  const addReview = api.review.createReview.useMutation();
+  const delReview = api.review.deleteReview.useMutation();
 
   //example crud for space
   //@ts-ignore
@@ -29,6 +29,7 @@ export default function HelloWorld() {
     console.log(createData);
   }
 
+  //add new amenities playground
   async function addNewAmenities() {
     const createAmenityData = await addAmenity.mutateAsync({
       name: "Free wifi sampe kiamat",
@@ -44,11 +45,46 @@ export default function HelloWorld() {
     console.log(deleteAmenity);
   }
 
+  //add new review playground
+  //3 req = userId, content, spaceId
+  async function addNewReview() {
+    const fakeDatas = [
+      {
+        userId: "60f04ee3e6e6f9571439f21a",
+        content: "I love this place, amazing views, cute girls.",
+        spaceId: "64b6232b802c1d2582a8ebec",
+      },
+      {
+        userId: "60f9723f77d9d90f6095d2cf",
+        content: "This is why i love this place, the owner is a cutie pie.",
+        spaceId: "64b6232b802c1d2582a8ebec",
+      },
+    ];
+
+    fakeDatas.forEach(async (item) => {
+      const createReview = await addReview.mutateAsync({
+        userId: item.userId,
+        content: item.content,
+        spaceId: item.spaceId,
+      });
+      console.log(createReview);
+    });
+  }
+
+  async function deleteReview() {
+    const deletedData = await delReview.mutateAsync({
+      id: "64b631f724b8f0d2a4c5aafb",
+    });
+    console.log(deletedData);
+  }
+
   return (
     <div>
       <Button onClick={addNewSpace}>Add new space</Button>
       <Button onClick={addNewAmenities}>Add new amenities</Button>
       <Button onClick={deleteAmenity}>Delete amenity</Button>
+      <Button onClick={addNewReview}>Add new review</Button>
+      <Button onClick={deleteReview}>Delete review</Button>
     </div>
   );
 }
