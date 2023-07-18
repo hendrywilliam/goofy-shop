@@ -9,7 +9,6 @@ import { getBaseUrl } from "@/lib/api/api";
 
 /**
  * create a TRPC client and wrap the entire application in tRPC Provider
- *
  * using useState in the creation of queryClient and TRPC Client is to ensure each request (in SSR) gets an unique client.
  */
 

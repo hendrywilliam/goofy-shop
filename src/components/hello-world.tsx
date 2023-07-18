@@ -3,6 +3,7 @@
 //api obtained from /api/api hook createTRPCReact
 import { api } from "@/lib/api/api";
 import { Button } from "./ui/button";
+import { useClerk, useAuth } from "@clerk/nextjs";
 
 export default function HelloWorld() {
   // const hello = api.hello.hello.useQuery();
@@ -14,6 +15,20 @@ export default function HelloWorld() {
   const delReview = api.review.deleteReview.useMutation();
   const addCity = api.city.createCity.useMutation();
   const delCity = api.city.deleteCity.useMutation();
+
+  //get protected data
+  const protectedData = api.hello.helloProtected.useQuery();
+
+  // const getUserId = api.hello.hello.useQuery();
+
+  const { userId } = useAuth();
+
+  console.log(userId);
+
+  console.log(protectedData.data?.message, protectedData.data?.user);
+
+  //useClerk hook
+  const { signOut } = useClerk();
 
   //example crud for space
   //@ts-ignore
@@ -94,6 +109,10 @@ export default function HelloWorld() {
     console.log(deleteCity);
   }
 
+  function logoutSession() {
+    return signOut();
+  }
+
   return (
     <div>
       <Button onClick={addNewSpace}>Add new space</Button>
@@ -103,6 +122,9 @@ export default function HelloWorld() {
       <Button onClick={deleteReview}>Delete review</Button>
       <Button onClick={createCity}>Create City</Button>
       <Button onClick={deleteCity}>Delete City</Button>
+      <div className="border p-2">
+        <Button onClick={logoutSession}>Logout</Button>
+      </div>
     </div>
   );
 }

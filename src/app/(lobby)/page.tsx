@@ -1,5 +1,3 @@
-"use client";
-
 import HelloWorld from "@/components/hello-world";
 import { Button } from "@/components/ui/button";
 
