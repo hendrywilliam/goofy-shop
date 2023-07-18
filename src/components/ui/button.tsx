@@ -23,7 +23,9 @@ export const button = tv({
 
 export interface ButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "color">,
-    VariantProps<typeof button> {}
+    VariantProps<typeof button> {
+  custom?: string;
+}
 
 export type Ref = HTMLButtonElement;
 
@@ -32,7 +34,11 @@ export const Button = forwardRef<Ref, ButtonProps>((props, ref) => {
   return (
     <button
       ref={ref}
-      className={button({ color: props.color, size: props.size })}
+      className={button({
+        color: props.color,
+        size: props.size,
+        class: props.custom,
+      })}
       {...props}
     >
       {props.children}

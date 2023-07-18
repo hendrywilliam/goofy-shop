@@ -23,7 +23,7 @@ model Space {
   createdAt         DateTime  @default(now()) @map(name: "created_at")
   updatedAt         DateTime  @default(now()) @map(name: "updated_at")
 
-  @@map(name: "products")
+  @@map(name: "spaces")
 }
 
 model Review {

@@ -2,9 +2,10 @@
 
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { authValidation } from "@/lib/validation/auth";
 import { useSignUp } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { authValidation } from "@/lib/validation/auth";
+import { Form, FormField, FormInput, FormLabel, FormMessage } from "../ui/form";
 
 type RegistrationInput = z.infer<typeof authValidation>;
 
@@ -52,29 +53,39 @@ export default function RegistrationForm() {
   return (
     <div className="w-max h-max p-6 border rounded-md">
       <p className="">Sign up</p>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <fieldset className="flex flex-col">
-          <label htmlFor="email">Email</label>
-          <input
-            className="border"
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <FormField className="flex flex-col">
+          <FormLabel htmlFor="email">Email:</FormLabel>
+          <FormInput
+            className="border p-2 rounded-md"
             {...register("email")}
             type="text"
             name="email"
           />
-          <p>{errors.email?.message}</p>
-        </fieldset>
-        <fieldset>
-          <label htmlFor="password">Password</label>
-          <input
-            className="border"
+          <FormMessage color="error" size="sm">
+            {errors.email?.message}
+          </FormMessage>
+        </FormField>
+        <FormField className="flex flex-col">
+          <FormLabel htmlFor="password">Password:</FormLabel>
+          <FormInput
+            className="border p-2 rounded-md"
             {...register("password")}
             type="password"
             name="password"
           />
-          <p>{errors.password?.message}</p>
-        </fieldset>
-        <input type="submit" value="Submit" />
-      </form>
+          <FormMessage color="error" size="sm">
+            {errors.password?.message}
+          </FormMessage>
+        </FormField>
+        <FormField>
+          <FormInput
+            className="border p-2 mt-4 rounded-md"
+            type="submit"
+            value="Submit"
+          />
+        </FormField>
+      </Form>
     </div>
   );
 }

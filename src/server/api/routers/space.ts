@@ -1,6 +1,6 @@
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
-import { spaceValidation } from "@/lib/validation/product";
+import { spaceValidation } from "@/lib/validation/space";
 
 export const spaceRouter = createTRPCRouter({
   createSpace: publicProcedure
