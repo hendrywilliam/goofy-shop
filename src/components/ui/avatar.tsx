@@ -3,12 +3,13 @@
 import { ImgHTMLAttributes, forwardRef } from "react";
 import Image from "next/image";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import LofiGirl from "/public/images/image-lofi-girl.webp";
 
 /**
  * replace original src (only accepts string | undefined) with our new "src"
  * that accepts a StaticImport
  * example:
- * import LofiGirl from "./lofi-girl.png"
+ * import LofiGirl from "/public/images/image-lofi-girl.webp"
  * <Avatar src={LofiGirl} alt="lofi-girl"/>
  */
 
@@ -33,7 +34,8 @@ export const Avatar = forwardRef<AvatarRef, Avatar>((props, ref) => {
         // fallback avatar
         <Image
           className="rounded-full"
-          src="/images/image-lofi-girl.webp"
+          // src="/images/image-lofi-girl.webp"
+          src={LofiGirl}
           alt={props.alt ? props.alt : "Default Avatar"}
           ref={ref}
           fill
