@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/form";
 import { authValidation } from "@/lib/validation/auth";
 import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type AuthValidation = z.infer<typeof authValidation>;
 
@@ -18,7 +19,9 @@ export default function SignInForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<AuthValidation>();
+  } = useForm<AuthValidation>({
+    resolver: zodResolver(authValidation),
+  });
 
   const onSubmit: SubmitHandler<AuthValidation> = (data) => {
     console.log(data);

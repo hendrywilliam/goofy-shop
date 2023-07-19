@@ -1,13 +1,14 @@
 import { ButtonHTMLAttributes, forwardRef } from "react";
 import { tv, type VariantProps } from "tailwind-variants";
 
-export const button = tv({
+export const buttonVariants = tv({
   base: "px-4 py-2 rounded-md hover:opacity-80 antialiased",
   variants: {
     color: {
       primary: "bg-primary text-white",
       neutral: "bg-zinc-500 text-black dark:text-white",
       destructive: "bg-destructive text-white",
+      ghost: "hover:bg-[#f9f9f9] border-none",
     },
     size: {
       sm: "text-sm",
@@ -23,18 +24,18 @@ export const button = tv({
 
 export interface ButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "color">,
-    VariantProps<typeof button> {
+    VariantProps<typeof buttonVariants> {
   custom?: string;
 }
 
-export type Ref = HTMLButtonElement;
+type Ref = HTMLButtonElement;
 
 /*eslint-disable*/
 export const Button = forwardRef<Ref, ButtonProps>((props, ref) => {
   return (
     <button
       ref={ref}
-      className={button({
+      className={buttonVariants({
         color: props.color,
         size: props.size,
         class: props.custom,

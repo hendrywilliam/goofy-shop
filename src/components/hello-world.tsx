@@ -17,7 +17,7 @@ export default function HelloWorld() {
   const delCity = api.city.deleteCity.useMutation();
 
   //get protected data
-  const protectedData = api.hello.helloProtected.useQuery();
+  // const protectedData = api.hello.helloProtected.useQuery();
 
   // const getUserId = api.hello.hello.useQuery();
 
@@ -25,7 +25,7 @@ export default function HelloWorld() {
 
   console.log(userId);
 
-  console.log(protectedData.data?.message, protectedData.data?.user);
+  // console.log(protectedData.data?.message, protectedData.data?.user);
 
   //useClerk hook
   const { signOut } = useClerk();
