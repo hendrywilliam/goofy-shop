@@ -1,10 +1,10 @@
 import { PropsWithChildren } from "react";
-import SiteNavbar from "@/components/layouts/site-nav";
+import SiteHeader from "@/components/layouts/site-header";
 
 export default function LobbyLayout({ children }: PropsWithChildren) {
   return (
     <div>
-      <SiteNavbar />
+      <SiteHeader />
       {children}
     </div>
   );

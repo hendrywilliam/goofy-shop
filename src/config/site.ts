@@ -6,19 +6,29 @@ export const siteConfig = {
     "A simple space-shop (e-commerce) written in Typescript and small adoption of tRPC.",
   mainNavigation: [
     {
-      title: "Lobby",
+      title: "Stays",
+      href: "/",
+    },
+    {
+      title: "Experiences",
+      href: "/experiences",
+    },
+    {
+      title: "Online Experiences",
+      href: "/online-experiences",
+    },
+  ],
+  footerNavigation: [
+    {
+      title: "Lofi",
       items: [
         {
-          title: "Stays",
-          href: "/",
+          title: "Lofi Girl Original",
+          href: "https://www.youtube.com/watch?v=jfKfPfyJRdk&pp=ygUJbG9maSBnaXJs",
         },
         {
-          title: "Experiences",
-          href: "/experiences",
-        },
-        {
-          title: "Online Experiences",
-          href: "/online-experiences",
+          title: "Synthwave Boy",
+          href: "https://www.youtube.com/watch?v=4xDzrJKXOOY&pp=ygUJbG9maSBnaXJs",
         },
       ],
     },

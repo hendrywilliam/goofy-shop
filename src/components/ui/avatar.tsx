@@ -21,10 +21,9 @@ export interface Avatar
 type AvatarRef = HTMLImageElement;
 export const Avatar = forwardRef<AvatarRef, Avatar>((props, ref) => {
   return (
-    <div className="relative w-10 h-10 p-2 rounded-full">
+    <div className="relative w-6 h-6 p-2 rounded-full self-center">
       {props.src ? (
         <Image
-          className="rounded-full"
           src={props.src}
           alt={props.alt ? props.alt : "Avatar"}
           ref={ref}

@@ -30,7 +30,6 @@ export interface ButtonProps
 
 type Ref = HTMLButtonElement;
 
-/*eslint-disable*/
 export const Button = forwardRef<Ref, ButtonProps>((props, ref) => {
   return (
     <button
@@ -46,3 +45,5 @@ export const Button = forwardRef<Ref, ButtonProps>((props, ref) => {
     </button>
   );
 });
+
+Button.displayName = "Button"

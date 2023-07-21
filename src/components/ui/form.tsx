@@ -51,24 +51,46 @@ FormLabel.displayName = "FormLabel";
 //form input interfaces
 export interface FormInput
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "color">,
-    FormInputVariant {}
+    FormInputVariant {
+  custom?: string;
+}
 
 type FormInputRef = HTMLInputElement;
 
 //form input variant
 const FormInputVariant = tv({
-  base: "border",
+  base: "p-2 rounded-md",
   variants: {
     color: {
-      error: "border-destructive",
+      primary: "border",
+      error: "border border-destructive",
     },
+    font: {
+      sm: "text-sm",
+      md: "text-base",
+      lg: "text-lg",
+    },
+  },
+  defaultVariants: {
+    color: "primary",
+    font: "sm",
   },
 });
 
 type FormInputVariant = VariantProps<typeof FormInputVariant>;
 
 export const FormInput = forwardRef<FormInputRef, FormInput>((props, ref) => {
-  return <input {...props} ref={ref} />;
+  return (
+    <input
+      className={FormInputVariant({
+        color: props.color,
+        font: props.font,
+        class: props.custom,
+      })}
+      {...props}
+      ref={ref}
+    />
+  );
 });
 
 FormInput.displayName = "FormInput";
@@ -84,8 +106,9 @@ type FormMessageRef = HTMLParagraphElement;
 const FormMessageVariant = tv({
   base: "text-base mt-2",
   variants: {
-    color: {
+    variant: {
       error: "text-destructive",
+      muted: "text-muted",
     },
     size: {
       sm: "text-sm",
@@ -100,7 +123,7 @@ export const FormMessage = forwardRef<FormMessageRef, FormMessage>(
     return (
       <p
         className={FormMessageVariant({
-          color: props.color,
+          variant: props.variant,
           size: props.size,
           class: props.custom,
         })}

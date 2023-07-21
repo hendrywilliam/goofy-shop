@@ -13,7 +13,7 @@ export default function MainNavigationMenu() {
 
   return (
     <div className="flex w-1/3 justify-center items-center gap-4">
-      {mainNavigation[0].items.map((item, index) => {
+      {mainNavigation.map((item, index) => {
         return (
           <div className="flex flex-col h-full items-center" key={index}>
             <div className="flex grow items-center">

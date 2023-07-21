@@ -6,6 +6,7 @@ import { useSignUp } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authValidation } from "@/lib/validation/auth";
 import { Form, FormField, FormInput, FormLabel, FormMessage } from "../ui/form";
+import Link from "next/link";
 
 type RegistrationInput = z.infer<typeof authValidation>;
 
@@ -51,42 +52,67 @@ export default function RegistrationForm() {
     }
   }
 
+  //@todo add 0auth
+
   return (
-    <div className="w-max h-max p-6 border rounded-md">
-      <p className="">Sign up</p>
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <FormField className="flex flex-col">
-          <FormLabel htmlFor="email">Email</FormLabel>
-          <FormInput
-            className="border p-2 rounded-md"
-            {...register("email")}
-            type="text"
-            name="email"
-          />
-          <FormMessage color="error" size="sm">
-            {errors.email?.message}
+    <Form className="w-full" onSubmit={handleSubmit(onSubmit)}>
+      <FormField className="flex flex-col">
+        <FormLabel className="text-sm" htmlFor="email">
+          Email
+        </FormLabel>
+        <FormInput
+          {...register("email")}
+          type="text"
+          name="email"
+          color={errors.email?.message ? "error" : "primary"}
+          custom="w-full"
+        />
+        {errors.email ? (
+          <FormMessage variant="error" size="sm">
+            {errors.email.message}
           </FormMessage>
-        </FormField>
-        <FormField className="flex flex-col">
-          <FormLabel htmlFor="password">Password</FormLabel>
-          <FormInput
-            className="border p-2 rounded-md"
-            {...register("password")}
-            type="password"
-            name="password"
-          />
-          <FormMessage color="error" size="sm">
+        ) : (
+          <FormMessage size="sm" variant="muted">
+            (e.g: cutielofigirl@gmail.com)
+          </FormMessage>
+        )}
+      </FormField>
+      <FormField className="flex flex-col">
+        <FormLabel className="text-sm" htmlFor="password">
+          Password
+        </FormLabel>
+        <FormInput
+          {...register("password")}
+          type="password"
+          name="password"
+          color={errors.password?.message ? "error" : "primary"}
+          custom="w-full"
+        />
+        {errors.password ? (
+          <FormMessage variant="error" size="sm">
             {errors.password?.message}
           </FormMessage>
-        </FormField>
-        <FormField>
-          <FormInput
-            className="border p-2 mt-4 rounded-md"
-            type="submit"
-            value="Submit"
-          />
-        </FormField>
-      </Form>
-    </div>
+        ) : (
+          <FormMessage size="sm" variant="muted">
+            (Password minimum 8 characters & atleast 1 number.)
+          </FormMessage>
+        )}
+      </FormField>
+      <FormField>
+        <p className="text-sm my-2">
+          Already have an account?{" "}
+          <span>
+            <Link className="font-semibold" href="/sign-in">
+              Sign in
+            </Link>
+          </span>
+        </p>
+        <FormInput
+          custom="w-full bg-black text-white"
+          type="submit"
+          value="Register"
+        />
+      </FormField>
+    </Form>
   );
 }
