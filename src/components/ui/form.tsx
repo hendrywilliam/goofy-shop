@@ -97,13 +97,13 @@ FormInput.displayName = "FormInput";
 
 export interface FormMessage
   extends Omit<HTMLAttributes<HTMLParagraphElement>, "color">,
-    VariantProps<typeof FormMessageVariant> {
+    VariantProps<typeof formMessageVariant> {
   custom?: string;
 }
 
 type FormMessageRef = HTMLParagraphElement;
 
-const FormMessageVariant = tv({
+const formMessageVariant = tv({
   base: "text-base mt-2",
   variants: {
     variant: {
@@ -122,7 +122,7 @@ export const FormMessage = forwardRef<FormMessageRef, FormMessage>(
   (props, ref) => {
     return (
       <p
-        className={FormMessageVariant({
+        className={formMessageVariant({
           variant: props.variant,
           size: props.size,
           class: props.custom,

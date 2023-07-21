@@ -1,6 +1,6 @@
 import BecomeHostForm from "@/components/forms/become-host-form";
 
-export default function BecomeAHost() {
+export default function BecomeAHostPage() {
   return (
     <div>
       <BecomeHostForm />

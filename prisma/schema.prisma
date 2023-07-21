@@ -10,7 +10,7 @@ datasource db {
 model Space {
   id                String    @id @default(auto()) @map(name: "_id") @db.ObjectId
   //obtained id from auth, no need to add new collections.
-  authorId          String    @map("author_id")
+  authorId          String    @map(name: "author_id")
   name              String
   city              City      @relation(fields: [cityId], references: [id])
   cityId            String    @db.ObjectId @map(name: "city_id")
