@@ -4,6 +4,12 @@
 import { api } from "@/lib/api/api";
 import { Button } from "./ui/button";
 import { useClerk, useAuth } from "@clerk/nextjs";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogClose,
+} from "./ui/dialog";
 
 export default function HelloWorld() {
   // const hello = api.hello.hello.useQuery();
@@ -124,6 +130,15 @@ export default function HelloWorld() {
       <Button onClick={deleteCity}>Delete City</Button>
       <div className="border p-2">
         <Button onClick={logoutSession}>Logout</Button>
+      </div>
+      <div>
+        <AlertDialog>
+          <AlertDialogTrigger>Show</AlertDialogTrigger>
+          <AlertDialogContent>
+            <p>Ingfokan</p>
+            <AlertDialogClose>Close</AlertDialogClose>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </div>
   );
