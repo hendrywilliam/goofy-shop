@@ -2,7 +2,7 @@ import { ButtonHTMLAttributes, forwardRef } from "react";
 import { tv, type VariantProps } from "tailwind-variants";
 
 export const buttonVariants = tv({
-  base: "px-4 py-2 rounded-md hover:opacity-80 antialiased",
+  base: "px-4 py-2 rounded-md hover:opacity-80 antialiased cursor-pointer",
   variants: {
     color: {
       primary: "bg-primary text-white",
@@ -46,4 +46,4 @@ export const Button = forwardRef<Ref, ButtonProps>((props, ref) => {
   );
 });
 
-Button.displayName = "Button"
+Button.displayName = "Button";

@@ -4,6 +4,7 @@ import {
   InputHTMLAttributes,
   LabelHTMLAttributes,
   forwardRef,
+  TextareaHTMLAttributes,
 } from "react";
 import { tv, type VariantProps } from "tailwind-variants";
 
@@ -62,8 +63,8 @@ const FormInputVariant = tv({
   base: "p-2 rounded-md",
   variants: {
     color: {
-      primary: "border",
-      error: "border border-destructive",
+      primary: "border focus:ring-2 ring-muted outline-none",
+      error: "border border-destructive focus:ring-2 ring-muted outline-none",
     },
     font: {
       sm: "text-sm",
@@ -136,3 +137,28 @@ export const FormMessage = forwardRef<FormMessageRef, FormMessage>(
 );
 
 FormMessage.displayName = "FormMessage";
+
+//form textarea
+export interface FormTextarea
+  extends TextareaHTMLAttributes<HTMLTextAreaElement>,
+    FormTextareaVariants {}
+
+type FormTextareaRef = HTMLTextAreaElement;
+
+const formTextVariants = tv({
+  base: "border",
+});
+
+type FormTextareaVariants = VariantProps<typeof formTextVariants>;
+
+export const FormTextarea = forwardRef<FormTextareaRef, FormTextarea>(
+  (props, ref) => {
+    return (
+      <textarea className={formTextVariants()} {...props} ref={ref}>
+        {props.children}
+      </textarea>
+    );
+  }
+);
+
+FormTextarea.displayName = "FormTextarea";

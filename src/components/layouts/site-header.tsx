@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { IconGlobe } from "../icons/icon-globe";
+import { IconGlobe } from "@/components/icons/icon-globe";
 import MainNavigationMenu from "./main-nav";
 import AccountNavigationMenu from "./account-nav";
 

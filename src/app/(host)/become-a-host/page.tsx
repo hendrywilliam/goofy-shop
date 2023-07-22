@@ -1,9 +1,10 @@
 import BecomeHostForm from "@/components/forms/become-host-form";
+import { Shell } from "@/components/ui/shell";
 
 export default function BecomeAHostPage() {
   return (
-    <div>
+    <Shell custom="min-h-screen">
       <BecomeHostForm />
-    </div>
+    </Shell>
   );
 }

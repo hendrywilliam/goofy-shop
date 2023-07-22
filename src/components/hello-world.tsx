@@ -25,7 +25,7 @@ export default function HelloWorld() {
 
   console.log(userId);
 
-  // console.log(protectedData.data?.message, protectedData.data?.user);
+  // console.log(protected Data.data?.message, protectedData.data?.user);
 
   //useClerk hook
   const { signOut } = useClerk();
