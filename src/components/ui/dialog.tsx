@@ -88,7 +88,7 @@ const AlertDialogOverlay = React.forwardRef<
 >((props, ref) => {
   return (
     <div
-      className="flex h-screen w-screen items-center fixed top-0 z-29 backdrop-blur-sm bg-white/30"
+      className="flex h-screen w-screen items-center fixed top-0 left-0 z-29 backdrop-blur-sm bg-white/30"
       ref={ref}
     >
       {props.children}
@@ -108,7 +108,7 @@ type AlertDialogContentRef = HTMLDialogElement;
 //alert dialog content variant
 
 const alertDialogContentVariant = tv({
-  base: "flex w-[300px] h-[300px] border rounded-md z-30 p-2 text-sm",
+  base: "flex flex-col w-full h-full border rounded-md z-30 p-4 text-sm gap-2",
 });
 
 export const AlertDialogContent = React.forwardRef<
@@ -198,7 +198,7 @@ type AlertDialogHeaderRef = HTMLDivElement;
 
 //variant alert dialog header
 const alertDialogHeaderVariant = tv({
-  base: "h-max w-max p-2",
+  base: "flex justify-between h-max w-full",
 });
 
 export const AlertDialogHeader = React.forwardRef<

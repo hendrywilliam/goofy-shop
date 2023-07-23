@@ -5,7 +5,7 @@ import { siteConfig } from "@/config/site";
 
 export default function SiteFooter() {
   return (
-    <Shell custom="h-[max] border-t py-4">
+    <Shell className="h-[max] border-t py-4">
       <footer className="flex flex-col">
         <section
           id="footer-content"

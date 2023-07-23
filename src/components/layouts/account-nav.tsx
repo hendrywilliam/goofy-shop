@@ -13,7 +13,7 @@ export default function AccountNavigationMenu() {
   return (
     <div className="flex w-1/3 justify-end items-center">
       <Link href="/become-a-host" className="mr-2">
-        <Button custom="w-max">Become a host</Button>
+        <Button className="w-max">Become a host</Button>
       </Link>
       <div className="flex flex-row p-2 border rounded-md cursor-pointer hover:bg-[#f9f9f9] gap-2">
         <p>Logged in as: {userId}</p>

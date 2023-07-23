@@ -17,28 +17,21 @@ import {
   FormTextarea,
 } from "@/components/ui/form";
 import { toast } from "sonner";
-import { useUploadThing } from "@/lib/uploadthing";
-import { Button } from "../ui/button";
+import AddSpace from "@/components/add-space";
+import {
+  AlertDialog,
+  AlertDialogClose,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTrigger,
+} from "@/components/ui/dialog";
+import { FileWithPreview } from "@/types";
 
 export type ProductInput = z.infer<typeof spaceValidation>;
 
 export default function BecomeHostForm() {
   const { userId } = useAuth();
-  const [files, setFiles] = React.useState<File[]>([]);
-
-  const onDrop = React.useCallback((acceptedFiles: FileWithPath[]) => {
-    setFiles(acceptedFiles);
-  }, []);
-
-  const { getRootProps, getInputProps } = useDropzone({
-    onDrop,
-    accept: {
-      "image/*": [],
-    },
-    maxFiles: 3,
-  });
-
-  const { startUpload } = useUploadThing("imageUploader");
+  const [files, setFiles] = React.useState<FileWithPreview[]>([]);
 
   //react-hook-form
   const {
@@ -48,9 +41,7 @@ export default function BecomeHostForm() {
   } = useForm<ProductInput>();
 
   const onSubmit: SubmitHandler<ProductInput> = (data: ProductInput) => {
-    console.log(data);
-    console.log(userId);
-    toast("Ngab");
+    console.log("ok");
   };
 
   return (
@@ -74,22 +65,22 @@ export default function BecomeHostForm() {
             rows={10}
           ></FormTextarea>
         </FormField>
-        <div
-          className="border border-dashed w-[200px] h-[200px]"
-          {...getRootProps()}
-        >
-          <input {...getInputProps()} />
-          <div>
-            {files.length > 0 && (
-              <Button onClick={() => startUpload(files)}>
-                You`ve selected {files.length} files
-              </Button>
-            )}
-          </div>
-          Drop files here!
-        </div>
-        <FormInput type="submit" value="Submit" />
+        <FormField>
+          <FormInput type="submit" value="Submit" />
+        </FormField>
       </Form>
+      <AlertDialog>
+        <AlertDialogTrigger>Upload Image</AlertDialogTrigger>
+        <AlertDialogContent className="w-[500px] h-max">
+          <AlertDialogHeader>
+            <div className="flex">
+              <p className="self-center">Upload image</p>
+            </div>
+            <AlertDialogClose />
+          </AlertDialogHeader>
+          <AddSpace setFile={setFiles} files={files} />
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

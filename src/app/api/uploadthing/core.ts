@@ -5,14 +5,6 @@ import { createUploadthing, type FileRouter } from "uploadthing/next";
 const f = createUploadthing();
 
 export const uploadFileRouter = {
-  /**
-   * createUploadThing => f(FileRouterInputConfig) => UploadBuilder(input, middleware,onUploadComplete)
-   * - createUploadThing invoked
-   * - f is a fn that accepts (input), input = FileRouterInputConfig
-   * - FileRouterInputConfig =
-   * - f returns UploadBuilder (input, middleware, onUploadComplete)
-   */
-
   //set max file size
   imageUploader: f({ image: { maxFileSize: "4MB" } })
     .middleware(async ({ req }) => {
