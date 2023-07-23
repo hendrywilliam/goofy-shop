@@ -9,6 +9,7 @@ import {
   AlertDialogTrigger,
   AlertDialogContent,
   AlertDialogClose,
+  AlertDialogHeader,
 } from "./ui/dialog";
 
 export default function HelloWorld() {
@@ -131,15 +132,15 @@ export default function HelloWorld() {
       <div className="border p-2">
         <Button onClick={logoutSession}>Logout</Button>
       </div>
-      <div>
-        <AlertDialog>
-          <AlertDialogTrigger>Show</AlertDialogTrigger>
-          <AlertDialogContent>
-            <p>Ingfokan</p>
+      <AlertDialog>
+        <AlertDialogTrigger>Show</AlertDialogTrigger>
+        <AlertDialogContent className="w-[600px] h-[500px]">
+          <AlertDialogHeader className="flex flex-row justify-between border w-full rounded-md">
+            <p className="text-base">Input image</p>
             <AlertDialogClose>Close</AlertDialogClose>
-          </AlertDialogContent>
-        </AlertDialog>
-      </div>
+          </AlertDialogHeader>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

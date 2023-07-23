@@ -20,16 +20,14 @@ export const shellVariants = tv({
 
 interface Shell
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof shellVariants> {
-  custom?: string;
-}
+    VariantProps<typeof shellVariants> {}
 
 type ShellRef = HTMLDivElement;
 
 export const Shell = React.forwardRef<ShellRef, Shell>((props, ref) => {
   return (
     <div
-      className={shellVariants({ class: props.custom })}
+      className={shellVariants({ class: props.className })}
       {...props}
       ref={ref}
     >

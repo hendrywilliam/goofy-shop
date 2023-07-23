@@ -24,9 +24,7 @@ export const buttonVariants = tv({
 
 export interface ButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "color">,
-    VariantProps<typeof buttonVariants> {
-  custom?: string;
-}
+    VariantProps<typeof buttonVariants> {}
 
 type Ref = HTMLButtonElement;
 
@@ -37,7 +35,7 @@ export const Button = forwardRef<Ref, ButtonProps>((props, ref) => {
       className={buttonVariants({
         color: props.color,
         size: props.size,
-        class: props.custom,
+        class: props.className,
       })}
       {...props}
     >

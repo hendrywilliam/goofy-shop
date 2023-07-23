@@ -1,5 +1,8 @@
+"use client";
+
 import * as React from "react";
-import { VariantProps, tv } from "tailwind-variants";
+import { type VariantProps, tv } from "tailwind-variants";
+import { IconClose } from "../icons/icon-close";
 
 interface DialogContext {
   isActive: boolean;
@@ -11,9 +14,6 @@ const DialogContext = React.createContext<DialogContext>({
   isActive: false,
   setIsActive: () => {},
 });
-
-//create context dialog dispatch
-// const DialogDispatchContext = React.createContext();
 
 //this will be the root (context.provider)
 export const AlertDialog = function ({ children }: React.PropsWithChildren) {
@@ -53,21 +53,29 @@ const alertDialogVariant = tv({
   },
 });
 
-export const AlertDialogTrigger = function ({
-  children,
-}: React.PropsWithChildren) {
-  const { isActive, setIsActive } = React.useContext(DialogContext);
+interface AlertDialogTrigger
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color">,
+    VariantProps<typeof alertDialogVariant> {}
 
+type AlertDialogTriggerRef = HTMLButtonElement;
+
+export const AlertDialogTrigger = React.forwardRef<
+  AlertDialogTriggerRef,
+  AlertDialogTrigger
+>((props, ref) => {
+  const { isActive, setIsActive } = React.useContext(DialogContext);
   return (
     <button
       id="dialog_trigger"
-      className={alertDialogVariant()}
+      className={alertDialogVariant({ class: props.className })}
       onClick={() => setIsActive(!isActive)}
     >
-      {children}
+      {props.children}
     </button>
   );
-};
+});
+
+AlertDialogTrigger.displayName = "AlertDialogTrigger";
 
 //alert dialog overlay
 interface AlertDialogOverlay extends React.HTMLAttributes<HTMLDivElement> {}
@@ -79,7 +87,10 @@ const AlertDialogOverlay = React.forwardRef<
   AlertDialogOverlay
 >((props, ref) => {
   return (
-    <div className="flex h-screen w-screen items-center fixed top-0 z-29 backdrop-blur-sm bg-white/30">
+    <div
+      className="flex h-screen w-screen items-center fixed top-0 z-29 backdrop-blur-sm bg-white/30"
+      ref={ref}
+    >
       {props.children}
     </div>
   );
@@ -97,7 +108,7 @@ type AlertDialogContentRef = HTMLDialogElement;
 //alert dialog content variant
 
 const alertDialogContentVariant = tv({
-  base: "flex w-[300px] h-[300px] border rounded-md z-30",
+  base: "flex w-[300px] h-[300px] border rounded-md z-30 p-2 text-sm",
 });
 
 export const AlertDialogContent = React.forwardRef<
@@ -128,14 +139,12 @@ AlertDialogContent.displayName = "AlertDialogContent";
 
 interface AlertDialogClose
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color">,
-    VariantProps<typeof alertDialogCloseVariant> {
-  custom?: string;
-}
+    VariantProps<typeof alertDialogCloseVariant> {}
 
 type AlertDialogCloseRef = HTMLButtonElement;
 
 const alertDialogCloseVariant = tv({
-  base: "px-4 py-2 rounded-md hover:opacity-80 antialiased cursor-pointer",
+  base: "p-2 h-max w-max rounded-md hover:opacity-80 antialiased cursor-pointer",
   variants: {
     color: {
       primary: "bg-primary text-white",
@@ -173,18 +182,48 @@ export const AlertDialogClose = React.forwardRef<
       ref={ref}
       id="dialog_close_action"
     >
-      {props.children}
+      <IconClose />
     </button>
   );
 });
 
 AlertDialogClose.displayName = "AlertDialogClose";
 
+//alert dialog header
+interface AlertDialogHeader
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof alertDialogHeaderVariant> {}
+
+type AlertDialogHeaderRef = HTMLDivElement;
+
+//variant alert dialog header
+const alertDialogHeaderVariant = tv({
+  base: "h-max w-max p-2",
+});
+
+export const AlertDialogHeader = React.forwardRef<
+  AlertDialogHeaderRef,
+  AlertDialogHeader
+>((props, ref) => {
+  return (
+    <div
+      className={alertDialogHeaderVariant({ class: props.className })}
+      ref={ref}
+    >
+      {props.children}
+    </div>
+  );
+});
+
+AlertDialogHeader.displayName = "AlertDialogHeader";
+
 /**
  * anatomy
  * -AlertDialog
  * |- AlertDialogTrigger
  * |- AlertDialogContent (include overlay)
+ *  |- AlertDialogHeader
  *   |- AlertDialogClose
- *
+ *  |- AlertDialogMainContent
+ *  |- AlertDialogFooter
  */

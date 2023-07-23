@@ -52,9 +52,7 @@ FormLabel.displayName = "FormLabel";
 //form input interfaces
 export interface FormInput
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "color">,
-    FormInputVariant {
-  custom?: string;
-}
+    FormInputVariant {}
 
 type FormInputRef = HTMLInputElement;
 
@@ -86,7 +84,7 @@ export const FormInput = forwardRef<FormInputRef, FormInput>((props, ref) => {
       className={FormInputVariant({
         color: props.color,
         font: props.font,
-        class: props.custom,
+        class: props.className,
       })}
       {...props}
       ref={ref}
@@ -98,9 +96,7 @@ FormInput.displayName = "FormInput";
 
 export interface FormMessage
   extends Omit<HTMLAttributes<HTMLParagraphElement>, "color">,
-    VariantProps<typeof formMessageVariant> {
-  custom?: string;
-}
+    VariantProps<typeof formMessageVariant> {}
 
 type FormMessageRef = HTMLParagraphElement;
 
@@ -126,7 +122,7 @@ export const FormMessage = forwardRef<FormMessageRef, FormMessage>(
         className={formMessageVariant({
           variant: props.variant,
           size: props.size,
-          class: props.custom,
+          class: props.className,
         })}
         {...props}
       >
