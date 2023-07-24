@@ -55,7 +55,9 @@ const alertDialogVariant = tv({
 
 interface AlertDialogTrigger
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color">,
-    VariantProps<typeof alertDialogVariant> {}
+    VariantProps<typeof alertDialogVariant> {
+  custom?: string;
+}
 
 type AlertDialogTriggerRef = HTMLButtonElement;
 
@@ -67,7 +69,7 @@ export const AlertDialogTrigger = React.forwardRef<
   return (
     <button
       id="dialog_trigger"
-      className={alertDialogVariant({ class: props.className })}
+      className={alertDialogVariant({ class: props.custom })}
       onClick={() => setIsActive(!isActive)}
     >
       {props.children}
@@ -101,7 +103,9 @@ AlertDialogOverlay.displayName = "AlertDialogOverlay";
 //alert dialog content
 interface AlertDialogContent
   extends React.DialogHTMLAttributes<HTMLDialogElement>,
-    VariantProps<typeof alertDialogContentVariant> {}
+    VariantProps<typeof alertDialogContentVariant> {
+  custom?: string;
+}
 
 type AlertDialogContentRef = HTMLDialogElement;
 
@@ -121,7 +125,7 @@ export const AlertDialogContent = React.forwardRef<
       {isActive && (
         <AlertDialogOverlay>
           <dialog
-            className={alertDialogContentVariant({ class: props.className })}
+            className={alertDialogContentVariant({ class: props.custom })}
             open={isActive}
             id="dialog_content"
           >
@@ -139,7 +143,9 @@ AlertDialogContent.displayName = "AlertDialogContent";
 
 interface AlertDialogClose
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color">,
-    VariantProps<typeof alertDialogCloseVariant> {}
+    VariantProps<typeof alertDialogCloseVariant> {
+  custom?: string;
+}
 
 type AlertDialogCloseRef = HTMLButtonElement;
 
@@ -175,7 +181,7 @@ export const AlertDialogClose = React.forwardRef<
       className={alertDialogCloseVariant({
         color: props.color,
         size: props.size,
-        class: props.className,
+        class: props.custom,
       })}
       {...props}
       onClick={() => void setIsActive(!isActive)}
@@ -192,7 +198,9 @@ AlertDialogClose.displayName = "AlertDialogClose";
 //alert dialog header
 interface AlertDialogHeader
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof alertDialogHeaderVariant> {}
+    VariantProps<typeof alertDialogHeaderVariant> {
+  custom?: string;
+}
 
 type AlertDialogHeaderRef = HTMLDivElement;
 
@@ -207,7 +215,7 @@ export const AlertDialogHeader = React.forwardRef<
 >((props, ref) => {
   return (
     <div
-      className={alertDialogHeaderVariant({ class: props.className })}
+      className={alertDialogHeaderVariant({ class: props.custom })}
       ref={ref}
     >
       {props.children}
