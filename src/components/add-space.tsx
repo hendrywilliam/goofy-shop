@@ -117,8 +117,7 @@ export const ImagePreview = ({ image, deleteFile }: ImagePreview) => {
     <div className="flex flex-row mt-2 justify-between">
       <div className="flex flex-row w-16 relative h-12 rounded-md">
         <Image
-          objectFit="cover"
-          className="rounded-md"
+          className="rounded-md cover"
           src={image.preview}
           fill={true}
           alt={image.name}

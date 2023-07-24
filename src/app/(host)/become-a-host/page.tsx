@@ -3,7 +3,7 @@ import { Shell } from "@/components/ui/shell";
 
 export default function BecomeAHostPage() {
   return (
-    <Shell custom="min-h-screen">
+    <Shell custom="min-h-screen flex flex-col lg:flex-row px-2 lg:px-20">
       <BecomeHostForm />
     </Shell>
   );

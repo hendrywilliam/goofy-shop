@@ -27,12 +27,13 @@ export const Avatar = forwardRef<AvatarRef, Avatar>((props, ref) => {
           src={props.src}
           alt={props.alt ? props.alt : "Avatar"}
           ref={ref}
+          className="rounded-full cover"
           fill
         />
       ) : (
         // fallback avatar
         <Image
-          className="rounded-full"
+          className="rounded-full cover"
           // src="/images/image-lofi-girl.webp"
           src={LofiGirl}
           alt={props.alt ? props.alt : "Default Avatar"}
