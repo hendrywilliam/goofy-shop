@@ -71,7 +71,7 @@ export default function BecomeHostForm() {
       </Form>
       <AlertDialog>
         <AlertDialogTrigger>Upload Image</AlertDialogTrigger>
-        <AlertDialogContent className="w-[500px] h-max">
+        <AlertDialogContent custom="w-[500px] h-max">
           <AlertDialogHeader>
             <div className="flex">
               <p className="self-center">Upload image</p>

@@ -71,6 +71,7 @@ export const AlertDialogTrigger = React.forwardRef<
       id="dialog_trigger"
       className={alertDialogVariant({ class: props.custom })}
       onClick={() => setIsActive(!isActive)}
+      ref={ref}
     >
       {props.children}
     </button>
@@ -88,9 +89,18 @@ const AlertDialogOverlay = React.forwardRef<
   AlertDialogOverlayRef,
   AlertDialogOverlay
 >((props, ref) => {
+  React.useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, []);
+
   return (
     <div
-      className="flex h-screen w-screen items-center fixed top-0 left-0 z-29 backdrop-blur-sm bg-white/30"
+      className="flex h-screen w-screen items-center fixed top-0 left-0 z-30 backdrop-blur-sm bg-white/30"
       ref={ref}
     >
       {props.children}
@@ -112,7 +122,7 @@ type AlertDialogContentRef = HTMLDialogElement;
 //alert dialog content variant
 
 const alertDialogContentVariant = tv({
-  base: "flex flex-col w-full h-full border rounded-md z-30 p-4 text-sm gap-2",
+  base: "flex flex-col w-full h-full border rounded-md z-50 p-4 text-sm gap-2",
 });
 
 export const AlertDialogContent = React.forwardRef<
@@ -120,6 +130,7 @@ export const AlertDialogContent = React.forwardRef<
   AlertDialogContent
 >((props, ref) => {
   const { isActive } = React.useContext(DialogContext);
+
   return (
     <>
       {isActive && (

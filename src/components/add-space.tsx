@@ -2,12 +2,7 @@
 
 import * as React from "react";
 import { FileWithPreview } from "@/types";
-import {
-  useDropzone,
-  type Accept,
-  type FileWithPath,
-  FileRejection,
-} from "react-dropzone";
+import { useDropzone, type Accept, FileRejection } from "react-dropzone";
 import Image from "next/image";
 import { toast } from "sonner";
 import { IconDelete } from "./icons/icon-delete";
@@ -29,7 +24,7 @@ export default function AddSpace({
   },
   files,
   maxFiles = 3,
-  // bytes binary
+  // bytes binary 4MB
   maxSize = 1024 * 1024 * 4,
 }: AddSpace) {
   const onDrop = React.useCallback(
@@ -46,10 +41,22 @@ export default function AddSpace({
     [setFile, files]
   );
 
+  //rejected files - max file size, max image files
   const onDropRejected = React.useCallback(
     (fileRejections: FileRejection[]) => {
       const firstRejection = fileRejections[0].errors[0];
       toast.error(`Operation rejected - ${firstRejection.message}`);
+    },
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+    [files]
+  );
+
+  const deleteFile = React.useCallback(
+    (selectedFileIndex: number) => {
+      const filteredFiles = files.filter((_, i) => {
+        return i !== selectedFileIndex;
+      });
+      setFile(filteredFiles);
     },
     //eslint-disable-next-line react-hooks/exhaustive-deps
     [files]
@@ -79,20 +86,16 @@ export default function AddSpace({
         <p>Only accepts image file with maximum 4MB each.</p>
       </div>
       <div className="relative mt-2 h-max">
-        {files.length > 0 && <p>You have selected ({files.length}/3) files</p>}
+        <p>You have selected ({files.length}/3) files</p>
         <div className="flex flex-col gap-2">
           {files?.length
             ? files.map((item, i) => {
                 return (
-                  // <Image
-                  //   className="rounded-md"
-                  //   src={item.preview}
-                  //   key={i}
-                  //   width={50}
-                  //   height={50}
-                  //   alt={item.name}
-                  // />
-                  <ImagePreview image={item} key={i} />
+                  <ImagePreview
+                    image={item}
+                    key={i}
+                    deleteFile={() => deleteFile(i)}
+                  />
                 );
               })
             : null}
@@ -104,10 +107,10 @@ export default function AddSpace({
 
 interface ImagePreview {
   image: FileWithPreview;
-  setFile?: React.Dispatch<React.SetStateAction<FileWithPreview[]>>;
+  deleteFile: () => void;
 }
 
-export const ImagePreview = ({ image, setFile }: ImagePreview) => {
+export const ImagePreview = ({ image, deleteFile }: ImagePreview) => {
   const lastModified = new Date(image.lastModified).toDateString();
 
   return (
@@ -122,10 +125,13 @@ export const ImagePreview = ({ image, setFile }: ImagePreview) => {
         />
       </div>
       <div className="flex flex-col w-full mx-2 truncate justify-center">
-        <p>{image.name}</p>
+        <p className="truncate">{image.name}</p>
         <p className="text-xs text-muted">Last modified - {lastModified}</p>
       </div>
-      <Button custom="border p-2 h-1/2 rounded-md self-center">
+      <Button
+        onClick={deleteFile}
+        custom="border p-2 h-1/2 rounded-md self-center"
+      >
         <IconDelete className="stroke-1" />
       </Button>
     </div>
