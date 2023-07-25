@@ -27,6 +27,12 @@ import {
 import { FileWithPreview } from "@/types";
 import { Shell } from "@/components/ui/shell";
 import { useGeoLocation } from "@/hooks/use-geo-location";
+import "leaflet/dist/leaflet.css";
+import dynamic from "next/dynamic";
+
+const Map = dynamic(() => import("@/components/ui/map"), {
+  ssr: false,
+});
 
 export type ProductInput = z.infer<typeof spaceValidation>;
 
@@ -56,8 +62,6 @@ export default function BecomeHostForm() {
   return (
     <>
       <Shell custom="flex p-4 lg:p-0 border-b w-full lg:w-1/4 lg:border-r lg:border-b-0">
-        <button onClick={() => console.log(latitude)}>Check location</button>
-        <button onClick={() => console.log(longitude)}>Check longitude</button>
         <div className="flex flex-col w-full h-max text-start pt-2">
           <h1 className="font-calsans text-xl">Become a host</h1>
           <p className="text-muted">Host anything you want</p>
@@ -162,6 +166,13 @@ export default function BecomeHostForm() {
               />
             </FormField>
           </FormField>
+          <div className="relative flex flex-row w-full h-[400px] mt-2 rounded-md">
+            <Map
+              latitude={latitude}
+              longitude={longitude}
+              popupMessage="Test Map"
+            />
+          </div>
           <FormField className="flex flex-row w-full justify-between gap-2">
             <FormField className="flex flex-col w-full">
               <FormLabel htmlFor="description">Description</FormLabel>
