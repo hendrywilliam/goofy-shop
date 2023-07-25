@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { api } from "@/lib/api/api";
 import { spaceValidation } from "@/lib/validation/space";
@@ -15,7 +16,6 @@ import {
   FormMessage,
   FormTextarea,
 } from "@/components/ui/form";
-import { toast } from "sonner";
 import AddSpace from "@/components/add-space";
 import {
   AlertDialog,
@@ -28,9 +28,23 @@ import { FileWithPreview } from "@/types";
 import { Shell } from "@/components/ui/shell";
 import { useGeoLocation } from "@/hooks/use-geo-location";
 import "leaflet/dist/leaflet.css";
-import dynamic from "next/dynamic";
+import { useIsMounted } from "@/hooks/use-is-mounted";
+
+/**
+ * dynamic import for lazy component (client side)
+ * map and draggable marker (both leaflet components) is using window instance
+ * thats why you need to import them dynamically and escape ssr.
+ *
+ * and import components after importing the leaflet css
+ * import "leaflet/dist/leaflet.css"
+ * @see https://nextjs.org/docs/app/building-your-application/optimizing/lazy-loading#importing-client-components
+ */
 
 const Map = dynamic(() => import("@/components/ui/map"), {
+  ssr: false,
+});
+
+const DraggableMarker = dynamic(() => import("@/components/ui/map-marker"), {
   ssr: false,
 });
 
@@ -40,8 +54,9 @@ export default function BecomeHostForm() {
   const { userId } = useAuth();
   const [files, setFiles] = React.useState<FileWithPreview[]>([]);
 
-  //geolocation hook
+  //custom hooks
   const { latitude, longitude, setLongitude, setLatitude } = useGeoLocation();
+  const mounted = useIsMounted();
 
   //react-query-hooks
   const cities = api.city.getAllCity.useQuery();
@@ -167,11 +182,20 @@ export default function BecomeHostForm() {
             </FormField>
           </FormField>
           <div className="relative flex flex-row w-full h-[400px] mt-2 rounded-md">
-            <Map
-              latitude={latitude}
-              longitude={longitude}
-              popupMessage="Test Map"
-            />
+            {mounted && (
+              <Map
+                latitude={latitude}
+                longitude={longitude}
+                popupMessage="Test Map"
+              >
+                <DraggableMarker
+                  lat={latitude}
+                  lng={longitude}
+                  setLatitude={setLatitude}
+                  setLongitude={setLongitude}
+                />
+              </Map>
+            )}
           </div>
           <FormField className="flex flex-row w-full justify-between gap-2">
             <FormField className="flex flex-col w-full">

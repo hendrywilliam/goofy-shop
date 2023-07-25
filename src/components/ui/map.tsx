@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { MapContainer, TileLayer } from "react-leaflet";
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
@@ -15,13 +15,13 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow.src,
 });
 
-interface Map {
+interface Map extends React.PropsWithChildren {
   latitude: number;
   longitude: number;
   popupMessage: string;
 }
 
-const Map = React.memo(({ latitude, longitude, popupMessage }: Map) => {
+const Map = React.memo(({ latitude, longitude, children }: Map) => {
   return (
     <MapContainer
       center={{ lat: latitude, lng: longitude }}
@@ -33,9 +33,8 @@ const Map = React.memo(({ latitude, longitude, popupMessage }: Map) => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Marker position={{ lat: latitude, lng: longitude }}>
-        <Popup>{popupMessage}</Popup>
-      </Marker>
+
+      {children}
     </MapContainer>
   );
 });
