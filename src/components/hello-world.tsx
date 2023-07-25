@@ -120,6 +120,25 @@ export default function HelloWorld() {
     return signOut();
   }
 
+  function multipleCityCreation() {
+    const city = [
+      "Yogyakarta",
+      "Bandung",
+      "Pekanbaru",
+      "Medan",
+      "Singkawang",
+      "Cirebon",
+      "Tanggerang",
+    ];
+
+    city.forEach(async (item) => {
+      const ngab = await addCity.mutateAsync({
+        name: item,
+      });
+      console.log(ngab);
+    });
+  }
+
   return (
     <div>
       <Button onClick={addNewSpace}>Add new space</Button>
@@ -129,6 +148,7 @@ export default function HelloWorld() {
       <Button onClick={deleteReview}>Delete review</Button>
       <Button onClick={createCity}>Create City</Button>
       <Button onClick={deleteCity}>Delete City</Button>
+      <Button onClick={multipleCityCreation}>Multiple cities</Button>
       <div className="border p-2">
         <Button onClick={logoutSession}>Logout</Button>
       </div>

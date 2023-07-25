@@ -5,7 +5,6 @@ import { api } from "@/lib/api/api";
 import { spaceValidation } from "@/lib/validation/space";
 import { z } from "zod";
 import { useAuth } from "@clerk/nextjs";
-import { useDropzone } from "react-dropzone";
 import type { FileWithPath } from "react-dropzone";
 import * as React from "react";
 import {
@@ -27,12 +26,19 @@ import {
 } from "@/components/ui/dialog";
 import { FileWithPreview } from "@/types";
 import { Shell } from "@/components/ui/shell";
+import { useGeoLocation } from "@/hooks/use-geo-location";
 
 export type ProductInput = z.infer<typeof spaceValidation>;
 
 export default function BecomeHostForm() {
   const { userId } = useAuth();
   const [files, setFiles] = React.useState<FileWithPreview[]>([]);
+
+  //geolocation hook
+  const { latitude, longitude, setLongitude, setLatitude } = useGeoLocation();
+
+  //react-query-hooks
+  const cities = api.city.getAllCity.useQuery();
 
   //react-hook-form
   const {
@@ -43,53 +49,151 @@ export default function BecomeHostForm() {
 
   const onSubmit: SubmitHandler<ProductInput> = (data: ProductInput) => {
     console.log("ok");
+    console.log(data);
     console.log(files);
   };
 
   return (
     <>
-      <Shell custom="flex px-0 border-r w-1/4">
-        <p className="flex self-center">Host</p>
+      <Shell custom="flex p-4 lg:p-0 border-b w-full lg:w-1/4 lg:border-r lg:border-b-0">
+        <button onClick={() => console.log(latitude)}>Check location</button>
+        <button onClick={() => console.log(longitude)}>Check longitude</button>
+        <div className="flex flex-col w-full h-max text-start pt-2">
+          <h1 className="font-calsans text-xl">Become a host</h1>
+          <p className="text-muted">Host anything you want</p>
+          <p className="text-muted">Your place your rules.</p>
+        </div>
       </Shell>
       <Shell custom="pr-0 h-max w-full">
         <Form
-          className="p-4 pr-0"
+          className="flex flex-col p-4 pr-0 gap-2"
           onSubmit={(...args) => void handleSubmit(onSubmit)(...args)}
         >
-          <FormField className="flex flex-col">
-            <FormLabel htmlFor="name">Name</FormLabel>
-            <FormInput {...register("name")} type="text" name="name" />
+          <FormField className="flex flex-row w-full justify-between gap-4">
+            <FormField className="flex flex-col w-full">
+              <FormLabel htmlFor="name">Your place name</FormLabel>
+              <FormInput
+                custom="w-full"
+                {...register("name")}
+                type="text"
+                name="name"
+              />
+            </FormField>
+            <FormField className="flex flex-col w-full">
+              <FormLabel htmlFor="cityId">Select City</FormLabel>
+              <select
+                className="p-2 border rounded-md h-full focus:ring-2 ring-muted outline-none"
+                {...register("cityId")}
+                name="cityId"
+              >
+                {cities.data?.map((item) => {
+                  return (
+                    <option value={item.id} key={item.id}>
+                      {item.name}
+                    </option>
+                  );
+                })}
+              </select>
+            </FormField>
           </FormField>
-          <FormField className="flex flex-col">
-            <FormLabel htmlFor="cityId">City</FormLabel>
-            <FormInput {...register("cityId")} type="text" name="cityId" />
+          <FormField className="flex flex-row w-full justify-between gap-4">
+            <FormField className="flex flex-col w-full">
+              <FormLabel htmlFor="numberRooms">Number of room(s)</FormLabel>
+              <FormInput
+                custom="w-full"
+                {...register("numberRooms")}
+                type="number"
+                name="numberRooms"
+                min={1}
+              />
+            </FormField>
+            <FormField className="flex flex-col w-full">
+              <FormLabel htmlFor="numberBathrooms">
+                Number of bathroom(s)
+              </FormLabel>
+              <FormInput
+                custom="w-full"
+                {...register("numberBathrooms")}
+                type="number"
+                name="numberBathrooms"
+                min={1}
+              />
+            </FormField>
           </FormField>
-          <FormField>
-            <FormLabel htmlFor="description">Description</FormLabel>
-            <FormTextarea
-              {...register("description")}
-              name="description"
-              id=""
-              cols={30}
-              rows={10}
-            ></FormTextarea>
+          <FormField className="flex flex-row w-full justify-between gap-4">
+            <FormField className="flex flex-col w-full">
+              <FormLabel htmlFor="maxGuest">Max guest(s)</FormLabel>
+              <FormInput
+                custom="w-full"
+                {...register("maxGuest")}
+                type="number"
+                name="maxGuest"
+                min={1}
+              />
+            </FormField>
+            <FormField className="flex flex-col w-full">
+              <FormLabel htmlFor="price">Price (IDR)</FormLabel>
+              <FormInput
+                custom="w-full"
+                {...register("price")}
+                type="number"
+                name="price"
+                min={1}
+              />
+            </FormField>
+          </FormField>
+          <FormField className="flex flex-row w-full justify-between gap-4">
+            <FormField className="flex flex-col w-full">
+              <FormLabel htmlFor="longitude">Longitude (Optional)</FormLabel>
+              <FormInput
+                custom="w-full"
+                {...register("longitude")}
+                type="text"
+                name="longitude"
+              />
+            </FormField>
+            <FormField className="flex flex-col w-full">
+              <FormLabel htmlFor="latitude">Latitude (Optional)</FormLabel>
+              <FormInput
+                custom="w-full"
+                {...register("latitude")}
+                type="text"
+                name="latitude"
+              />
+            </FormField>
+          </FormField>
+          <FormField className="flex flex-row w-full justify-between gap-2">
+            <FormField className="flex flex-col w-full">
+              <FormLabel htmlFor="description">Description</FormLabel>
+              <FormTextarea
+                custom="rounded-md p-2"
+                {...register("description")}
+                name="description"
+                cols={30}
+                rows={10}
+              ></FormTextarea>
+            </FormField>
+          </FormField>
+          <FormField className="flex flex-row w-full justify-between gap-2">
+            <AlertDialog>
+              <AlertDialogTrigger custom="w-full" type="button">
+                Select image
+              </AlertDialogTrigger>
+              <AlertDialogContent custom="w-[500px] h-max">
+                <AlertDialogHeader>
+                  <div className="flex">
+                    <p className="self-center">Select image</p>
+                  </div>
+                  <AlertDialogClose />
+                </AlertDialogHeader>
+                <AddSpace setFile={setFiles} files={files} />
+              </AlertDialogContent>
+            </AlertDialog>
           </FormField>
           <FormField>
             <FormInput type="submit" value="Submit" />
           </FormField>
         </Form>
-        <AlertDialog>
-          <AlertDialogTrigger>Select image</AlertDialogTrigger>
-          <AlertDialogContent custom="w-[500px] h-max">
-            <AlertDialogHeader>
-              <div className="flex">
-                <p className="self-center">Select image</p>
-              </div>
-              <AlertDialogClose />
-            </AlertDialogHeader>
-            <AddSpace setFile={setFiles} files={files} />
-          </AlertDialogContent>
-        </AlertDialog>
       </Shell>
     </>
   );

@@ -2,7 +2,7 @@
 
 import { ImgHTMLAttributes, forwardRef } from "react";
 import Image from "next/image";
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import { type StaticImport } from "next/dist/shared/lib/get-img-props";
 import LofiGirl from "/public/images/image-lofi-girl.webp";
 
 /**

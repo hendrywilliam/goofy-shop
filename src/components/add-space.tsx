@@ -117,7 +117,8 @@ export const ImagePreview = ({ image, deleteFile }: ImagePreview) => {
     <div className="flex flex-row mt-2 justify-between">
       <div className="flex flex-row w-16 relative h-12 rounded-md">
         <Image
-          className="rounded-md cover"
+          className="rounded-md"
+          style={{ objectFit: "cover" }}
           src={image.preview}
           fill={true}
           alt={image.name}
@@ -125,11 +126,12 @@ export const ImagePreview = ({ image, deleteFile }: ImagePreview) => {
       </div>
       <div className="flex flex-col w-full mx-2 truncate justify-center">
         <p className="truncate">{image.name}</p>
-        <p className="text-xs text-muted">Last modified - {lastModified}</p>
+        <p className="text-xs text-muted">Last modified — {lastModified}</p>
       </div>
       <Button
         onClick={deleteFile}
         custom="border p-2 h-1/2 rounded-md self-center"
+        type="button"
       >
         <IconDelete className="stroke-1" />
       </Button>

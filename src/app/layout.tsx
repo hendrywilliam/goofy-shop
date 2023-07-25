@@ -4,6 +4,14 @@ import { Inter } from "next/font/google";
 import TRPCProvider from "@/context/trpc-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import Toaster from "@/components/ui/toaster";
+import localFont from "next/font/local";
+
+const calsans = localFont({
+  src: "../assets/fonts/calsans-semibold.woff2",
+  display: "swap",
+  variable: "--font-calsans",
+});
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -21,7 +29,9 @@ export default function RootLayout({
     <ClerkProvider>
       <TRPCProvider>
         <html lang="en">
-          <body className={inter.className}>
+          <body
+            className={`${inter.className} ${calsans.variable} antialiased`}
+          >
             {children}
             <Toaster position="bottom-right" />
           </body>

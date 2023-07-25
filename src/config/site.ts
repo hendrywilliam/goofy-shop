@@ -25,19 +25,19 @@ export const siteConfig = {
       title: "Lofis",
       items: [
         {
-          title: "Lofi Girl Original",
+          title: "lofi girl original",
           href: "https://www.youtube.com/watch?v=jfKfPfyJRdk&pp=ygUJbG9maSBnaXJs",
         },
         {
-          title: "Synthwave Boy",
+          title: "synthwave boy",
           href: "https://www.youtube.com/watch?v=4xDzrJKXOOY&pp=ygUJbG9maSBnaXJs",
         },
         {
-          title: "Lofi chill/sleep",
+          title: "lofi chill/sleep",
           href: "https://www.youtube.com/watch?v=rUxyKA_-grg",
         },
         {
-          title: "A fresh start",
+          title: "a fresh start",
           href: "https://www.youtube.com/watch?v=rwionZbOryo",
         },
       ],
@@ -46,15 +46,15 @@ export const siteConfig = {
       title: "Socials",
       items: [
         {
-          title: "GitHub",
+          title: "github",
           href: "https://github.com/hendrywilliam",
         },
         {
-          title: "Twitter",
+          title: "twitter",
           href: "https://twitter.com/Freya_JKT48",
         },
         {
-          title: "Instagram",
+          title: "instagram",
           href: "https://www.instagram.com/jkt48.freya/",
         },
       ],

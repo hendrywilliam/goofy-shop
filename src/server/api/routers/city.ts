@@ -1,4 +1,4 @@
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
 import { cityValidation, idCityValidation } from "@/lib/validation/city";
 
@@ -27,4 +27,12 @@ export const cityRouter = createTRPCRouter({
       });
       return deleteCity;
     }),
+  getAllCity: protectedProcedure.query(async ({ ctx }) => {
+    const cities = ctx.prisma.city.findMany({
+      orderBy: {
+        name: "asc",
+      },
+    });
+    return cities;
+  }),
 });

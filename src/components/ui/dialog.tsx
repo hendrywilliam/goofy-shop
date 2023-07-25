@@ -69,6 +69,7 @@ export const AlertDialogTrigger = React.forwardRef<
   return (
     <button
       id="dialog_trigger"
+      type={props.type}
       className={alertDialogVariant({ class: props.custom })}
       onClick={() => setIsActive(!isActive)}
       ref={ref}

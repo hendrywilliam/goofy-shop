@@ -9,6 +9,7 @@ import { appRouter } from "@/server/api/root";
  * @see https://trpc.io/docs/server/adapters/nextjs#nextjs-example
  */
 
+//serve api
 export default createNextApiHandler({
   router: appRouter,
   createContext: createTRPCContext,

@@ -22,7 +22,7 @@ export default function SiteFooter() {
             <ul className="flex flex-col mt-2 gap-2">
               {siteConfig.footerNavigation[0].items.map((item, index) => {
                 return (
-                  <li key={index}>
+                  <li key={index} className="text-muted">
                     <Link href={item.href} target="_blank">
                       {item.title}
                     </Link>
@@ -39,7 +39,7 @@ export default function SiteFooter() {
             <ul className="flex flex-col mt-2 gap-2">
               {siteConfig.footerNavigation[1].items.map((item, index) => {
                 return (
-                  <li key={index}>
+                  <li key={index} className="text-muted">
                     <Link href={item.href} target="_blank">
                       {item.title}
                     </Link>
@@ -56,7 +56,7 @@ export default function SiteFooter() {
             <ul className="flex flex-col mt-2 gap-2">
               {siteConfig.footerNavigation[2].items.map((item, index) => {
                 return (
-                  <li key={index}>
+                  <li key={index} className="text-muted">
                     <Link href={item.href} target="_blank">
                       {item.title}
                     </Link>

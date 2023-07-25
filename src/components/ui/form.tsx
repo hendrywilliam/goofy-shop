@@ -141,12 +141,14 @@ FormMessage.displayName = "FormMessage";
 //form textarea
 export interface FormTextarea
   extends TextareaHTMLAttributes<HTMLTextAreaElement>,
-    FormTextareaVariants {}
+    FormTextareaVariants {
+  custom?: string;
+}
 
 type FormTextareaRef = HTMLTextAreaElement;
 
 const formTextVariants = tv({
-  base: "border",
+  base: "border focus:ring-2 ring-muted outline-none",
 });
 
 type FormTextareaVariants = VariantProps<typeof formTextVariants>;
@@ -154,7 +156,11 @@ type FormTextareaVariants = VariantProps<typeof formTextVariants>;
 export const FormTextarea = forwardRef<FormTextareaRef, FormTextarea>(
   (props, ref) => {
     return (
-      <textarea className={formTextVariants()} {...props} ref={ref}>
+      <textarea
+        className={formTextVariants({ class: props.custom })}
+        {...props}
+        ref={ref}
+      >
         {props.children}
       </textarea>
     );
