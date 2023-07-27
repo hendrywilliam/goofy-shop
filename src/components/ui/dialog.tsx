@@ -15,15 +15,29 @@ const DialogContext = React.createContext<DialogContext>({
   setIsActive: () => {},
 });
 
+const alertDialogRootVariant = tv({
+  base: "w-max h-max",
+});
+
+interface CustomizeAlertDialog
+  extends VariantProps<typeof alertDialogRootVariant> {
+  custom?: string;
+}
+
+type AlertDialog = CustomizeAlertDialog & React.PropsWithChildren;
+
 //this will be the root (context.provider)
-export const AlertDialog = function ({ children }: React.PropsWithChildren) {
+export const AlertDialog = function ({ children, custom }: AlertDialog) {
   const [isActive, setIsActive] = React.useState(false);
 
   return (
     <DialogContext.Provider
       value={{ isActive: isActive, setIsActive: setIsActive }}
     >
-      <div id="dialog_root" className="w-max h-max">
+      <div
+        id="dialog_root"
+        className={alertDialogRootVariant({ class: custom })}
+      >
         {children}
       </div>
     </DialogContext.Provider>
@@ -140,6 +154,7 @@ export const AlertDialogContent = React.forwardRef<
             className={alertDialogContentVariant({ class: props.custom })}
             open={isActive}
             id="dialog_content"
+            ref={ref}
           >
             {props.children}
           </dialog>

@@ -10,6 +10,6 @@ export const spaceValidation = z.object({
   numberBathrooms: z.number().positive().default(0),
   maxGuest: z.number().positive().default(0),
   price: z.number().positive().default(0),
-  longitude: z.string().optional().nullable(),
-  latitude: z.string().optional().nullable(),
+  longitude: z.number(),
+  latitude: z.number(),
 });

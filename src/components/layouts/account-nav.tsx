@@ -6,6 +6,12 @@ import * as React from "react";
 import { Button } from "../ui/button";
 import { useAuth } from "@clerk/nextjs";
 import Link from "next/link";
+import {
+  DropdownMenuRoot,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuHeader,
+} from "@/components/ui/dropdown-menu";
 
 export default function AccountNavigationMenu() {
   const { userId } = useAuth();
@@ -19,6 +25,21 @@ export default function AccountNavigationMenu() {
         <p>Logged in as: {userId}</p>
         <IconHamburger className="self-center" />
         <Avatar />
+        <DropdownMenuRoot>
+          <DropdownMenuTrigger>Menu</DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuHeader>
+              <p>hi mom</p>
+            </DropdownMenuHeader>
+            <div>
+              <ul>
+                <li>test</li>
+                <li>test</li>
+                <li>test</li>
+              </ul>
+            </div>
+          </DropdownMenuContent>
+        </DropdownMenuRoot>
       </div>
     </div>
   );

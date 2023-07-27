@@ -87,7 +87,7 @@ export default function SignInForm() {
           </span>
         </p>
         <FormInput
-          className="w-full bg-black text-white cursor-pointer"
+          custom="w-full bg-black text-white cursor-pointer"
           type="submit"
           value="Login"
         />
