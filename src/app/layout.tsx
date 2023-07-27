@@ -30,7 +30,7 @@ export default function RootLayout({
       <TRPCProvider>
         <html lang="en">
           <body
-            className={`${inter.className} ${calsans.variable} antialiased text-sm`}
+            className={`${inter.className} ${calsans.variable} antialiased`}
           >
             {children}
             <Toaster position="bottom-right" />

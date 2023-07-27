@@ -19,7 +19,7 @@ export default function MainNavigationMenu() {
             <div className="flex grow items-center">
               <Link
                 className={`${buttonVariants({
-                  color: "ghost",
+                  variant: "ghost",
                   // add additional classes improve readibility
                   class: "flex h-max border font-medium ",
                 })}`}

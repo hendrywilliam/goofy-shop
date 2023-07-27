@@ -1,46 +1,98 @@
 "use client";
 
-import { Avatar } from "../ui/avatar";
-import { IconHamburger } from "../icons/icon-hamburger";
+import { Avatar } from "@/components/ui/avatar";
+import { IconHamburger } from "@/components/icons/icon-hamburger";
 import * as React from "react";
-import { Button } from "../ui/button";
-import { useAuth } from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
+import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
+import { IconLogout } from "@/components/icons/icon-logout";
+import { IconSetting } from "@/components/icons/icon-setting";
+import { IconAccount } from "@/components/icons/icon-account";
 import {
   DropdownMenuRoot,
   DropdownMenuContent,
   DropdownMenuTrigger,
   DropdownMenuHeader,
 } from "@/components/ui/dropdown-menu";
+import { IconDashboard } from "../icons/icon-dashboard";
+import { useRouter } from "next/navigation";
 
 export default function AccountNavigationMenu() {
-  const { userId } = useAuth();
+  const { user, isLoaded, isSignedIn } = useUser();
+  const router = useRouter();
 
   return (
     <div className="flex w-1/3 justify-end items-center">
       <Link href="/become-a-host" className="mr-2">
-        <Button className="w-max">Become a host</Button>
+        <Button custom="w-max" variant="primary">
+          Become a host
+        </Button>
       </Link>
-      <div className="flex flex-row p-2 border rounded-md cursor-pointer hover:bg-[#f9f9f9] gap-2">
-        <p>Logged in as: {userId}</p>
-        <IconHamburger className="self-center" />
-        <Avatar />
-        <DropdownMenuRoot>
-          <DropdownMenuTrigger>Menu</DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuHeader>
-              <p>hi mom</p>
-            </DropdownMenuHeader>
-            <div>
-              <ul>
-                <li>test</li>
-                <li>test</li>
-                <li>test</li>
-              </ul>
-            </div>
-          </DropdownMenuContent>
-        </DropdownMenuRoot>
-      </div>
+      <DropdownMenuRoot>
+        <DropdownMenuTrigger custom="flex justify-between">
+          <IconHamburger className="self-center" />
+          <Avatar />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuHeader>
+            {!isLoaded && !isSignedIn ? (
+              <div className="flex flex-col p-2">
+                <p>You are not signed in</p>
+              </div>
+            ) : (
+              <div className="flex flex-col p-2">
+                <p className="text-xs text-start">You are signed in as:</p>
+                <p className="font-bold">
+                  {user?.emailAddresses[0].emailAddress}
+                </p>
+              </div>
+            )}
+          </DropdownMenuHeader>
+          <div>
+            <ul>
+              <li>
+                <Button
+                  custom="flex flex-row w-full justify-center gap-2"
+                  variant="ghost"
+                  onClick={() => router.push("/dashboard/account")}
+                >
+                  <IconAccount className="flex self-center" />
+                  Account
+                </Button>
+              </li>
+              <li>
+                <Button
+                  custom="flex flex-row w-full justify-center gap-2"
+                  variant="ghost"
+                  onClick={() => router.push("/dashboard")}
+                >
+                  <IconDashboard className="flex self-center" />
+                  Dashboard
+                </Button>
+              </li>
+              <li>
+                <Button
+                  custom="flex flex-row w-full justify-center gap-2"
+                  variant="ghost"
+                >
+                  <IconSetting className="flex self-center" />
+                  Settings
+                </Button>
+              </li>
+              <li>
+                <Button
+                  custom="flex flex-row w-full justify-center gap-2"
+                  variant="destructive"
+                >
+                  <IconLogout className="flex self-center" />
+                  Logout
+                </Button>
+              </li>
+            </ul>
+          </div>
+        </DropdownMenuContent>
+      </DropdownMenuRoot>
     </div>
   );
 }

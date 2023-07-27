@@ -1,0 +1,4 @@
+{
+  //intelisense for custom props
+  "tailwindCSS.classAttributes": ["custom", "className", "class"]
+}

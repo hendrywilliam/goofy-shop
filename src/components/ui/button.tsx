@@ -4,7 +4,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 export const buttonVariants = tv({
   base: "px-4 py-2 rounded-md hover:opacity-80 antialiased cursor-pointer",
   variants: {
-    color: {
+    variant: {
       primary: "bg-primary text-white",
       neutral: "bg-zinc-500 text-black dark:text-white",
       destructive: "bg-destructive text-white",
@@ -17,7 +17,7 @@ export const buttonVariants = tv({
     },
   },
   defaultVariants: {
-    color: "primary",
+    variant: "primary",
     size: "sm",
   },
 });
@@ -35,7 +35,7 @@ export const Button = forwardRef<Ref, ButtonProps>((props, ref) => {
     <button
       ref={ref}
       className={buttonVariants({
-        color: props.color,
+        variant: props.variant,
         size: props.size,
         class: props.custom,
       })}

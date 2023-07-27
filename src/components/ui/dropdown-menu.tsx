@@ -81,7 +81,7 @@ interface DropdownMenuContent
 type DropdownMenuContentRef = HTMLDivElement;
 
 const dropdownMenuContentVariant = tv({
-  base: "flex flex-col h-[200px] w-[12rem] z-30 absolute right-0 border mt-2 rounded-md bg-white p-2",
+  base: "flex flex-col h-max w-max z-30 absolute right-0 border mt-2 rounded-md bg-white p-2",
 });
 
 const DropdownMenuContent = React.forwardRef<
@@ -120,7 +120,7 @@ type DropdownMenuHeaderRef = HTMLDivElement;
 
 //dropdown menu header variant
 const dropdownMenuHeaderVariant = tv({
-  base: "flex w-full border-b py-2 mb-2",
+  base: "flex w-full border-b",
 });
 
 const DropdownMenuHeader = React.forwardRef<

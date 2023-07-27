@@ -2,7 +2,7 @@ import * as React from "react";
 import { tv, type VariantProps } from "tailwind-variants";
 
 export const shellVariants = tv({
-  base: "px-20 text-sm",
+  base: "px-20",
 });
 
 interface Shell
