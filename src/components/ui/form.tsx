@@ -9,7 +9,9 @@ import {
 import { tv, type VariantProps } from "tailwind-variants";
 
 //form root interfaces
-export interface Form extends FormHTMLAttributes<HTMLFormElement> {}
+export interface Form extends FormHTMLAttributes<HTMLFormElement> {
+  custom?: string;
+}
 
 type FormRef = HTMLFormElement;
 
@@ -24,13 +26,25 @@ export const Form = forwardRef<FormRef, Form>((props, ref) => {
 Form.displayName = "Form";
 
 //form field interfaces
-export interface FormField extends FormHTMLAttributes<HTMLFieldSetElement> {}
+export interface FormField
+  extends FormHTMLAttributes<HTMLFieldSetElement>,
+    VariantProps<typeof formFieldVariants> {
+  custom?: string;
+}
 
 type FormFieldRef = HTMLFieldSetElement;
 
+const formFieldVariants = tv({
+  base: "flex flex-col",
+});
+
 export const FormField = forwardRef<FormFieldRef, FormField>((props, ref) => {
   return (
-    <fieldset {...props} ref={ref}>
+    <fieldset
+      className={formFieldVariants({ class: props.custom })}
+      {...props}
+      ref={ref}
+    >
       {props.children}
     </fieldset>
   );
@@ -168,3 +182,12 @@ export const FormTextarea = forwardRef<FormTextareaRef, FormTextarea>(
 );
 
 FormTextarea.displayName = "FormTextarea";
+
+/**
+ * anatomy
+ * |- Form
+ *  |--FormField
+ *   |---FormLabel
+ *   |---FormInput / FormTextarea
+ *   |---FormMessage
+ */

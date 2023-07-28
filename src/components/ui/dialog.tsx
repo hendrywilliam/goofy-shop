@@ -117,6 +117,7 @@ const AlertDialogOverlay = React.forwardRef<
     <div
       className="flex h-screen w-screen items-center fixed top-0 left-0 z-30 backdrop-blur-sm bg-white/30"
       ref={ref}
+      id="dialog_overlay"
     >
       {props.children}
     </div>
