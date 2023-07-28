@@ -19,9 +19,9 @@ model Space {
   numberBathrooms   Int?      @map(name: "number_bathrooms") @default(0)
   maxGuest          Int?      @map(name: "max_guest") @default(0)
   price             Int?      @map(name: "price_per_night") @default(0)
-  photos            String[]
-  longitude         String?
-  latitude          String?
+  photos            UploadedFile[]
+  longitude         Int?
+  latitude          Int?
   reviews           Review[]
   amenity           Amenity[]
   createdAt         DateTime  @default(now()) @map(name: "created_at")
@@ -72,4 +72,9 @@ model User {
   description   String
 
   @@map(name: "user_profile")
+}
+
+type UploadedFile {
+  fileKey String
+  fileUrl String
 }

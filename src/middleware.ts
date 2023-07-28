@@ -8,6 +8,7 @@ export default authMiddleware({
     "/sign-in",
     "/experiences",
     "/online-experiences",
+    "/api/(.*)",
   ],
 });
 

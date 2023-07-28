@@ -1,9 +1,9 @@
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
 import { spaceValidation } from "@/lib/validation/space";
 
 export const spaceRouter = createTRPCRouter({
-  createSpace: publicProcedure
+  createSpace: protectedProcedure
     .input(spaceValidation)
     .mutation(async ({ ctx, input }) => {
       const space = await ctx.prisma.space.create({
@@ -18,6 +18,7 @@ export const spaceRouter = createTRPCRouter({
           price: input.price,
           longitude: input.longitude,
           latitude: input.latitude,
+          photos: input.photo,
         },
       });
       return space;

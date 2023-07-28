@@ -1,17 +1,11 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import {
-  useForm,
-  SubmitHandler,
-  ResolverError,
-  ResolverResult,
-} from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { api } from "@/lib/api/api";
 import { spaceValidation } from "@/lib/validation/space";
-import { z, ZodError } from "zod";
+import { z } from "zod";
 import { useAuth } from "@clerk/nextjs";
-import type { FileWithPath } from "react-dropzone";
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -36,6 +30,7 @@ import { useGeoLocation } from "@/hooks/use-geo-location";
 import "leaflet/dist/leaflet.css";
 import { useIsMounted } from "@/hooks/use-is-mounted";
 import { toast } from "sonner";
+import { uploadFiles, useUploadThing } from "@/lib/uploadthing";
 
 const Map = dynamic(() => import("@/components/ui/map"), {
   ssr: false,
@@ -50,13 +45,16 @@ export type SpaceInput = z.infer<typeof spaceValidation>;
 export default function BecomeHostForm() {
   const { userId } = useAuth();
   const [files, setFiles] = React.useState<FileWithPreview[]>([]);
+  const [isPending, startTransition] = React.useTransition();
 
   //custom hooks
   const { latitude, longitude, setLongitude, setLatitude } = useGeoLocation();
   const mounted = useIsMounted();
+  const { startUpload } = useUploadThing("imageUploader");
 
   //react-query-hooks
   const cities = api.city.getAllCity.useQuery();
+  const mutateSpace = api.space.createSpace.useMutation();
 
   //react-hook-form
   const {
@@ -68,10 +66,39 @@ export default function BecomeHostForm() {
     resolver: zodResolver(spaceValidation),
   });
 
-  const onSubmit: SubmitHandler<SpaceInput> = (data: SpaceInput) => {
+  function onSubmit(data: SpaceInput) {
+    startTransition(async () => {
+      try {
+        const uploadedFiles = await startUpload(files);
+        console.log(uploadedFiles);
+
+        const addedSpace = await mutateSpace.mutateAsync({
+          authorId: data.authorId,
+          cityId: data.cityId,
+          description: data.description,
+          latitude: data.latitude,
+          longitude: data.longitude,
+          name: data.name,
+          price: data.price,
+          numberBathrooms: data.numberBathrooms,
+          maxGuest: data.maxGuest,
+          numberRooms: data.numberRooms,
+          photo: uploadedFiles,
+        });
+
+        toast("Success created a new place.");
+        console.log(addedSpace);
+      } catch (err) {
+        if (err instanceof Error) {
+          toast.error(err.message);
+        } else {
+          toast.error("Something went wrong please try again later.");
+        }
+      }
+    });
     console.log("Files", files);
     console.log(`Data: `, data);
-  };
+  }
 
   //latitude longitude integrate react hook form
   React.useEffect(() => {
@@ -314,7 +341,7 @@ export default function BecomeHostForm() {
             </AlertDialog>
           </FormField>
           <FormField>
-            <FormInput type="submit" value="Submit" />
+            <FormInput type="submit" value="Submit" disabled={isPending} />
           </FormField>
         </Form>
       </Shell>

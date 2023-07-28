@@ -17,15 +17,9 @@ export const spaceValidation = z.object({
     })
     .max(500),
   numberRooms: z.number().positive().min(1).default(1),
-  photo: z
-    .any()
-    .refine((files) => files.length > 0, {
-      message: "Image is required",
-    })
-    .refine(
-      (files) => files?.[0]?.size <= 1024 * 1024 * 4,
-      "Max file size is 4MB"
-    ),
+  photo: z.any().refine((files) => files.length > 0, {
+    message: "Image is required",
+  }),
   numberBathrooms: z.number().positive().min(1).default(1),
   maxGuest: z.number().positive().default(0).default(1),
   price: z.number().positive(),
