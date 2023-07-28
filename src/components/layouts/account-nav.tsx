@@ -17,10 +17,17 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { IconDashboard } from "../icons/icon-dashboard";
 import { useRouter } from "next/navigation";
+import { useClerk } from "@clerk/nextjs";
 
 export default function AccountNavigationMenu() {
   const { user, isLoaded, isSignedIn } = useUser();
+  const { signOut } = useClerk();
   const router = useRouter();
+
+  function logOut() {
+    signOut();
+    router.push("/");
+  }
 
   return (
     <div className="flex w-1/3 justify-end items-center">
@@ -84,6 +91,7 @@ export default function AccountNavigationMenu() {
                 <Button
                   custom="flex flex-row w-full justify-center gap-2"
                   variant="destructive"
+                  onClick={() => logOut()}
                 >
                   <IconLogout className="flex self-center" />
                   Logout

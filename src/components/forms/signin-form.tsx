@@ -12,47 +12,52 @@ import { authValidation } from "@/lib/validation/auth";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useSignIn } from "@clerk/nextjs";
+import { isClerkAPIResponseError, useSignIn } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import { useIsMounted } from "@/hooks/use-is-mounted";
+import { toast } from "sonner";
 
-type AuthValidation = z.infer<typeof authValidation>;
+type Input = z.infer<typeof authValidation>;
 
 export default function SignInForm() {
   //hooks
-  const { signIn } = useSignIn();
-  const mounted = useIsMounted();
+  const { signIn, isLoaded, setActive } = useSignIn();
   const router = useRouter();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<AuthValidation>({
+  } = useForm<Input>({
     resolver: zodResolver(authValidation),
   });
 
-  const onSubmit: SubmitHandler<AuthValidation> = async (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<Input> = async (data) => {
+    if (!isLoaded) {
+      return;
+    }
 
-    await signIn
-      ?.create({
+    try {
+      const loginResult = await signIn?.create({
         identifier: data.email,
         password: data.password,
-      })
-      .then((result) => {
-        if (result.status === "complete") {
-          //please use toast later
-          //@todo add sign 0auth
-          alert("Success login");
-          if (mounted) {
-            router.push("/");
-          }
-        } else {
-          console.log(result);
-        }
-      })
-      .catch((err) => console.log(err));
+      });
+
+      if (loginResult.status === "complete") {
+        toast("Login success.");
+        await setActive({ session: loginResult.createdSessionId });
+        router.push("/");
+      } else {
+        console.log(loginResult);
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        toast(err.message);
+      } else if (isClerkAPIResponseError(err)) {
+        toast(`${err.errors[0].longMessage}`);
+      } else {
+        toast("Something went error, please try again later.");
+      }
+    }
   };
 
   return (
