@@ -1,13 +1,19 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useForm, SubmitHandler, useController } from "react-hook-form";
+import {
+  useForm,
+  SubmitHandler,
+  ResolverError,
+  ResolverResult,
+} from "react-hook-form";
 import { api } from "@/lib/api/api";
 import { spaceValidation } from "@/lib/validation/space";
-import { z } from "zod";
+import { z, ZodError } from "zod";
 import { useAuth } from "@clerk/nextjs";
 import type { FileWithPath } from "react-dropzone";
 import * as React from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormField,
@@ -29,16 +35,7 @@ import { Shell } from "@/components/ui/shell";
 import { useGeoLocation } from "@/hooks/use-geo-location";
 import "leaflet/dist/leaflet.css";
 import { useIsMounted } from "@/hooks/use-is-mounted";
-
-/**
- * dynamic import for lazy component (client side)
- * map and draggable marker (both leaflet components) is using window instance
- * thats why you need to import them dynamically and escape ssr.
- *
- * and import components after importing the leaflet css
- * import "leaflet/dist/leaflet.css"
- * @see https://nextjs.org/docs/app/building-your-application/optimizing/lazy-loading#importing-client-components
- */
+import { toast } from "sonner";
 
 const Map = dynamic(() => import("@/components/ui/map"), {
   ssr: false,
@@ -65,29 +62,65 @@ export default function BecomeHostForm() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm<SpaceInput>();
+  } = useForm<SpaceInput>({
+    resolver: zodResolver(spaceValidation),
+  });
 
   const onSubmit: SubmitHandler<SpaceInput> = (data: SpaceInput) => {
     console.log("Files", files);
-    console.log(data);
+    console.log(`Data: `, data);
   };
+
+  //latitude longitude integrate react hook form
+  React.useEffect(() => {
+    reset({ latitude: latitude, longitude: longitude });
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [latitude, longitude]);
+
+  //integrate userId to authorId in react hook form
+  React.useEffect(() => {
+    if (userId) {
+      reset({
+        authorId: userId,
+      });
+    }
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId]);
+
+  //integrate files into photo field in react hook form
+  React.useEffect(() => {
+    reset({
+      photo: files,
+    });
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [files]);
 
   return (
     <>
       <Shell custom="flex p-4 lg:p-0 border-b w-full lg:w-1/4 lg:border-r lg:border-b-0">
         <div className="flex flex-col w-full h-max text-start pt-2">
-          <h1 className="font-calsans text-xl">Become a host</h1>
+          <h1 className="font-calsans text-3xl">Become a host</h1>
           <p className="text-muted">Host anything you want</p>
           <p className="text-muted">Your place your rules.</p>
         </div>
       </Shell>
-      <Shell custom="pr-0 h-max w-full">
+      <Shell custom="pr-0 h-max w-full px-2 lg:px-20">
         <Form
-          className="flex flex-col p-4 pr-0 gap-8"
-          onSubmit={(...args) => void handleSubmit(onSubmit)(...args)}
+          className="flex flex-col gap-8 py-4"
+          onSubmit={handleSubmit(onSubmit)}
         >
-          <FormField className="flex flex-row w-full justify-between gap-4">
+          <FormField className="flex flex-col lg:flex-row w-full justify-between gap-4">
+            <div className="flex-col w-full hidden">
+              <FormInput
+                custom="w-full"
+                {...register("authorId")}
+                type="text"
+                name="name"
+                id="name"
+              />
+            </div>
             <div className="flex flex-col w-full">
               <FormLabel htmlFor="name">Your place name</FormLabel>
               <FormInput
@@ -97,15 +130,21 @@ export default function BecomeHostForm() {
                 name="name"
                 id="name"
               />
+              {errors.name?.message && (
+                <FormMessage variant="error">
+                  {errors.name?.message}
+                </FormMessage>
+              )}
             </div>
             <div className="flex flex-col w-full">
               <FormLabel htmlFor="cityId">Select City</FormLabel>
               <select
-                className="p-2 border rounded-md h-full focus:ring-2 ring-muted outline-none"
+                className="p-2 border rounded-md focus:ring-2 ring-muted outline-none text-sm"
                 {...register("cityId")}
                 name="cityId"
                 id="cityId"
               >
+                <option value="">(Select your country)</option>
                 {cities.data?.map((item) => {
                   return (
                     <option value={item.id} key={item.id}>
@@ -114,20 +153,32 @@ export default function BecomeHostForm() {
                   );
                 })}
               </select>
+              {errors.cityId?.message && (
+                <FormMessage variant="error">
+                  {errors.cityId?.message}
+                </FormMessage>
+              )}
             </div>
           </FormField>
-          <FormField className="flex flex-row w-full justify-between gap-4">
+          <FormField className="flex flex-col lg:flex-row w-full justify-between gap-4">
             <div className="flex flex-col w-full">
               <FormLabel htmlFor="numberRooms">Number of room(s)</FormLabel>
               <FormInput
                 id="numberRooms"
                 custom="w-full"
-                {...register("numberRooms")}
+                {...register("numberRooms", {
+                  valueAsNumber: true,
+                })}
                 type="number"
                 name="numberRooms"
                 min={1}
                 defaultValue={1}
               />
+              {errors.numberRooms?.message && (
+                <FormMessage variant="error">
+                  {errors.numberRooms?.message}
+                </FormMessage>
+              )}
             </div>
             <div className="flex flex-col w-full">
               <FormLabel htmlFor="numberBathrooms">
@@ -136,7 +187,9 @@ export default function BecomeHostForm() {
               <FormInput
                 id="numberBathrooms"
                 custom="w-full"
-                {...register("numberBathrooms")}
+                {...register("numberBathrooms", {
+                  valueAsNumber: true,
+                })}
                 type="number"
                 name="numberBathrooms"
                 min={1}
@@ -144,13 +197,15 @@ export default function BecomeHostForm() {
               />
             </div>
           </FormField>
-          <FormField className="flex flex-row w-full justify-between gap-4">
+          <FormField className="flex flex-col lg:flex-row w-full justify-between gap-4">
             <div className="flex flex-col w-full">
               <FormLabel htmlFor="maxGuest">Max guest(s)</FormLabel>
               <FormInput
                 id="maxGuest"
                 custom="w-full"
-                {...register("maxGuest")}
+                {...register("maxGuest", {
+                  valueAsNumber: true,
+                })}
                 type="number"
                 name="maxGuest"
                 min={1}
@@ -162,7 +217,9 @@ export default function BecomeHostForm() {
               <FormInput
                 id="price"
                 custom="w-full"
-                {...register("price")}
+                {...register("price", {
+                  valueAsNumber: true,
+                })}
                 type="number"
                 name="price"
                 min={1}
@@ -170,20 +227,19 @@ export default function BecomeHostForm() {
               />
             </div>
           </FormField>
-          <FormField className="flex flex-row w-full justify-between gap-4">
+          <FormField className="flex flex-col lg:flex-row w-full justify-between gap-4">
             <div className="flex flex-col w-full">
               <FormLabel htmlFor="longitude">Longitude</FormLabel>
               <FormInput
                 id="longitude"
                 custom="w-full"
                 {...register("longitude", {
-                  onChange(e: React.FormEvent<HTMLInputElement>) {
-                    setLongitude(e.currentTarget.valueAsNumber);
-                  },
+                  valueAsNumber: true,
                 })}
                 type="number"
                 name="longitude"
-                value={longitude}
+                defaultValue={longitude}
+                step="0.01"
               />
             </div>
             <div className="flex flex-col w-full">
@@ -192,13 +248,12 @@ export default function BecomeHostForm() {
                 id="latitude"
                 custom="w-full"
                 {...register("latitude", {
-                  onChange(e: React.FormEvent<HTMLInputElement>) {
-                    setLatitude(e.currentTarget.valueAsNumber);
-                  },
+                  valueAsNumber: true,
                 })}
                 type="number"
                 name="latitude"
-                value={latitude}
+                defaultValue={latitude}
+                step="0.01"
               />
             </div>
           </FormField>
@@ -229,10 +284,20 @@ export default function BecomeHostForm() {
                 cols={30}
                 rows={10}
               ></FormTextarea>
+              {errors.description?.message && (
+                <FormMessage variant="error">
+                  {errors.description?.message}
+                </FormMessage>
+              )}
             </div>
           </FormField>
           <FormField className="flex flex-col w-full justify-between gap-2">
             <p>Upload your images - ({files.length}/3) selected</p>
+            {errors.photo?.message && (
+              <FormMessage variant="error">
+                {errors.photo.message.toString()}
+              </FormMessage>
+            )}
             <AlertDialog custom="w-full">
               <AlertDialogTrigger custom="w-full" type="button">
                 Select image

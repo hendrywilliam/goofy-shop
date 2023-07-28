@@ -64,3 +64,12 @@ model City {
 
   @@map(name: "cities")
 }
+
+model User {
+  id            String  @id @default(auto()) @map(name: "_id") @db.ObjectId
+  clerkId       String  @unique @map(name: "clerk_id")
+  fullName      String  @map(name: "full_name")
+  description   String
+
+  @@map(name: "user_profile")
+}

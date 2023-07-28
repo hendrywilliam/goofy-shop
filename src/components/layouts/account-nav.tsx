@@ -43,9 +43,9 @@ export default function AccountNavigationMenu() {
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuHeader>
-            {!isLoaded && !isSignedIn ? (
+            {!isSignedIn ? (
               <div className="flex flex-col p-2">
-                <p>You are not signed in</p>
+                <p>Welcome, guest!</p>
               </div>
             ) : (
               <div className="flex flex-col p-2">

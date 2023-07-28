@@ -55,7 +55,7 @@ export default function SignInForm() {
       } else if (isClerkAPIResponseError(err)) {
         toast(`${err.errors[0].longMessage}`);
       } else {
-        toast("Something went error, please try again later.");
+        toast("Something went wrong, please try again later.");
       }
     }
   };
