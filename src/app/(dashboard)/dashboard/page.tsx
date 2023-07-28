@@ -8,8 +8,8 @@ export default async function DashboardPage() {
   const user = await currentUser();
 
   return (
-    <Shell custom="flex flex-col h-screen justify-center items-center px-2 lg:px-20">
-      <div className="w-1/2 h-[600px]">
+    <Shell custom="flex flex-col h-[500px] lg:h-screen justify-center lg:items-center p-2 lg:px-20">
+      <div className="w-full lg:w-1/2 lg:h-[600px]">
         <div>
           <h1 className="font-calsans text-3xl">Dashboard</h1>
           <p>
@@ -23,7 +23,7 @@ export default async function DashboardPage() {
             </Link>
           </p>
         </div>
-        <div className="grid grid-cols-3 gap-4 mt-4">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
           <Link href="/dashboard/account">
             <div className="flex flex-col border p-4 rounded-md h-[8em] justify-between">
               <IconAccount />
@@ -38,7 +38,7 @@ export default async function DashboardPage() {
               <IconPlace />
               <h1 className="font-calsans mt-2">Manage Places</h1>
               <p className="text-muted text-sm">
-                Provide your personal details.
+                Add, edit, delete your places.
               </p>
             </div>
           </Link>

@@ -19,7 +19,10 @@ import { useIsMounted } from "@/hooks/use-is-mounted";
 type AuthValidation = z.infer<typeof authValidation>;
 
 export default function SignInForm() {
-  //@todo add logic user is logged in? -> redirect "/"
+  //hooks
+  const { signIn } = useSignIn();
+  const mounted = useIsMounted();
+  const router = useRouter();
 
   const {
     register,
@@ -28,11 +31,6 @@ export default function SignInForm() {
   } = useForm<AuthValidation>({
     resolver: zodResolver(authValidation),
   });
-
-  //hooks
-  const { signIn } = useSignIn();
-  const mounted = useIsMounted();
-  const router = useRouter();
 
   const onSubmit: SubmitHandler<AuthValidation> = async (data) => {
     console.log(data);

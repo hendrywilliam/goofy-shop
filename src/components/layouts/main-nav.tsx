@@ -21,7 +21,7 @@ export default function MainNavigationMenu() {
                 className={`${buttonVariants({
                   variant: "ghost",
                   // add additional classes improve readibility
-                  class: "flex h-max border font-medium ",
+                  class: "flex h-max border font-medium text-base",
                 })}`}
                 href={item.href}
               >

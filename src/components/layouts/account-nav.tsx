@@ -32,7 +32,7 @@ export default function AccountNavigationMenu() {
       <DropdownMenuRoot>
         <DropdownMenuTrigger custom="flex justify-between">
           <IconHamburger className="self-center" />
-          <Avatar />
+          <Avatar src={user?.imageUrl} />
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuHeader>
@@ -43,7 +43,7 @@ export default function AccountNavigationMenu() {
             ) : (
               <div className="flex flex-col p-2">
                 <p className="text-xs text-start">You are signed in as:</p>
-                <p className="font-bold">
+                <p className="font-bold text-sm">
                   {user?.emailAddresses[0].emailAddress}
                 </p>
               </div>
