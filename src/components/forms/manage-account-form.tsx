@@ -53,8 +53,8 @@ export default function ManageAccountForm() {
 
         if (data.firstName || data.lastName) {
           await user.update({
-            first_name: data.firstName,
-            last_name: data.lastName,
+            firstName: data.firstName,
+            lastName: data.lastName,
           });
         }
 
