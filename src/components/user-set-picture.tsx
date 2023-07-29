@@ -4,11 +4,15 @@ import * as React from "react";
 import ReactCrop, { type Crop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { useUser } from "@clerk/nextjs";
 
 export default function UserSetPicture() {
   const [crop, setCrop] = React.useState<Crop>();
   const [imageSource, setImageSource] = React.useState<string>();
   const [croppedImage, setCroppedImage] = React.useState<Blob | null>(null);
+
+  const { user, isLoaded, isSignedIn } = useUser();
 
   const canvasRef = React.useRef<React.ElementRef<"canvas">>(null);
   const imgRef = React.useRef<React.ElementRef<"img">>(null);
@@ -50,9 +54,24 @@ export default function UserSetPicture() {
 
       canvas?.toBlob((blob) => {
         setCroppedImage(blob);
+        toast("Image crop successfully");
       });
     }
   }
+
+  const uploadPhoto = React.useCallback(async () => {
+    try {
+      if (!user) return;
+      await user.setProfileImage({ file: croppedImage });
+      toast("Avatar updated successfully.");
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("Something went wrong, please try again later.");
+      }
+    }
+  }, [croppedImage]);
 
   React.useEffect(() => {
     return () => {
@@ -60,7 +79,7 @@ export default function UserSetPicture() {
         URL.revokeObjectURL(imageSource);
       }
     };
-  }, []);
+  }, [imageSource]);
 
   return (
     <div className="w-full h-max">
@@ -85,7 +104,10 @@ export default function UserSetPicture() {
       >
         <img className="overflow-y" src={imageSource} ref={imgRef} />
       </ReactCrop>
-      <Button onClick={() => cropImage()}>Crop Image</Button>
+      <Button onClick={cropImage} variant="bordered" custom="mr-2">
+        Crop Image
+      </Button>
+      <Button onClick={uploadPhoto}>Upload image</Button>
       {/* hidden preview */}
       <canvas ref={canvasRef} className="hidden" />
     </div>
