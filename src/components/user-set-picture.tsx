@@ -104,10 +104,12 @@ export default function UserSetPicture() {
       >
         <img className="overflow-y" src={imageSource} ref={imgRef} />
       </ReactCrop>
-      <Button onClick={cropImage} variant="bordered" custom="mr-2">
-        Crop Image
-      </Button>
-      <Button onClick={uploadPhoto}>Upload image</Button>
+      <div className="w-full flex justify-between">
+        <Button onClick={cropImage} variant="bordered" custom="mr-2">
+          Crop Image
+        </Button>
+        <Button onClick={uploadPhoto}>Upload image</Button>
+      </div>
       {/* hidden preview */}
       <canvas ref={canvasRef} className="hidden" />
     </div>

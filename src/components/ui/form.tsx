@@ -162,7 +162,7 @@ export interface FormTextarea
 type FormTextareaRef = HTMLTextAreaElement;
 
 const formTextVariants = tv({
-  base: "border focus:ring-2 ring-muted outline-none",
+  base: "border rounded-md resize-none p-2 text-sm focus:ring-2 ring-muted outline-none",
 });
 
 type FormTextareaVariants = VariantProps<typeof formTextVariants>;
