@@ -17,7 +17,7 @@ export const spaceValidation = z.object({
     })
     .max(500),
   numberRooms: z.number().positive().min(1).default(1),
-  photo: z.any().refine((files) => files.length > 0, {
+  photo: z.any().refine((files) => files?.length > 0, {
     message: "Image is required",
   }),
   numberBathrooms: z.number().positive().min(1).default(1),

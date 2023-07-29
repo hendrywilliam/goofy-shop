@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useForm } from "react-hook-form";
+import { FieldErrors, useForm } from "react-hook-form";
 import { api } from "@/lib/api/api";
 import { spaceValidation } from "@/lib/validation/space";
 import { z } from "zod";
@@ -30,7 +30,7 @@ import { useGeoLocation } from "@/hooks/use-geo-location";
 import "leaflet/dist/leaflet.css";
 import { useIsMounted } from "@/hooks/use-is-mounted";
 import { toast } from "sonner";
-import { uploadFiles, useUploadThing } from "@/lib/uploadthing";
+import { useUploadThing } from "@/lib/uploadthing";
 
 const Map = dynamic(() => import("@/components/ui/map"), {
   ssr: false,
@@ -43,7 +43,7 @@ const DraggableMarker = dynamic(() => import("@/components/ui/map-marker"), {
 export type SpaceInput = z.infer<typeof spaceValidation>;
 
 export default function BecomeHostForm() {
-  const { userId } = useAuth();
+  const { userId, isSignedIn } = useAuth();
   const [files, setFiles] = React.useState<FileWithPreview[]>([]);
   const [isPending, startTransition] = React.useTransition();
 
@@ -69,11 +69,16 @@ export default function BecomeHostForm() {
   function onSubmit(data: SpaceInput) {
     startTransition(async () => {
       try {
+        if (!isSignedIn) {
+          throw new Error("You are not logged in");
+        }
+
+        console.log(userId);
         const uploadedFiles = await startUpload(files);
         console.log(uploadedFiles);
 
         const addedSpace = await mutateSpace.mutateAsync({
-          authorId: data.authorId,
+          authorId: userId,
           cityId: data.cityId,
           description: data.description,
           latitude: data.latitude,
@@ -91,13 +96,18 @@ export default function BecomeHostForm() {
       } catch (err) {
         if (err instanceof Error) {
           toast.error(err.message);
+        } else if (err instanceof z.ZodError) {
+          toast.error(err.issues[0].message);
         } else {
           toast.error("Something went wrong please try again later.");
         }
       }
     });
-    console.log("Files", files);
-    console.log(`Data: `, data);
+  }
+  //callback when there is an error occurs
+  function onError(error: FieldErrors<SpaceInput>) {
+    const firstError = Object.values(error)[0];
+    toast(firstError.message?.toString());
   }
 
   //latitude longitude integrate react hook form
@@ -105,16 +115,6 @@ export default function BecomeHostForm() {
     reset({ latitude: latitude, longitude: longitude });
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [latitude, longitude]);
-
-  //integrate userId to authorId in react hook form
-  React.useEffect(() => {
-    if (userId) {
-      reset({
-        authorId: userId,
-      });
-    }
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId]);
 
   //integrate files into photo field in react hook form
   React.useEffect(() => {
@@ -136,7 +136,7 @@ export default function BecomeHostForm() {
       <Shell custom="pr-0 h-max w-full px-2 lg:px-20">
         <Form
           className="flex flex-col gap-8 py-4"
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(onSubmit, onError)}
         >
           <FormField className="flex flex-col lg:flex-row w-full justify-between gap-4">
             <div className="flex-col w-full hidden">

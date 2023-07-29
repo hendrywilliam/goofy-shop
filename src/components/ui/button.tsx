@@ -9,6 +9,7 @@ export const buttonVariants = tv({
       neutral: "bg-zinc-500 text-black dark:text-white",
       destructive: "bg-destructive text-white",
       ghost: "hover:bg-[#f9f9f9] border-none",
+      bordered: "bg-transparent hover:bg-gray-100 border",
     },
     size: {
       sm: "text-sm",
