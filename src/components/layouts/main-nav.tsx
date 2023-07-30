@@ -12,7 +12,7 @@ export default function MainNavigationMenu() {
   const path = usePathname();
 
   return (
-    <div className="flex w-1/3 justify-center items-center gap-4">
+    <div className="flex w-full text-sm lg:w-1/3 lg:text-base justify-center items-center gap-4">
       {mainNavigation.map((item, index) => {
         return (
           <div className="flex flex-col h-full items-center" key={index}>
@@ -21,7 +21,8 @@ export default function MainNavigationMenu() {
                 className={`${buttonVariants({
                   variant: "ghost",
                   // add additional classes improve readibility
-                  class: "flex h-max border font-medium text-base",
+                  class:
+                    "flex h-max border font-medium text-sm text-start p-2 lg:text-base lg:px-4 lg:py-2",
                 })}`}
                 href={item.href}
               >
