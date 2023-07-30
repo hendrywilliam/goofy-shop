@@ -30,7 +30,7 @@ export default function AccountNavigationMenu() {
   }
 
   return (
-    <div className="flex w-1/3 justify-end items-center">
+    <div className="flex w-full justify-between mt-4 lg:mt-0 lg:w-1/3 lg:justify-end items-center">
       <Link href="/become-a-host" className="mr-2">
         <Button custom="w-max" variant="primary">
           Become a host
@@ -41,7 +41,7 @@ export default function AccountNavigationMenu() {
           <IconHamburger className="self-center" />
           <Avatar src={user?.imageUrl} />
         </DropdownMenuTrigger>
-        <DropdownMenuContent>
+        <DropdownMenuContent custom="mt-4 lg:mt-2">
           <DropdownMenuHeader>
             {!isSignedIn ? (
               <div className="flex flex-col p-2">

@@ -24,7 +24,7 @@ export const buttonVariants = tv({
 });
 
 export interface ButtonProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "color">,
+  extends ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   custom?: string;
 }
