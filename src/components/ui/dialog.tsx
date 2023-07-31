@@ -263,3 +263,9 @@ AlertDialogHeader.displayName = "AlertDialogHeader";
  *  |- AlertDialogMainContent
  *  |- AlertDialogFooter
  */
+
+/**
+ * note for myself
+ * add custom height and width for dialog content
+ * e.g <AlertDialogContent custom="w-[90%] lg:w-[500px] h-max"></AlertDialogContent>
+ */
