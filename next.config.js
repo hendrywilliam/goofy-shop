@@ -17,6 +17,12 @@ const nextConfig = {
         port: "",
         pathname: "/avatar/**",
       },
+      {
+        protocol: "https",
+        hostname: "uploadthing.com",
+        port: "",
+        pathname: "/f/**",
+      },
     ],
   },
 };

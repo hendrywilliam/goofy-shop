@@ -8,7 +8,7 @@ export const spaceValidation = z.object({
     .min(10, {
       message: "Name must contains 10 characters",
     })
-    .max(30),
+    .max(200),
   cityId: z.string(),
   description: z
     .string()
