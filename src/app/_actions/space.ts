@@ -52,3 +52,21 @@ export async function getSpaces(searchParams: FilteredValue) {
   const results = await prisma.space.findMany();
   return results;
 }
+
+export async function getSpecificSpace(id: string) {
+  const result = await prisma.space.findUnique({
+    where: {
+      id: id,
+    },
+  });
+  return result;
+}
+
+export async function getSpecificCity(id: string) {
+  const result = await prisma.city.findUnique({
+    where: {
+      id: id,
+    },
+  });
+  return result;
+}
