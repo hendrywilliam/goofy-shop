@@ -26,3 +26,18 @@ export const spaceValidation = z.object({
   longitude: z.number(),
   latitude: z.number(),
 });
+
+export const spaceFilterValidation = z
+  .object({
+    minPrice: z.number().min(15000, "Minimum price is 15000").default(15000),
+    maxPrice: z
+      .number()
+      .max(21000000, "Maximum price is 21000000")
+      .default(21000000),
+    numberOfRooms: z.number().min(1, "Minimum room is 1").default(1),
+    numberOfBathrooms: z.number().min(1, "Minimum bathrooms is 1").default(1),
+    minimumGuest: z.number().min(1, "Minimum guest is 1").default(1),
+  })
+  .refine((data) => data?.minPrice <= data?.maxPrice, {
+    message: "Minimum price cannot higher than maximum price",
+  });
