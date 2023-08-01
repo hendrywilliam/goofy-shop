@@ -15,8 +15,8 @@ export default async function IndexPage({
   params,
   searchParams,
 }: {
-  params?: { slug: string };
-  searchParams?: FilteredValue;
+  params: { slug: string };
+  searchParams: FilteredValue;
 }) {
   const spaces = await getSpaces(searchParams);
 

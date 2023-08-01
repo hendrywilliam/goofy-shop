@@ -1,10 +1,11 @@
+"use server";
+
 import { type FilteredValue } from "@/types";
 import { prisma } from "@/server/db";
 
-//get all spaces with no filter applied
 //@todo make it fancier
-export async function getSpaces(searchParams?: FilteredValue) {
-  if (searchParams) {
+export async function getSpaces(searchParams: FilteredValue) {
+  if (Object.keys(searchParams).length > 0) {
     let queries = [];
 
     //searchParams returns a plain javascript object.
