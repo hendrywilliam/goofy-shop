@@ -1,4 +1,4 @@
-import { FilteredValue } from "@/types";
+import { type FilteredValue } from "@/types";
 
 export function searchParamsBuilder(filteredValue: FilteredValue) {
   const searchParams = new URLSearchParams();

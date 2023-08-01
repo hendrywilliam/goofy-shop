@@ -8,45 +8,22 @@ import {
 } from "@/components/ui/card";
 import FilterController from "@/components/filter-controller";
 import Image from "next/image";
-
-//get all spaces with no filter applied
-async function getSpaces(searchParams?: unknown) {
-  if (searchParams["min_price"]) {
-    const result = await prisma.space.findMany({
-      where: {
-        AND: [
-          {
-            price: {
-              gte: 20000,
-            },
-          },
-          {
-            price: {
-              lte: 80000,
-            },
-          },
-        ],
-      },
-    });
-    return result;
-  }
-  const results = await prisma.space.findMany();
-  return results;
-}
+import { type FilteredValue } from "@/types";
+import { getSpaces } from "@/app/_actions/space";
 
 export default async function IndexPage({
   params,
   searchParams,
 }: {
   params?: { slug: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams?: FilteredValue;
 }) {
   const spaces = await getSpaces(searchParams);
 
   return (
     <main>
       <Shell custom="p-2 lg:px-20 py-4">
-        <div className="mb-3">
+        <div className="flex flex-col mb-3 w-full h-max items-end">
           <FilterController />
         </div>
         <div className="w-full h-max grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-4">

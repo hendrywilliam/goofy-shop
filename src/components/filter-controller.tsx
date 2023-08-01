@@ -40,6 +40,7 @@ export default function FilterController() {
         toast.error(firstError);
       }
     }
+    /* eslint-disable-next-line */
   }, [filteredValue]);
 
   return (
@@ -63,7 +64,7 @@ export default function FilterController() {
                   <Input
                     custom="w-full"
                     type="number"
-                    defaultValue={10000}
+                    defaultValue={15000}
                     onChange={(e: React.FormEvent<HTMLInputElement>) => {
                       startTransition(() => {
                         setFilteredValue({
@@ -148,7 +149,20 @@ export default function FilterController() {
                 </div>
               </div>
             </div>
-            <Button onClick={generateSearchParams}>Apply filter</Button>
+            <div className="flex flex-row justify-between">
+              <Button
+                variant="destructive"
+                onClick={() => {
+                  setFilteredValue({});
+                  startTransition(() => {
+                    router.push("/");
+                  });
+                }}
+              >
+                Clear filter
+              </Button>
+              <Button onClick={generateSearchParams}>Apply filter</Button>
+            </div>
           </div>
         </AlertDialogContent>
       </AlertDialog>
