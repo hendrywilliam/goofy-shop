@@ -12,3 +12,11 @@ export interface MainNavItem {
 export interface FileWithPreview extends FileWithPath {
   preview: string;
 }
+
+export interface FilteredValue {
+  min_price?: number;
+  max_price?: number;
+  rooms?: number;
+  bathrooms?: number;
+  guest?: number;
+}

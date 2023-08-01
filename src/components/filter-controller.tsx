@@ -15,31 +15,31 @@ import { Input } from "@/components/ui/input";
 import { spaceFilterValidation } from "@/lib/validation/space";
 import { z } from "zod";
 import { toast } from "sonner";
+import { searchParamsBuilder } from "@/lib/utils";
 
 export default function FilterController() {
   const router = useRouter();
   const pathname = usePathname();
   const [isPending, startTransition] = React.useTransition();
   const [filteredValue, setFilteredValue] = React.useState({});
-  console.log("rendered");
 
   const generateSearchParams = React.useCallback(() => {
-    let urlSearchParams = `${pathname}`;
-
-    //validation before proceed
+    let urlSearchParams = `${pathname}?`;
     try {
-      const a = spaceFilterValidation.parse(filteredValue);
-      console.log(a);
+      //zod validation before proceed (parsed)
+      const parsedFilteredValue = spaceFilterValidation.parse(filteredValue);
+      //generate search params
+      const generateSearchParams = searchParamsBuilder(parsedFilteredValue);
+      //final urlSearchParams
+      const final = urlSearchParams.concat(generateSearchParams);
+      //navigate to url with searchParams
+      router.push(final);
     } catch (err) {
       if (err instanceof z.ZodError) {
-        console.log(err.issues);
-        toast.error(err.issues[0].message);
+        const firstError = err.issues[0].message;
+        toast.error(firstError);
       }
     }
-
-    // router.push("/?price=20000")
-
-    console.log(filteredValue);
   }, [filteredValue]);
 
   return (
@@ -68,7 +68,7 @@ export default function FilterController() {
                       startTransition(() => {
                         setFilteredValue({
                           ...filteredValue,
-                          minPrice: e.currentTarget.valueAsNumber,
+                          min_price: e.currentTarget.valueAsNumber,
                         });
                       });
                     }}
@@ -84,7 +84,7 @@ export default function FilterController() {
                       startTransition(() => {
                         setFilteredValue({
                           ...filteredValue,
-                          maxPrice: e.currentTarget.valueAsNumber,
+                          max_price: e.currentTarget.valueAsNumber,
                         });
                       });
                     }}
@@ -104,7 +104,7 @@ export default function FilterController() {
                       startTransition(() => {
                         setFilteredValue({
                           ...filteredValue,
-                          numberOfRooms: e.currentTarget.valueAsNumber,
+                          rooms: e.currentTarget.valueAsNumber,
                         });
                       });
                     }}
@@ -121,7 +121,7 @@ export default function FilterController() {
                       startTransition(() => {
                         setFilteredValue({
                           ...filteredValue,
-                          numberOfBathrooms: e.currentTarget.valueAsNumber,
+                          bathrooms: e.currentTarget.valueAsNumber,
                         });
                       });
                     }}
@@ -140,7 +140,7 @@ export default function FilterController() {
                       startTransition(() => {
                         setFilteredValue({
                           ...filteredValue,
-                          minimumGuest: e.currentTarget.valueAsNumber,
+                          guest: e.currentTarget.valueAsNumber,
                         });
                       });
                     }}
@@ -148,12 +148,7 @@ export default function FilterController() {
                 </div>
               </div>
             </div>
-            <Button
-              disabled={Object.entries(filteredValue).length === 0}
-              onClick={generateSearchParams}
-            >
-              Apply filter
-            </Button>
+            <Button onClick={generateSearchParams}>Apply filter</Button>
           </div>
         </AlertDialogContent>
       </AlertDialog>

@@ -11,7 +11,7 @@ import Image from "next/image";
 
 //get all spaces with no filter applied
 async function getSpaces(searchParams?: unknown) {
-  if (searchParams["price"]) {
+  if (searchParams["min_price"]) {
     const result = await prisma.space.findMany({
       where: {
         AND: [

@@ -29,15 +29,15 @@ export const spaceValidation = z.object({
 
 export const spaceFilterValidation = z
   .object({
-    minPrice: z.number().min(15000, "Minimum price is 15000").default(15000),
-    maxPrice: z
+    min_price: z.number().min(15000, "Minimum price is 15000").default(15000),
+    max_price: z
       .number()
       .max(21000000, "Maximum price is 21000000")
       .default(21000000),
-    numberOfRooms: z.number().min(1, "Minimum room is 1").default(1),
-    numberOfBathrooms: z.number().min(1, "Minimum bathrooms is 1").default(1),
-    minimumGuest: z.number().min(1, "Minimum guest is 1").default(1),
+    rooms: z.number().min(1, "Minimum room is 1").default(1),
+    bathrooms: z.number().min(1, "Minimum bathrooms is 1").default(1),
+    guest: z.number().min(1, "Minimum guest is 1").default(1),
   })
-  .refine((data) => data?.minPrice <= data?.maxPrice, {
+  .refine((data) => data?.min_price <= data?.max_price, {
     message: "Minimum price cannot higher than maximum price",
   });
