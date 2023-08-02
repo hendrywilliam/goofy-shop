@@ -9,6 +9,7 @@ export default authMiddleware({
     "/experiences",
     "/online-experiences",
     "/api/(.*)",
+    "/rooms/(.*)",
   ],
 });
 

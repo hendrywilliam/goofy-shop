@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { IconFiltering } from "@/components/icons/icon-filtering";
 import { Button } from "@/components/ui/button";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { spaceFilterValidation } from "@/lib/validation/space";
 import { z } from "zod";
@@ -22,9 +22,6 @@ export default function FilterController() {
   const pathname = usePathname();
   const [isPending, startTransition] = React.useTransition();
   const [filteredValue, setFilteredValue] = React.useState({});
-
-  //delete later
-  const sp = useSearchParams();
 
   const generateSearchParams = React.useCallback(() => {
     let urlSearchParams = `${pathname}?`;

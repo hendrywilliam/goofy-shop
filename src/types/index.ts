@@ -1,4 +1,5 @@
 import { FileWithPath } from "react-dropzone";
+import { type SignUpResource } from "@clerk/types";
 
 export interface FooterNavItem {
   [key: string]: string | Record<string, string>[];
@@ -20,3 +21,8 @@ export interface FilteredValue {
   bathrooms?: number;
   guest?: number;
 }
+
+export type ClerkDataUser = Pick<
+  SignUpResource,
+  "createdUserId" | "firstName" | "lastName"
+>;

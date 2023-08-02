@@ -39,19 +39,19 @@ export default function HelloWorld() {
 
   //example crud for space
   //@ts-ignore
-  function addNewSpace(): any {
-    const createData = addSpace.mutate({
-      authorId: "60f9723f77d9d90f6095d2cf",
-      name: "Testing dulu",
-      cityId: "60f9724077d9d90f6095d2d0",
-      description: "amazing space, whoever read this you are blyatiful",
-      numberRooms: 2,
-      numberBathrooms: 10,
-      maxGuest: 100,
-      price: 696969,
-    });
-    console.log(createData);
-  }
+  // function addNewSpace(): any {
+  //   const createData = addSpace.mutate({
+  //     authorId: "60f9723f77d9d90f6095d2cf",
+  //     name: "Testing dulu",
+  //     cityId: "60f9724077d9d90f6095d2d0",
+  //     description: "amazing space, whoever read this you are blyatiful",
+  //     numberRooms: 2,
+  //     numberBathrooms: 10,
+  //     maxGuest: 100,
+  //     price: 696969,
+  //   });
+  //   console.log(createData);
+  // }
 
   //add new amenities playground
   async function addNewAmenities() {
@@ -141,7 +141,7 @@ export default function HelloWorld() {
 
   return (
     <div>
-      <Button onClick={addNewSpace}>Add new space</Button>
+      {/* <Button onClick={addNewSpace}>Add new space</Button> */}
       <Button onClick={addNewAmenities}>Add new amenities</Button>
       <Button onClick={deleteAmenity}>Delete amenity</Button>
       <Button onClick={addNewReview}>Add new review</Button>
