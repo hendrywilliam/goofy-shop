@@ -15,6 +15,7 @@ import Link from "next/link";
 import { isClerkAPIResponseError, useSignIn } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { captureError } from "@/lib/utils";
 
 type Input = z.infer<typeof authValidation>;
 
@@ -35,7 +36,6 @@ export default function SignInForm() {
     if (!isLoaded) {
       return;
     }
-
     try {
       const loginResult = await signIn?.create({
         identifier: data.email,
@@ -50,13 +50,7 @@ export default function SignInForm() {
         console.log(loginResult);
       }
     } catch (err) {
-      if (err instanceof Error) {
-        toast(err.message);
-      } else if (isClerkAPIResponseError(err)) {
-        toast(`${err.errors[0].longMessage}`);
-      } else {
-        toast("Something went wrong, please try again later.");
-      }
+      captureError(err);
     }
   };
 

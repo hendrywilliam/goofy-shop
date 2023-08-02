@@ -7,17 +7,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { authValidation } from "@/lib/validation/user";
 import { Form, FormField, FormInput, FormLabel, FormMessage } from "../ui/form";
 import Link from "next/link";
+import { captureError } from "@/lib/utils";
+import { FieldErrors } from "react-hook-form";
+import { toast } from "sonner";
+import { addUserToDatabase } from "@/app/_actions/auth";
+import { ClerkDataUser } from "@/types";
 
 type RegistrationInput = z.infer<typeof authValidation>;
 
 export default function RegistrationForm() {
-  /**
-   * useSignUp is a custom hook that gives an access to signup object
-   * this will allow us to build our "own" sign-up flow
-   * its an alternative for "prebuilt-component"
-   * @see https://clerk.com/docs/authentication/usesignup-and-usesignin
-   */
-
   const { isLoaded, signUp } = useSignUp();
 
   //react-hook-form
@@ -30,32 +28,38 @@ export default function RegistrationForm() {
   });
 
   async function onSubmit(data: RegistrationInput) {
-    console.log(data);
     if (!isLoaded) return;
 
     try {
-      //@todo add more functionality
-      //like "prepareForVerification"
+      //add user to vendor
       const res = await signUp.create({
         emailAddress: data.email,
         password: data.password,
       });
 
-      console.log(res);
-      // await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
-    } catch (e) {
-      //@ts-ignore
-      console.log(e.errors[0].longMessage);
-      if (e instanceof Error) {
-        console.log(e.message);
+      //passing plain object (serialization)
+      const userData = {
+        createdUserId: res.createdUserId,
+        firstName: res.firstName,
+        lastName: res.lastName,
+      } satisfies ClerkDataUser;
+
+      //add user to database
+      if (res) {
+        await addUserToDatabase(userData);
       }
+      toast(`Success created a new account, you may login now.`);
+    } catch (error) {
+      captureError(error);
     }
   }
 
-  //@todo add 0auth
-
+  function onError(error: FieldErrors<RegistrationInput>) {
+    const firstError = Object.values(error)[0];
+    toast(firstError.message?.toString());
+  }
   return (
-    <Form className="w-full" onSubmit={handleSubmit(onSubmit)}>
+    <Form className="w-full" onSubmit={handleSubmit(onSubmit, onError)}>
       <FormField className="flex flex-col">
         <FormLabel className="text-sm" htmlFor="email">
           Email

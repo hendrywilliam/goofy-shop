@@ -66,10 +66,13 @@ model City {
 }
 
 model User {
-  id            String  @id @default(auto()) @map(name: "_id") @db.ObjectId
-  clerkId       String  @unique @map(name: "clerk_id")
-  fullName      String  @map(name: "full_name")
+  id            String    @id @default(auto()) @map(name: "_id") @db.ObjectId
+  clerkId       String    @unique @map(name: "clerk_id")
+  firstName     String?    @map(name: "first_name")
+  lastName      String?    @map(name: "last_name")
   description   String
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @default(now()) @map(name: "updated_at")
 
   @@map(name: "user_profile")
 }

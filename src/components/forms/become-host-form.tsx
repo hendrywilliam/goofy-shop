@@ -31,6 +31,7 @@ import "leaflet/dist/leaflet.css";
 import { useIsMounted } from "@/hooks/use-is-mounted";
 import { toast } from "sonner";
 import { useUploadThing } from "@/lib/uploadthing";
+import { captureError } from "@/lib/utils";
 
 const Map = dynamic(() => import("@/components/ui/map"), {
   ssr: false,
@@ -94,13 +95,7 @@ export default function BecomeHostForm() {
         toast("Success created a new place.");
         console.log(addedSpace);
       } catch (err) {
-        if (err instanceof Error) {
-          toast.error(err.message);
-        } else if (err instanceof z.ZodError) {
-          toast.error(err.issues[0].message);
-        } else {
-          toast.error("Something went wrong please try again later.");
-        }
+        captureError(err);
       }
     });
   }
