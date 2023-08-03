@@ -33,7 +33,7 @@ export default async function DashboardPage() {
               </p>
             </div>
           </Link>
-          <Link href="/dashboard/account">
+          <Link href="/dashboard/hosting">
             <div className="flex flex-col border p-4 rounded-md h-[8em] justify-between">
               <IconPlace />
               <h1 className="font-calsans mt-2">Manage Places</h1>
