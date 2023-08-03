@@ -5,7 +5,7 @@ import { z } from "zod";
 import { useSignUp } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authValidation } from "@/lib/validation/user";
-import { Form, FormField, FormInput, FormLabel, FormMessage } from "../ui/form";
+import { Form, FormField, FormInput, FormLabel, FormMessage } from "@/components/ui/form";
 import Link from "next/link";
 import { captureError } from "@/lib/utils";
 import { FieldErrors } from "react-hook-form";

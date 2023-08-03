@@ -22,7 +22,7 @@ model Space {
   photos            UploadedFile[]
   longitude         Int?
   latitude          Int?
-  reviews           Review[]
+  reviews           SpaceReview[]
   amenity           Amenity[]
   createdAt         DateTime  @default(now()) @map(name: "created_at")
   updatedAt         DateTime  @default(now()) @map(name: "updated_at")
@@ -30,7 +30,7 @@ model Space {
   @@map(name: "spaces")
 }
 
-model Review {
+model SpaceReview {
   id        String    @id @default(auto()) @map(name: "_id") @db.ObjectId
   //obtained from Auth clerk
   userId    String    @db.ObjectId @map(name: "user_id")

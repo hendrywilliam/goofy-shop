@@ -26,6 +26,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { isClerkAPIResponseError } from "@clerk/nextjs";
+import { captureError } from "@/lib/utils";
 
 type ProfileInput = z.infer<typeof profileValidation>;
 
@@ -65,13 +66,7 @@ export default function ManageAccountForm() {
         }
         toast("Update data successfully.");
       } catch (err) {
-        if (err instanceof Error) {
-          toast(err.message);
-        } else if (isClerkAPIResponseError(err)) {
-          toast(`${err.errors[0].longMessage}`);
-        } else {
-          toast("Something went wrong, please try again later.");
-        }
+        captureError(err);
       }
     });
   }
@@ -103,11 +98,17 @@ export default function ManageAccountForm() {
       >
         <FormField>
           <FormLabel>First Name</FormLabel>
-          <FormInput {...register("firstName")} />
+          <FormInput
+            {...register("firstName")}
+            defaultValue={user?.firstName ?? ""}
+          />
         </FormField>
         <FormField>
           <FormLabel>Last Name</FormLabel>
-          <FormInput {...register("lastName")} />
+          <FormInput
+            {...register("lastName")}
+            defaultValue={user?.lastName ?? ""}
+          />
         </FormField>
         <FormField>
           <FormLabel>New Password</FormLabel>

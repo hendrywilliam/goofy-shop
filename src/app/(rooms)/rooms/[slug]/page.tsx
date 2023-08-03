@@ -15,9 +15,9 @@ export default async function RoomPage({
   return (
     <Shell custom="border">
       <div className="min-h-screen pt-4 w-2/3 mx-auto">
-        <h1 className="font-calsans text-xl">{space?.name}</h1>
-        <div className="flex flex-row gap-2 text-sm">
-          <p>{city?.name}</p>
+        <div className="flex flex-col my-4">
+          <h1 className="font-calsans text-xl">{space?.name}</h1>
+          <p className="text-muted">{city?.name}</p>
           {/* <p>{space?.review}</p> */}
           {/* <p>{space.totalreview}</p> */}
         </div>
