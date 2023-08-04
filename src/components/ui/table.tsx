@@ -10,7 +10,7 @@ interface TableRoot
 type TableRootRef = HTMLTableElement;
 
 const tableRootVariants = tv({
-  base: "border p-2",
+  base: "border",
 });
 
 const Table = React.forwardRef<TableRootRef, TableRoot>((props, ref) => {
@@ -35,7 +35,7 @@ interface TableCaption
 type TableCaptionRef = HTMLTableCaptionElement;
 
 const tableCaptionVariants = tv({
-  base: "border p-2",
+  base: "border",
 });
 
 const TableCaption = React.forwardRef<TableCaptionRef, TableCaption>(
@@ -118,7 +118,7 @@ interface TableHead
 type TableHeadRef = HTMLTableCellElement;
 
 const tableHeadVariants = tv({
-  base: "p-2",
+  base: "border",
 });
 
 const TableHead = React.forwardRef<TableHeadRef, TableHead>((props, ref) => {
@@ -144,7 +144,7 @@ interface TableData
 type TableDataRef = HTMLTableCellElement;
 
 const tableDataVariants = tv({
-  base: "p-2",
+  base: "border",
 });
 
 const TableData = React.forwardRef<TableDataRef, TableData>((props, ref) => {

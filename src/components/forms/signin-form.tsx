@@ -46,8 +46,6 @@ export default function SignInForm() {
         toast("Login success.");
         await setActive({ session: loginResult.createdSessionId });
         router.push("/");
-      } else {
-        console.log(loginResult);
       }
     } catch (err) {
       captureError(err);

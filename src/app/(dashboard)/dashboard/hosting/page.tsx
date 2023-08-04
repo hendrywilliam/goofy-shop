@@ -1,42 +1,15 @@
-import * as React from "react";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableFooter,
-  TableHeader,
-  TableRow,
-  TableHead,
-  TableData,
-} from "@/components/ui/table";
+import { Shell } from "@/components/ui/shell";
+import { getOwnedSpaces } from "@/app/_actions/space";
+import SpaceTableShell from "@/components/shells/space-table-shell";
 
-export default function DashboardHostingPage() {
+export default async function DashboardHostingPage() {
+  const ownedSpaces = await getOwnedSpaces();
+
   return (
-    <div>
-      <p>Manage your hosted places here</p>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead></TableHead>
-            <TableHead>Head1</TableHead>
-            <TableHead>Head2</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow>
-            <TableData custom="p-4 border">Data1</TableData>
-            <TableData>Data2</TableData>
-            <TableData>Data3</TableData>
-          </TableRow>
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableData>FooterData1</TableData>
-            <TableData>FooterData2</TableData>
-            <TableData>FooterData3</TableData>
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </div>
+    <Shell custom="min-h-screen h-[700px]">
+      <div>
+        <SpaceTableShell data={ownedSpaces} />
+      </div>
+    </Shell>
   );
 }

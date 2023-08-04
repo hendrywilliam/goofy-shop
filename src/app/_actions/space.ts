@@ -2,6 +2,7 @@
 
 import { type FilteredValue } from "@/types";
 import { prisma } from "@/server/db";
+import { currentUser } from "@clerk/nextjs";
 
 //@todo make it fancier
 export async function getSpaces(searchParams: FilteredValue) {
@@ -53,6 +54,7 @@ export async function getSpaces(searchParams: FilteredValue) {
   return results;
 }
 
+//get specific space with its slug
 export async function getSpecificSpace(id: string) {
   const result = await prisma.space.findUnique({
     where: {
@@ -62,6 +64,7 @@ export async function getSpecificSpace(id: string) {
   return result;
 }
 
+//get cities for city selection in become a host
 export async function getSpecificCity(id: string) {
   const result = await prisma.city.findUnique({
     where: {
@@ -69,4 +72,19 @@ export async function getSpecificCity(id: string) {
     },
   });
   return result;
+}
+
+//get owned spaces data for table
+export async function getOwnedSpaces() {
+  const user = await currentUser();
+  if (!user) {
+    throw new Error("You are not logged in");
+  }
+  const { id } = user;
+  const ownedSpaces = await prisma.space.findMany({
+    where: {
+      authorId: id,
+    },
+  });
+  return ownedSpaces;
 }
