@@ -10,7 +10,6 @@ export default authMiddleware({
     "/online-experiences",
     "/api/(.*)",
     "/rooms/(.*)",
-    "/test-table/(.*)",
   ],
 });
 

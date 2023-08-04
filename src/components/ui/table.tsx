@@ -10,7 +10,7 @@ interface TableRoot
 type TableRootRef = HTMLTableElement;
 
 const tableRootVariants = tv({
-  base: "border",
+  base: "text-sm border p-2 w-max h-max",
 });
 
 const Table = React.forwardRef<TableRootRef, TableRoot>((props, ref) => {
@@ -118,7 +118,7 @@ interface TableHead
 type TableHeadRef = HTMLTableCellElement;
 
 const tableHeadVariants = tv({
-  base: "border",
+  base: "font-normal border p-2",
 });
 
 const TableHead = React.forwardRef<TableHeadRef, TableHead>((props, ref) => {
@@ -144,7 +144,7 @@ interface TableData
 type TableDataRef = HTMLTableCellElement;
 
 const tableDataVariants = tv({
-  base: "border",
+  base: "border p-2",
 });
 
 const TableData = React.forwardRef<TableDataRef, TableData>((props, ref) => {

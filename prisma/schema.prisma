@@ -20,8 +20,8 @@ model Space {
   maxGuest          Int?      @map(name: "max_guest") @default(0)
   price             Int?      @map(name: "price_per_night") @default(0)
   photos            UploadedFile[]
-  longitude         Int?
-  latitude          Int?
+  longitude         Float?
+  latitude          Float?
   reviews           SpaceReview[]
   amenity           Amenity[]
   createdAt         DateTime  @default(now()) @map(name: "created_at")

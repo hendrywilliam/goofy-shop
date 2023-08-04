@@ -25,3 +25,10 @@ export function captureError(err: unknown) {
     toast.error(unknownError);
   }
 }
+
+export function truncate(word: string, length: number) {
+  if (word.length > length) {
+    return word.substring(0, length) + "...";
+  }
+  return word;
+}
