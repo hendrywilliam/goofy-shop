@@ -13,13 +13,15 @@ export function searchParamsBuilder(filteredValue: FilteredValue) {
 }
 
 export function captureError(err: unknown) {
+  const unknownError = "Something went wrong, please try again later.";
+
   if (err instanceof Error) {
     toast.error(err.message);
   } else if (isClerkAPIResponseError(err)) {
     toast.error(err.errors[0].message);
   } else if (err instanceof z.ZodError) {
-    toast.error(err.issues[0].message);
+    toast.error(err.issues[0].message ?? unknownError);
   } else {
-    toast.error("Something went wrong, please try again later.");
+    toast.error(unknownError);
   }
 }

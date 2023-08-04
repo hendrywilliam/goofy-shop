@@ -1,9 +1,15 @@
-import * as React from "react";
+import { Shell } from "@/components/ui/shell";
+import { getOwnedSpaces } from "@/app/_actions/space";
+import SpaceTableShell from "@/components/shells/space-table-shell";
 
-export default function DashboardHostingPage() {
+export default async function DashboardHostingPage() {
+  const ownedSpaces = await getOwnedSpaces();
+
   return (
-    <div>
-      <p>Manage your hosted places here</p>
-    </div>
+    <Shell custom="min-h-screen h-[700px]">
+      <div>
+        <SpaceTableShell data={ownedSpaces} />
+      </div>
+    </Shell>
   );
 }
