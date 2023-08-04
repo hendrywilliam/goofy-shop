@@ -1,12 +1,12 @@
 "use client";
 
+import * as React from "react";
 import dynamic from "next/dynamic";
 import { FieldErrors, useForm } from "react-hook-form";
 import { api } from "@/lib/api/api";
 import { spaceValidation } from "@/lib/validation/space";
 import { z } from "zod";
 import { useAuth } from "@clerk/nextjs";
-import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
@@ -27,11 +27,15 @@ import {
 import { FileWithPreview } from "@/types";
 import { Shell } from "@/components/ui/shell";
 import { useGeoLocation } from "@/hooks/use-geo-location";
-import "leaflet/dist/leaflet.css";
 import { useIsMounted } from "@/hooks/use-is-mounted";
 import { toast } from "sonner";
 import { useUploadThing } from "@/lib/uploadthing";
 import { captureError } from "@/lib/utils";
+import { DayPicker } from "react-day-picker";
+import { DateRange } from "react-day-picker";
+
+import "leaflet/dist/leaflet.css";
+import "react-day-picker/dist/style.css";
 
 const Map = dynamic(() => import("@/components/ui/map"), {
   ssr: false,
@@ -47,6 +51,7 @@ export default function BecomeHostForm() {
   const { userId, isSignedIn } = useAuth();
   const [files, setFiles] = React.useState<FileWithPreview[]>([]);
   const [isPending, startTransition] = React.useTransition();
+  const [selectedDate, setSelectedDate] = React.useState<DateRange>();
 
   //custom hooks
   const { latitude, longitude, setLongitude, setLatitude } = useGeoLocation();
@@ -64,36 +69,45 @@ export default function BecomeHostForm() {
     reset,
     formState: { errors },
   } = useForm<SpaceInput>({
-    resolver: zodResolver(spaceValidation),
+    resolver: async (data, context, options) => {
+      // you can debug your validation schema here
+      console.log("formData", data);
+      console.log(
+        "validation result",
+        await zodResolver(spaceValidation)(data, context, options)
+      );
+      return zodResolver(spaceValidation)(data, context, options);
+    },
   });
 
   function onSubmit(data: SpaceInput) {
     startTransition(async () => {
       try {
-        if (!isSignedIn) {
-          throw new Error("You are not logged in");
-        }
+        // if (!isSignedIn) {
+        //   throw new Error("You are not logged in");
+        // }
 
-        console.log(userId);
-        const uploadedFiles = await startUpload(files);
-        console.log(uploadedFiles);
+        // console.log(userId);
+        // const uploadedFiles = await startUpload(files);
+        // console.log(uploadedFiles);
 
-        const addedSpace = await mutateSpace.mutateAsync({
-          authorId: userId,
-          cityId: data.cityId,
-          description: data.description,
-          latitude: data.latitude,
-          longitude: data.longitude,
-          name: data.name,
-          price: data.price,
-          numberBathrooms: data.numberBathrooms,
-          maxGuest: data.maxGuest,
-          numberRooms: data.numberRooms,
-          photo: uploadedFiles,
-        });
-
-        toast("Success created a new place.");
-        console.log(addedSpace);
+        // const addedSpace = await mutateSpace.mutateAsync({
+        //   authorId: userId,
+        //   cityId: data.cityId,
+        //   description: data.description,
+        //   latitude: data.latitude,
+        //   longitude: data.longitude,
+        //   name: data.name,
+        //   price: data.price,
+        //   numberBathrooms: data.numberBathrooms,
+        //   maxGuest: data.maxGuest,
+        //   numberRooms: data.numberRooms,
+        //   availableDates: data.availableDates,
+        //   photo: uploadedFiles,
+        // });
+        console.log(data);
+        // toast("Success created a new place.");
+        // console.log(addedSpace);
       } catch (err) {
         captureError(err);
       }
@@ -110,6 +124,14 @@ export default function BecomeHostForm() {
     reset({ latitude: latitude, longitude: longitude });
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [latitude, longitude]);
+
+  //integrate dates with react hook form
+  React.useEffect(() => {
+    reset({
+      availableDates: selectedDate,
+    });
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedDate]);
 
   //integrate files into photo field in react hook form
   React.useEffect(() => {
@@ -279,6 +301,20 @@ export default function BecomeHostForm() {
               />
             </div>
           </FormField>
+          <div className="flex flex-col w-full h-max border justify-center items-center ">
+            <h1>Pick available dates</h1>
+            <DayPicker
+              mode="range"
+              selected={selectedDate}
+              onSelect={setSelectedDate}
+              //set default and prohibit navigate to past
+              defaultMonth={new Date(2023, 7)}
+              fromMonth={new Date(2023, 7)}
+              disabled={{
+                before: new Date(),
+              }}
+            />
+          </div>
           <div className="relative flex flex-row w-full h-[400px] mt-2 rounded-md">
             {mounted && (
               <Map

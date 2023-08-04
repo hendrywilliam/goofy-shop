@@ -14,7 +14,7 @@ export default async function RoomPage({
 
   return (
     <Shell custom="border">
-      <div className="min-h-screen pt-4 w-2/3 mx-auto">
+      <div className="min-h-screen h-max pt-4 w-2/3 mx-auto">
         <div className="flex flex-col my-4">
           <h1 className="font-calsans text-xl">{space?.name}</h1>
           <p className="text-muted">{city?.name}</p>
@@ -49,7 +49,7 @@ export default async function RoomPage({
               : null}
           </div>
         </div>
-        <div className="flex flex-row w-full h-max gap-2">
+        <div className="flex flex-row w-full gap-2">
           <section className="w-1/2">
             <div className="flex flex-col border-y w-full h-[150px] justify-center">
               <h1 className="font-calsans text-xl">
@@ -86,7 +86,7 @@ export default async function RoomPage({
               <p>Add amenities later</p>
             </div>
           </section>
-          <section className="w-1/2 h-max">
+          <section className="w-1/2 border">
             <BookingSpace />
           </section>
         </div>

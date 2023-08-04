@@ -9,7 +9,6 @@ datasource db {
 
 model Space {
   id                String    @id @default(auto()) @map(name: "_id") @db.ObjectId
-  //obtained id from auth, no need to add new collections.
   authorId          String    @map(name: "author_id")
   name              String
   city              City      @relation(fields: [cityId], references: [id])
@@ -24,6 +23,8 @@ model Space {
   latitude          Float?
   reviews           SpaceReview[]
   amenity           Amenity[]
+  availableDates    DateRange
+  bookedDates       DateTime[]
   createdAt         DateTime  @default(now()) @map(name: "created_at")
   updatedAt         DateTime  @default(now()) @map(name: "updated_at")
 
@@ -32,7 +33,6 @@ model Space {
 
 model SpaceReview {
   id        String    @id @default(auto()) @map(name: "_id") @db.ObjectId
-  //obtained from Auth clerk
   userId    String    @db.ObjectId @map(name: "user_id")
   space     Space     @relation(fields: [spaceId], references: [id])
   spaceId   String    @db.ObjectId @map(name: "place_id")
@@ -41,7 +41,7 @@ model SpaceReview {
   createdAt DateTime  @default(now()) @map(name: "created_at")
   updatedAt DateTime  @default(now()) @map(name: "updated_at")
 
-  @@map(name: "reviews")
+  @@map(name: "space_reviews")
 }
 
 model Amenity {
@@ -67,17 +67,61 @@ model City {
 
 model User {
   id            String    @id @default(auto()) @map(name: "_id") @db.ObjectId
-  clerkId       String    @unique @map(name: "clerk_id")
-  firstName     String?    @map(name: "first_name")
-  lastName      String?    @map(name: "last_name")
+  reservation   Reservation[]
+  clerkId       String    @map(name: "clerk_id")
+  firstName     String?   @map(name: "first_name")
+  lastName      String?   @map(name: "last_name")
   description   String
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @default(now()) @map(name: "updated_at")
 
-  @@map(name: "user_profile")
+  @@map(name: "user_profiles")
+}
+
+model Reservation {
+  id            String              @id @default(auto()) @map(name: "_id") @db.ObjectId
+  guestId       String              @map(name: "guest_id") @db.ObjectId
+  user          User                @relation(fields: [guestId], references: [id])
+  placeId       String              @map(name: "place_id")
+  totalPrice    Int                 @map(name: "total_price")
+  startDate     DateTime            @map(name: "start_date")
+  endDate       DateTime            @map(name: "end_date")
+  createdAt     DateTime            @default(now()) @map(name: "created_at")
+  updatedAt     DateTime            @default(now()) @map(name: "updated_at")
+  status        ReservationStatus   @map(name: "reservation_status")
+  invoice       Invoice?            
+
+  @@map(name: "reservations")
+}
+
+model Invoice {
+  id            String        @id @default(auto()) @map(name: "_id") @db.ObjectId
+  reservationId String        @map(name: "reservation_id") @db.ObjectId @unique
+  reservation   Reservation   @relation(fields: [reservationId], references: [id])
+  createdAt     DateTime      @map(name: "created_at")
+  updatedAt     DateTime      @map(name: "updated_at")
+  invoiceStatus InvoiceStatus @default(NOT_PAID) @map(name: "invoice_status")
+
+  @@map(name: "invoice_reservations")
 }
 
 type UploadedFile {
   fileKey String
   fileUrl String
+}
+
+type DateRange {
+  from  DateTime
+  to    DateTime
+}
+
+enum ReservationStatus {
+  ACTIVE
+  CANCELED
+  COMPLETED
+}
+
+enum InvoiceStatus {
+  PAID
+  NOT_PAID
 }

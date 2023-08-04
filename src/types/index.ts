@@ -1,5 +1,6 @@
 import { FileWithPath } from "react-dropzone";
 import { type SignUpResource } from "@clerk/types";
+import { DateRange } from "react-day-picker";
 
 export interface FooterNavItem {
   [key: string]: string | Record<string, string>[];
@@ -26,3 +27,5 @@ export type ClerkDataUser = Pick<
   SignUpResource,
   "createdUserId" | "firstName" | "lastName"
 >;
+
+export type DisabledDays = DateRange | Date | Date[] | string;

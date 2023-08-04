@@ -20,6 +20,20 @@ export const spaceValidation = z.object({
   photo: z.any().refine((files) => files?.length > 0, {
     message: "Image is required",
   }),
+  availableDates: z.object({
+    from: z
+      .date({
+        invalid_type_error: "Please provide start date",
+        required_error: "Please provide start date",
+      })
+      .max(new Date()),
+    to: z
+      .date({
+        invalid_type_error: "Please provide end date",
+        required_error: "Please provide end date",
+      })
+      .optional(),
+  }),
   numberBathrooms: z.number().positive().min(1).default(1),
   maxGuest: z.number().positive().default(0).default(1),
   price: z.number().positive(),
