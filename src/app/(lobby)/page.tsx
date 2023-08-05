@@ -11,6 +11,7 @@ import Image from "next/image";
 import { type FilteredValue } from "@/types";
 import { getSpaces } from "@/app/_actions/space";
 import Link from "next/link";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default async function IndexPage({
   params,
@@ -24,6 +25,7 @@ export default async function IndexPage({
   return (
     <main>
       <Shell custom="p-2 lg:px-20 py-4">
+        <Skeleton />
         <div className="flex flex-col mb-3 w-full h-max items-end">
           <FilterController />
         </div>

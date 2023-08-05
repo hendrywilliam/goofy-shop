@@ -180,7 +180,7 @@ export default function BecomeHostForm() {
                 name="cityId"
                 id="cityId"
               >
-                <option value="">(Select your country)</option>
+                <option value="">(Select city)</option>
                 {cities.data?.map((item) => {
                   return (
                     <option value={item.id} key={item.id}>

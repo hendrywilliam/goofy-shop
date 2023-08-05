@@ -14,16 +14,16 @@ export default async function RoomPage({
   const city = await getSpecificCity(space?.cityId!);
 
   return (
-    <Shell custom="border">
-      <div className="min-h-screen h-max pt-4 w-2/3 mx-auto">
+    <Shell custom="border px-2 lg:px-20">
+      <div className="min-h-screen h-full pt-4 w-full lg:w-2/3 mx-auto">
         <div className="flex flex-col my-4">
           <h1 className="font-calsans text-xl">{space?.name}</h1>
           <p className="text-muted">{city?.name}</p>
           {/* <p>{space?.review}</p> */}
           {/* <p>{space.totalreview}</p> */}
         </div>
-        <div className="flex flex-row w-full h-max mt-2 gap-4">
-          <div className="relative w-1/2 h-[510px]">
+        <div className="flex flex-col lg:flex-row w-full h-full mt-2 gap-4">
+          <div className="relative w-full lg:w-1/2 h-[300px] lg:h-[510px]">
             <Image
               src={space?.photos[0].fileUrl!}
               fill
@@ -32,7 +32,7 @@ export default async function RoomPage({
               className="rounded-md"
             />
           </div>
-          <div className="w-1/2 grid grid-cols-2 gap-4">
+          <div className="w-full lg:w-1/2 h-full lg:h-[510px] hidden lg:grid lg:grid-cols-2 gap-4">
             {space?.photos.length! < 2
               ? [...Array(4)].map((_, index) => {
                   return (
@@ -50,8 +50,8 @@ export default async function RoomPage({
               : null}
           </div>
         </div>
-        <div className="flex flex-row w-full gap-2">
-          <section className="w-1/2">
+        <div className="flex flex-col lg:flex-row w-full h-[800px] gap-2">
+          <section className="w-full h-full lg:w-1/2">
             <div className="flex flex-col border-y w-full h-[200px] justify-center">
               <h1 className="font-calsans text-xl">
                 {/* please change later */}
@@ -99,8 +99,8 @@ export default async function RoomPage({
               <p>Add amenities later</p>
             </div>
           </section>
-          <section className="w-1/2 border">
-            <BookingSpace />
+          <section className="flex flex-col w-full h-full lg:w-1/2">
+            <BookingSpace spaceId={params.slug} />
           </section>
         </div>
         <div className="flex flex-col w-full h-[200px] justify-center">

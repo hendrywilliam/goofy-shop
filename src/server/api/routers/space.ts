@@ -1,6 +1,6 @@
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
-import { spaceValidation } from "@/lib/validation/space"
+import { spaceValidation, idSpaceValidation } from "@/lib/validation/space";
 
 export const spaceRouter = createTRPCRouter({
   createSpace: protectedProcedure
@@ -88,5 +88,20 @@ export const spaceRouter = createTRPCRouter({
       });
 
       return deleteSpaceData;
+    }),
+  //get all dates (available, and booked dates)
+  getAllDatesFromASpace: protectedProcedure
+    .input(idSpaceValidation)
+    .query(async ({ ctx, input }) => {
+      const dates = await ctx.prisma.space.findFirst({
+        where: {
+          id: input.id,
+        },
+        select: {
+          availableDates: true,
+          bookedDates: true,
+        },
+      });
+      return dates;
     }),
 });

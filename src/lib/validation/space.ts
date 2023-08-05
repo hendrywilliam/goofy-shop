@@ -40,6 +40,8 @@ export const spaceValidation = z.object({
   }),
 });
 
+export const idSpaceValidation = spaceValidation.pick({ id: true });
+
 export const spaceFilterValidation = z
   .object({
     min_price: z.number().min(15000, "Minimum price is 15000").default(15000),
