@@ -51,7 +51,11 @@ export default function BecomeHostForm() {
   const { userId, isSignedIn } = useAuth();
   const [files, setFiles] = React.useState<FileWithPreview[]>([]);
   const [isPending, startTransition] = React.useTransition();
-  const [selectedDate, setSelectedDate] = React.useState<DateRange>();
+  const [selectedDate, setSelectedDate] = React.useState<DateRange | undefined>(
+    {
+      from: new Date(),
+    }
+  );
 
   //custom hooks
   const { latitude, longitude, setLongitude, setLatitude } = useGeoLocation();
@@ -66,48 +70,34 @@ export default function BecomeHostForm() {
   const {
     register,
     handleSubmit,
-    reset,
+    setValue,
     formState: { errors },
   } = useForm<SpaceInput>({
-    resolver: async (data, context, options) => {
-      // you can debug your validation schema here
-      console.log("formData", data);
-      console.log(
-        "validation result",
-        await zodResolver(spaceValidation)(data, context, options)
-      );
-      return zodResolver(spaceValidation)(data, context, options);
-    },
+    resolver: zodResolver(spaceValidation),
   });
 
   function onSubmit(data: SpaceInput) {
     startTransition(async () => {
       try {
-        // if (!isSignedIn) {
-        //   throw new Error("You are not logged in");
-        // }
-
-        // console.log(userId);
-        // const uploadedFiles = await startUpload(files);
-        // console.log(uploadedFiles);
-
-        // const addedSpace = await mutateSpace.mutateAsync({
-        //   authorId: userId,
-        //   cityId: data.cityId,
-        //   description: data.description,
-        //   latitude: data.latitude,
-        //   longitude: data.longitude,
-        //   name: data.name,
-        //   price: data.price,
-        //   numberBathrooms: data.numberBathrooms,
-        //   maxGuest: data.maxGuest,
-        //   numberRooms: data.numberRooms,
-        //   availableDates: data.availableDates,
-        //   photo: uploadedFiles,
-        // });
-        console.log(data);
-        // toast("Success created a new place.");
-        // console.log(addedSpace);
+        if (!isSignedIn) {
+          throw new Error("You are not logged in");
+        }
+        const uploadedFiles = await startUpload(files);
+        await mutateSpace.mutateAsync({
+          authorId: data.authorId,
+          cityId: data.cityId,
+          description: data.description,
+          latitude: data.latitude,
+          longitude: data.longitude,
+          name: data.name,
+          price: data.price,
+          numberBathrooms: data.numberBathrooms,
+          maxGuest: data.maxGuest,
+          numberRooms: data.numberRooms,
+          availableDates: data.availableDates,
+          photo: uploadedFiles,
+        });
+        toast("Success created a new place.");
       } catch (err) {
         captureError(err);
       }
@@ -121,25 +111,27 @@ export default function BecomeHostForm() {
 
   //latitude longitude integrate react hook form
   React.useEffect(() => {
-    reset({ latitude: latitude, longitude: longitude });
+    setValue("latitude", latitude);
+    setValue("longitude", longitude);
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [latitude, longitude]);
 
-  //integrate dates with react hook form
   React.useEffect(() => {
-    reset({
-      availableDates: selectedDate,
-    });
+    setValue("authorId", userId as string);
     //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedDate]);
+  }, [userId]);
 
   //integrate files into photo field in react hook form
   React.useEffect(() => {
-    reset({
-      photo: files,
-    });
+    setValue("photo", files);
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [files]);
+
+  //integrate dates with react hook form
+  React.useEffect(() => {
+    setValue("availableDates", selectedDate as DateRange);
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedDate]);
 
   return (
     <>
@@ -271,6 +263,20 @@ export default function BecomeHostForm() {
               />
             </div>
           </FormField>
+          <div className="flex flex-col w-full h-max border justify-center items-center py-4">
+            <h1>Pick available dates</h1>
+            <DayPicker
+              mode="range"
+              selected={selectedDate}
+              onSelect={setSelectedDate}
+              //set default and prohibit navigate to past
+              defaultMonth={new Date(2023, 7)}
+              fromMonth={new Date(2023, 7)}
+              disabled={{
+                before: new Date(),
+              }}
+            />
+          </div>
           <FormField className="flex flex-col lg:flex-row w-full justify-between gap-4">
             <div className="flex flex-col w-full">
               <FormLabel htmlFor="longitude">Longitude</FormLabel>
@@ -301,21 +307,8 @@ export default function BecomeHostForm() {
               />
             </div>
           </FormField>
-          <div className="flex flex-col w-full h-max border justify-center items-center ">
-            <h1>Pick available dates</h1>
-            <DayPicker
-              mode="range"
-              selected={selectedDate}
-              onSelect={setSelectedDate}
-              //set default and prohibit navigate to past
-              defaultMonth={new Date(2023, 7)}
-              fromMonth={new Date(2023, 7)}
-              disabled={{
-                before: new Date(),
-              }}
-            />
-          </div>
-          <div className="relative flex flex-row w-full h-[400px] mt-2 rounded-md">
+          <div className="relative flex flex-col w-full h-[400px] mt-2 rounded-md">
+            <h1>Set your position</h1>
             {mounted && (
               <Map
                 latitude={latitude}

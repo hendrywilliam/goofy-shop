@@ -3,6 +3,7 @@ import { Shell } from "@/components/ui/shell";
 import { getSpecificSpace, getSpecificCity } from "@/app/_actions/space";
 import Image from "next/image";
 import BookingSpace from "@/components/booking-space";
+import { localizedDate } from "@/lib/utils";
 
 export default async function RoomPage({
   params,
@@ -51,7 +52,7 @@ export default async function RoomPage({
         </div>
         <div className="flex flex-row w-full gap-2">
           <section className="w-1/2">
-            <div className="flex flex-col border-y w-full h-[150px] justify-center">
+            <div className="flex flex-col border-y w-full h-[200px] justify-center">
               <h1 className="font-calsans text-xl">
                 {/* please change later */}
                 Hosted by <span>Freyanashifa Jayawardana</span>
@@ -75,6 +76,18 @@ export default async function RoomPage({
                   <span>{space?.numberBathrooms} room</span>
                 )}
               </p>
+              <p className="mt-2">Available from</p>
+              {space?.availableDates.to ? (
+                <p className="text-muted">
+                  {`${localizedDate(
+                    space.availableDates.from as Date
+                  )} to ${localizedDate(space.availableDates.to)}`}
+                </p>
+              ) : (
+                <p className="text-muted">
+                  {localizedDate(space?.availableDates.from as Date)}
+                </p>
+              )}
             </div>
             <div className="flex flex-col border-b w-full min-h-[200px] h-max py-8 justify-center">
               <h1 className="font-calsans text-xl">About this space</h1>

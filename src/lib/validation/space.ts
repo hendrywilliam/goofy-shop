@@ -17,20 +17,16 @@ export const spaceValidation = z.object({
     })
     .max(500),
   numberRooms: z.number().positive().min(1).default(1),
-  photo: z.any().refine((files) => files?.length > 0, {
-    message: "Image is required",
-  }),
   availableDates: z.object({
-    from: z
+    from: z.coerce
       .date({
-        invalid_type_error: "Please provide start date",
-        required_error: "Please provide start date",
+        required_error: "Please provide available dates",
+        invalid_type_error: "Type error",
       })
-      .max(new Date()),
-    to: z
+      .optional(),
+    to: z.coerce
       .date({
-        invalid_type_error: "Please provide end date",
-        required_error: "Please provide end date",
+        invalid_type_error: "Type error",
       })
       .optional(),
   }),
@@ -39,6 +35,9 @@ export const spaceValidation = z.object({
   price: z.number().positive(),
   longitude: z.number(),
   latitude: z.number(),
+  photo: z.any().refine((files) => files?.length > 0, {
+    message: "Image is required",
+  }),
 });
 
 export const spaceFilterValidation = z
