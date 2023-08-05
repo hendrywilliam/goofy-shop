@@ -2,6 +2,9 @@ import { type FilteredValue } from "@/types";
 import { isClerkAPIResponseError } from "@clerk/nextjs";
 import { toast } from "sonner";
 import { z } from "zod";
+import eachDayOfInterval from "date-fns/eachDayOfInterval";
+import format from "date-fns/format";
+import { DateRange } from "react-day-picker";
 
 export function searchParamsBuilder(filteredValue: FilteredValue) {
   const searchParams = new URLSearchParams();
@@ -31,4 +34,15 @@ export function truncate(word: string, length: number) {
     return word.substring(0, length) + "...";
   }
   return word;
+}
+
+export function getEachDayOfInterval(from: Date, to: Date) {
+  return eachDayOfInterval({
+    start: from,
+    end: to,
+  });
+}
+
+export function localizedDate(date: Date) {
+  return format(date, "PPPP");
 }

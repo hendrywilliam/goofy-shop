@@ -151,10 +151,10 @@ export {
 /**
  * anatomy
  * |--DropdownMenuRoot
- *  |--DropdownMenuTrigger
- *  |--DropdownMenuContent
- *    |--DropdownMenuHeader
- *    |--MainContent (any tag, e.g <div>)
+ * |--DropdownMenuTrigger
+ * |----DropdownMenuContent
+ * |----DropdownMenuHeader
+ * |----MainContent (any tag, e.g <div>)
  */
 
 //not a big fan of portal🗿

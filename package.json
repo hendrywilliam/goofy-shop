@@ -17,7 +17,7 @@
     "@clerk/nextjs": "^4.21.15",
     "@clerk/types": "^3.48.1",
     "@hookform/resolvers": "^3.1.1",
-    "@prisma/client": "^5.1.0",
+    "@prisma/client": "^5.1.1",
     "@tanstack/react-query": "^4.29.19",
     "@tanstack/react-table": "^8.9.3",
     "@trpc/client": "^10.34.0",
@@ -29,12 +29,14 @@
     "@types/react-dom": "18.2.7",
     "@uploadthing/react": "^5.2.0",
     "autoprefixer": "10.4.14",
+    "date-fns": "^2.30.0",
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.9",
     "leaflet": "^1.9.4",
     "next": "13.4.9",
     "postcss": "8.4.25",
     "react": "18.2.0",
+    "react-day-picker": "^8.8.0",
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.45.1",
@@ -50,7 +52,7 @@
   },
   "devDependencies": {
     "@types/leaflet": "^1.9.3",
-    "prisma": "^5.1.0",
+    "prisma": "^5.1.1",
     "ts-node": "^10.9.1"
   }
 }

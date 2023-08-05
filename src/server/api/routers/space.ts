@@ -1,6 +1,6 @@
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
-import { spaceValidation } from "@/lib/validation/space";
+import { spaceValidation } from "@/lib/validation/space"
 
 export const spaceRouter = createTRPCRouter({
   createSpace: protectedProcedure
@@ -17,6 +17,7 @@ export const spaceRouter = createTRPCRouter({
           maxGuest: input.maxGuest,
           price: input.price,
           longitude: input.longitude,
+          availableDates: input.availableDates,
           latitude: input.latitude,
           photos: input.photo,
         },
