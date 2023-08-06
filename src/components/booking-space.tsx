@@ -54,7 +54,7 @@ export default function BookingSpace({ spaceId }: BookingSpace) {
           <Skeleton custom="h-10 w-1/2" />
         )}
       </div>
-      <DropdownMenuRoot custom="gap-4 text-sm w-3/4 self-center">
+      <DropdownMenuRoot custom="gap-4 w-3/4 self-center">
         <DropdownMenuTrigger custom="w-full">
           <p>Pick available date here</p>
           <div className="w-full h-full rounded-md">
@@ -93,13 +93,8 @@ export default function BookingSpace({ spaceId }: BookingSpace) {
         Reserve
       </Button>
       <div className="flex flex-col w-full h-max py-2 items-center">
-        <p>Your total charge</p>
+        <p className="text-muted">Your total charge</p>
         <div className="flex text-2xl font-calsans w-full h-full text-center justify-center">
-          {/* {status === "success" ? (
-            <p>{formatCurrency(totalChargeCalculation as number)}</p>
-          ) : (
-            <Skeleton custom="h-12 w-1/2" />
-          )} */}
           {status === "success" ? (
             <p>{formatCurrency(totalChargeCalculation as number)}</p>
           ) : (
