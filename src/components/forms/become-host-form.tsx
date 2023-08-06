@@ -135,13 +135,6 @@ export default function BecomeHostForm() {
 
   return (
     <>
-      <Shell custom="flex p-4 lg:p-0 border-b w-full lg:w-1/4 lg:border-r lg:border-b-0">
-        <div className="flex flex-col w-full h-max text-start pt-2">
-          <h1 className="font-calsans text-3xl">Become a host</h1>
-          <p className="text-muted">Host anything you want</p>
-          <p className="text-muted">Your place your rules.</p>
-        </div>
-      </Shell>
       <Shell custom="pr-0 h-max w-full px-2 lg:px-20">
         <Form
           className="flex flex-col gap-8 py-4"
@@ -263,7 +256,7 @@ export default function BecomeHostForm() {
               />
             </div>
           </FormField>
-          <div className="flex flex-col w-full h-max border justify-center items-center py-4">
+          <div className="flex flex-col w-full h-max border justify-center items-center py-4 rounded-md">
             <h1>Pick available dates</h1>
             <DayPicker
               mode="range"

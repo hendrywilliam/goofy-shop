@@ -25,7 +25,6 @@ export default async function IndexPage({
   return (
     <main>
       <Shell custom="p-2 lg:px-20 py-4">
-        <Skeleton />
         <div className="flex flex-col mb-3 w-full h-max items-end">
           <FilterController />
         </div>

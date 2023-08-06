@@ -255,13 +255,13 @@ AlertDialogHeader.displayName = "AlertDialogHeader";
 
 /**
  * anatomy
- * -AlertDialog
- * |- AlertDialogTrigger
- * |- AlertDialogContent (include overlay)
- *  |- AlertDialogHeader
- *   |- AlertDialogClose
- *  |- AlertDialogMainContent
- *  |- AlertDialogFooter
+ * |-AlertDialog
+ * |--AlertDialogTrigger
+ * |--AlertDialogContent (include overlay)
+ * |----AlertDialogHeader
+ * |----AlertDialogClose
+ * |----AlertDialogMainContent
+ * |----AlertDialogFooter
  */
 
 /**

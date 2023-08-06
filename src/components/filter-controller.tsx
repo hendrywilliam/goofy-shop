@@ -16,6 +16,7 @@ import { spaceFilterValidation } from "@/lib/validation/space";
 import { z } from "zod";
 import { toast } from "sonner";
 import { searchParamsBuilder } from "@/lib/utils";
+import { captureError } from "@/lib/utils";
 
 export default function FilterController() {
   const router = useRouter();
@@ -35,10 +36,7 @@ export default function FilterController() {
       //navigate to url with searchParams
       router.push(final);
     } catch (err) {
-      if (err instanceof z.ZodError) {
-        const firstError = err.issues[0].message;
-        toast.error(firstError);
-      }
+      captureError(err)
     }
     /* eslint-disable-next-line */
   }, [filteredValue]);

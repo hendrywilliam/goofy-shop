@@ -37,8 +37,8 @@ export default function AccountNavigationMenu() {
         </Button>
       </Link>
       <DropdownMenuRoot>
-        <DropdownMenuTrigger custom="flex justify-between">
-          <IconHamburger className="self-center" />
+        <DropdownMenuTrigger custom="flex justify-between rounded-full">
+          <IconHamburger className="self-center ml-3" />
           <Avatar src={user?.imageUrl} />
         </DropdownMenuTrigger>
         <DropdownMenuContent custom="mt-4 lg:mt-2">

@@ -90,7 +90,7 @@ export const spaceRouter = createTRPCRouter({
       return deleteSpaceData;
     }),
   //get all dates (available, and booked dates)
-  getAllDatesFromASpace: protectedProcedure
+  getSpaceDetails: protectedProcedure
     .input(idSpaceValidation)
     .query(async ({ ctx, input }) => {
       const dates = await ctx.prisma.space.findFirst({
@@ -100,6 +100,7 @@ export const spaceRouter = createTRPCRouter({
         select: {
           availableDates: true,
           bookedDates: true,
+          price: true,
         },
       });
       return dates;

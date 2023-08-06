@@ -185,9 +185,9 @@ FormTextarea.displayName = "FormTextarea";
 
 /**
  * anatomy
- * |- Form
- *  |--FormField
- *   |---FormLabel
- *   |---FormInput / FormTextarea
- *   |---FormMessage
+ * |-Form
+ * |---FormField
+ * |-----FormLabel
+ * |-----FormInput / FormTextarea
+ * |-----FormMessage
  */

@@ -3,7 +3,7 @@ import { isClerkAPIResponseError } from "@clerk/nextjs";
 import { toast } from "sonner";
 import { z } from "zod";
 import eachDayOfInterval from "date-fns/eachDayOfInterval";
-import format from "date-fns/format";
+import { DateRange } from "react-day-picker";
 
 export function searchParamsBuilder(filteredValue: FilteredValue) {
   const searchParams = new URLSearchParams();
@@ -20,9 +20,9 @@ export function captureError(err: unknown) {
   if (err instanceof Error) {
     toast.error(err.message);
   } else if (isClerkAPIResponseError(err)) {
-    toast.error(err.errors[0].message);
+    toast.error(err.errors[0].message ?? unknownError);
   } else if (err instanceof z.ZodError) {
-    toast.error(err.issues[0].message ?? unknownError);
+    toast.error(err.issues[0].message);
   } else {
     toast.error(unknownError);
   }
@@ -35,13 +35,26 @@ export function truncate(word: string, length: number) {
   return word;
 }
 
-export function getEachDayOfInterval(from: Date, to: Date) {
-  return eachDayOfInterval({
-    start: from,
-    end: to,
-  });
+export function getEachDayOfInterval({ from, to }: DateRange) {
+  if (to) {
+    return eachDayOfInterval({
+      start: from as Date,
+      end: to as Date,
+    });
+  } else {
+    return [from];
+  }
 }
 
 export function localizedDate(date: Date) {
-  return format(date, "PP");
+  return date ? date.toLocaleDateString() : null;
+}
+
+export function formatCurrency(n: number) {
+  const formatter = new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+  });
+
+  return formatter.format(n);
 }
