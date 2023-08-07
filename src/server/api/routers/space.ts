@@ -1,6 +1,10 @@
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
-import { spaceValidation, idSpaceValidation } from "@/lib/validation/space";
+import {
+  spaceValidation,
+  idSpaceValidation,
+  updateBookingDates,
+} from "@/lib/validation/space";
 
 export const spaceRouter = createTRPCRouter({
   createSpace: protectedProcedure
@@ -104,5 +108,35 @@ export const spaceRouter = createTRPCRouter({
         },
       });
       return dates;
+    }),
+  updateBookingDates: protectedProcedure
+    .input(updateBookingDates)
+    .mutation(async ({ ctx, input }) => {
+      //is it even exist
+      const isSpaceExist = await ctx.prisma.space.findFirst({
+        where: {
+          id: input.id,
+        },
+      });
+
+      if (!isSpaceExist) {
+        throw new TRPCError({
+          message: "There is no such space.",
+          code: "NOT_FOUND",
+        });
+      }
+
+      const updateSpaceBookdates = await ctx.prisma.space.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          bookedDates: input.bookedDates,
+        },
+        select: {
+          bookedDates: true,
+        },
+      });
+      return updateSpaceBookdates;
     }),
 });

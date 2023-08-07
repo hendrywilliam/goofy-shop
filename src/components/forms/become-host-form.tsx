@@ -268,6 +268,12 @@ export default function BecomeHostForm() {
               disabled={{
                 before: new Date(),
               }}
+              modifiersStyles={{
+                selected: {
+                  backgroundColor: "black",
+                  color: "white",
+                },
+              }}
             />
           </div>
           <FormField className="flex flex-col lg:flex-row w-full justify-between gap-4">

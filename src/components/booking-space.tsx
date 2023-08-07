@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { DayPicker, DateRange } from "react-day-picker";
+import { DayPicker, type DateRange } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import {
   DropdownMenuRoot,
@@ -14,6 +14,7 @@ import { localizedDate } from "@/lib/utils";
 import { api } from "@/lib/api/api";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatCurrency, getEachDayOfInterval } from "@/lib/utils";
+import { toast } from "sonner";
 
 interface BookingSpace {
   spaceId: string;
@@ -23,7 +24,8 @@ export default function BookingSpace({ spaceId }: BookingSpace) {
   const [dateRange, setDateRange] = React.useState<DateRange | undefined>({
     from: new Date(),
   });
-  //get all available dates and booked dates
+  const [isPending, startTransition] = React.useTransition();
+  const updateBookDates = api.space.updateBookingDates.useMutation();
   const { status, data } = api.space.getSpaceDetails.useQuery(
     {
       id: spaceId,
@@ -40,8 +42,20 @@ export default function BookingSpace({ spaceId }: BookingSpace) {
     }
   }, [dateRange, data?.price]);
 
+  const onSubmit = React.useCallback(() => {
+    startTransition(async () => {
+      const datesSequence = getEachDayOfInterval(dateRange as DateRange);
+      const updated = await updateBookDates.mutateAsync({
+        id: spaceId,
+        bookedDates: datesSequence as Date[],
+      });
+      toast(updated.bookedDates.toString());
+    });
+    //
+  }, [dateRange]);
+
   return (
-    <div className="sticky flex flex-col top-56 mt-4 h-max w-2/3 gap-2 justify-center p-4 border rounded-md self-center">
+    <div className="sticky flex flex-col top-56 mt-4 h-max w-2/3 gap-2 justify-center p-4 border rounded-md self-center shadow-md">
       <div className="w-full flex justify-center">
         {status === "success" ? (
           <p>
@@ -78,18 +92,25 @@ export default function BookingSpace({ spaceId }: BookingSpace) {
           <div className="w-max h-max p-4">
             <DayPicker
               mode="range"
-              numberOfMonths={2}
+              numberOfMonths={1}
               selected={dateRange}
               onSelect={setDateRange}
-              disabled={{
-                before: data?.availableDates.from as Date,
-                after: data?.availableDates.to as Date,
+              // disabled={disabledDays}
+              modifiersStyles={{
+                selected: {
+                  backgroundColor: "black",
+                  color: "white",
+                },
+                disabled: {
+                  color: "hsl(0,0%,58.4%)",
+                  textDecoration: "line-through",
+                },
               }}
             />
           </div>
         </DropdownMenuContent>
       </DropdownMenuRoot>
-      <Button custom="w-3/4 self-center" onClick={() => console.log(data)}>
+      <Button custom="w-3/4 self-center" onClick={() => onSubmit()}>
         Reserve
       </Button>
       <div className="flex flex-col w-full h-max py-2 items-center">

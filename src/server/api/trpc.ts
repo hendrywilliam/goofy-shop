@@ -36,7 +36,7 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
 };
 
 /**
- * initialize trpc for backend servaer
+ * initialize trpc for backend server
  * pipe the context to initTRPC builder before calling create fn
  * NOTE: .context accepts generic <T>, which can be inferred from
  * a function return type or explicitly defined

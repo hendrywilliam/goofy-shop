@@ -56,3 +56,8 @@ export const spaceFilterValidation = z
   .refine((data) => data?.min_price <= data?.max_price, {
     message: "Minimum price cannot higher than maximum price",
   });
+
+export const updateBookingDates = z.object({
+  id: z.string({ required_error: "ID is required" }),
+  bookedDates: z.date().array(),
+});

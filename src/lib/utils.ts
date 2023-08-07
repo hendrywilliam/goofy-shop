@@ -51,10 +51,12 @@ export function localizedDate(date: Date) {
 }
 
 export function formatCurrency(n: number) {
-  const formatter = new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-  });
-
-  return formatter.format(n);
+  if (typeof n !== "undefined") {
+    const formatter = new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+    });
+    return formatter.format(n);
+  }
+  return 0;
 }
