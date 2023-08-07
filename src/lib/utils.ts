@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import eachDayOfInterval from "date-fns/eachDayOfInterval";
 import { DateRange } from "react-day-picker";
+import isSameDay from "date-fns/isSameDay";
 
 export function searchParamsBuilder(filteredValue: FilteredValue) {
   const searchParams = new URLSearchParams();
@@ -36,14 +37,19 @@ export function truncate(word: string, length: number) {
 }
 
 export function getEachDayOfInterval({ from, to }: DateRange) {
-  if (to) {
-    return eachDayOfInterval({
-      start: from as Date,
-      end: to as Date,
-    });
-  } else {
-    return [from];
+  //check if "to" isnt undefined
+  if (typeof to !== "undefined") {
+    //check if from to "to" are the same.
+    if (isSameDay(from!, to)) {
+      return [from];
+    } else {
+      return eachDayOfInterval({
+        start: from as Date,
+        end: to as Date,
+      });
+    }
   }
+  return [from];
 }
 
 export function localizedDate(date: Date) {

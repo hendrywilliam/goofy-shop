@@ -15,6 +15,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { formatCurrency, getEachDayOfInterval } from "@/lib/utils";
 import { toast } from "sonner";
 import { Calendar } from "@/components/ui/calendar";
+import { captureError } from "@/lib/utils";
 
 interface BookingSpace {
   spaceId: string;
@@ -38,19 +39,31 @@ export default function BookingSpace({ spaceId }: BookingSpace) {
   const totalChargeCalculation = React.useMemo(() => {
     if (dateRange && data?.price) {
       const dateSequence = getEachDayOfInterval(dateRange);
-      return (dateSequence.length as number) * data?.price;
+      const numberOfDays = dateSequence.length === 0 ? 1 : dateSequence.length;
+      return numberOfDays * data?.price;
+    } else {
+      return 0;
     }
   }, [dateRange, data?.price]);
 
   const onSubmit = React.useCallback(() => {
     startTransition(async () => {
-      const datesSequence = getEachDayOfInterval(dateRange as DateRange);
-      const updated = await updateBookDates.mutateAsync({
-        id: spaceId,
-        bookedDates: datesSequence as Date[],
-      });
-      toast(updated.bookedDates.toString());
-      refetch();
+      try {
+        if (typeof dateRange === "undefined") {
+          throw new Error("Please select dates to book.");
+        } else {
+          const datesSequence = getEachDayOfInterval(dateRange as DateRange);
+          const updated = await updateBookDates.mutateAsync({
+            id: spaceId,
+            bookedDates: datesSequence as Date[],
+          });
+          toast(updated.bookedDates.toString());
+          //refetch to achieve booked dates
+          refetch();
+        }
+      } catch (err) {
+        captureError(err);
+      }
     });
     /* eslint-disable-next-line */
   }, [dateRange]);
@@ -110,8 +123,9 @@ export default function BookingSpace({ spaceId }: BookingSpace) {
       </DropdownMenuRoot>
       <Button
         custom="w-3/4 self-center"
-        onClick={() => onSubmit()}
+        onClick={onSubmit}
         disabled={isPending}
+        type="button"
       >
         Reserve
       </Button>
