@@ -1,8 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { DayPicker, type DateRange } from "react-day-picker";
-import "react-day-picker/dist/style.css";
+import { type DateRange } from "react-day-picker";
 import {
   DropdownMenuRoot,
   DropdownMenuContent,
@@ -15,6 +14,7 @@ import { api } from "@/lib/api/api";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatCurrency, getEachDayOfInterval } from "@/lib/utils";
 import { toast } from "sonner";
+import { Calendar } from "@/components/ui/calendar";
 
 interface BookingSpace {
   spaceId: string;
@@ -26,7 +26,7 @@ export default function BookingSpace({ spaceId }: BookingSpace) {
   });
   const [isPending, startTransition] = React.useTransition();
   const updateBookDates = api.space.updateBookingDates.useMutation();
-  const { status, data } = api.space.getSpaceDetails.useQuery(
+  const { status, data, refetch } = api.space.getSpaceDetails.useQuery(
     {
       id: spaceId,
     },
@@ -50,8 +50,9 @@ export default function BookingSpace({ spaceId }: BookingSpace) {
         bookedDates: datesSequence as Date[],
       });
       toast(updated.bookedDates.toString());
+      refetch();
     });
-    //
+    /* eslint-disable-next-line */
   }, [dateRange]);
 
   return (
@@ -85,32 +86,33 @@ export default function BookingSpace({ spaceId }: BookingSpace) {
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuHeader>
-            <div className="p-4">
-              <p>Please select start date and end date</p>
+            <div className="w-full p-2 text-center">
+              <p className="text-muted">Select dates to book.</p>
             </div>
           </DropdownMenuHeader>
-          <div className="w-max h-max p-4">
-            <DayPicker
-              mode="range"
-              numberOfMonths={1}
-              selected={dateRange}
-              onSelect={setDateRange}
-              // disabled={disabledDays}
-              modifiersStyles={{
-                selected: {
-                  backgroundColor: "black",
-                  color: "white",
-                },
-                disabled: {
-                  color: "hsl(0,0%,58.4%)",
-                  textDecoration: "line-through",
-                },
-              }}
-            />
+          <div className="w-full p-4 h-max">
+            {data?.availableDates && (
+              <Calendar
+                selected={dateRange}
+                mode="range"
+                disabled={[
+                  ...data.bookedDates,
+                  {
+                    before: data?.availableDates?.from as Date,
+                    after: data?.availableDates?.to as Date,
+                  },
+                ]}
+                onSelect={setDateRange}
+              />
+            )}
           </div>
         </DropdownMenuContent>
       </DropdownMenuRoot>
-      <Button custom="w-3/4 self-center" onClick={() => onSubmit()}>
+      <Button
+        custom="w-3/4 self-center"
+        onClick={() => onSubmit()}
+        disabled={isPending}
+      >
         Reserve
       </Button>
       <div className="flex flex-col w-full h-max py-2 items-center">

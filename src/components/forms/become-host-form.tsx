@@ -31,11 +31,10 @@ import { useIsMounted } from "@/hooks/use-is-mounted";
 import { toast } from "sonner";
 import { useUploadThing } from "@/lib/uploadthing";
 import { captureError } from "@/lib/utils";
-import { DayPicker } from "react-day-picker";
-import { DateRange } from "react-day-picker";
+import { type DateRange } from "react-day-picker";
+import { Calendar } from "@/components/ui/calendar";
 
 import "leaflet/dist/leaflet.css";
-import "react-day-picker/dist/style.css";
 
 const Map = dynamic(() => import("@/components/ui/map"), {
   ssr: false,
@@ -256,9 +255,9 @@ export default function BecomeHostForm() {
               />
             </div>
           </FormField>
-          <div className="flex flex-col w-full h-max border justify-center items-center py-4 rounded-md">
+          <div className="flex flex-col w-full h-max border justify-center align-middle items-center py-4 rounded-md gap-4">
             <h1>Pick available dates</h1>
-            <DayPicker
+            <Calendar
               mode="range"
               selected={selectedDate}
               onSelect={setSelectedDate}
@@ -267,12 +266,6 @@ export default function BecomeHostForm() {
               fromMonth={new Date(2023, 7)}
               disabled={{
                 before: new Date(),
-              }}
-              modifiersStyles={{
-                selected: {
-                  backgroundColor: "black",
-                  color: "white",
-                },
               }}
             />
           </div>

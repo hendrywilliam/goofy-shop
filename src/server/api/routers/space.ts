@@ -117,6 +117,9 @@ export const spaceRouter = createTRPCRouter({
         where: {
           id: input.id,
         },
+        select: {
+          bookedDates: true,
+        },
       });
 
       if (!isSpaceExist) {
@@ -126,12 +129,13 @@ export const spaceRouter = createTRPCRouter({
         });
       }
 
+      const previousBookDates = isSpaceExist.bookedDates;
       const updateSpaceBookdates = await ctx.prisma.space.update({
         where: {
           id: input.id,
         },
         data: {
-          bookedDates: input.bookedDates,
+          bookedDates: [...previousBookDates, ...input.bookedDates],
         },
         select: {
           bookedDates: true,
