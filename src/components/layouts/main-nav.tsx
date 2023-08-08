@@ -4,7 +4,7 @@ import { siteConfig } from "@/config/site";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as React from "react";
-import { buttonVariants } from "../ui/button";
+import { buttonVariants } from "@/components/ui/button";
 
 const { mainNavigation } = siteConfig;
 

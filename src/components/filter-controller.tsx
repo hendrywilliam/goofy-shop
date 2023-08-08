@@ -36,7 +36,7 @@ export default function FilterController() {
       //navigate to url with searchParams
       router.push(final);
     } catch (err) {
-      captureError(err)
+      captureError(err);
     }
     /* eslint-disable-next-line */
   }, [filteredValue]);
@@ -64,11 +64,9 @@ export default function FilterController() {
                     type="number"
                     defaultValue={15000}
                     onChange={(e: React.FormEvent<HTMLInputElement>) => {
-                      startTransition(() => {
-                        setFilteredValue({
-                          ...filteredValue,
-                          min_price: e.currentTarget.valueAsNumber,
-                        });
+                      setFilteredValue({
+                        ...filteredValue,
+                        min_price: e.currentTarget.valueAsNumber,
                       });
                     }}
                   />
@@ -80,11 +78,9 @@ export default function FilterController() {
                     type="number"
                     defaultValue={21000000}
                     onChange={(e: React.FormEvent<HTMLInputElement>) => {
-                      startTransition(() => {
-                        setFilteredValue({
-                          ...filteredValue,
-                          max_price: e.currentTarget.valueAsNumber,
-                        });
+                      setFilteredValue({
+                        ...filteredValue,
+                        max_price: e.currentTarget.valueAsNumber,
                       });
                     }}
                   />
@@ -100,11 +96,9 @@ export default function FilterController() {
                     min={1}
                     type="number"
                     onChange={(e: React.FormEvent<HTMLInputElement>) => {
-                      startTransition(() => {
-                        setFilteredValue({
-                          ...filteredValue,
-                          rooms: e.currentTarget.valueAsNumber,
-                        });
+                      setFilteredValue({
+                        ...filteredValue,
+                        rooms: e.currentTarget.valueAsNumber,
                       });
                     }}
                   />
@@ -117,11 +111,9 @@ export default function FilterController() {
                     min={1}
                     type="number"
                     onChange={(e: React.FormEvent<HTMLInputElement>) => {
-                      startTransition(() => {
-                        setFilteredValue({
-                          ...filteredValue,
-                          bathrooms: e.currentTarget.valueAsNumber,
-                        });
+                      setFilteredValue({
+                        ...filteredValue,
+                        bathrooms: e.currentTarget.valueAsNumber,
                       });
                     }}
                   />
@@ -136,11 +128,9 @@ export default function FilterController() {
                     min={1}
                     type="number"
                     onChange={(e: React.FormEvent<HTMLInputElement>) => {
-                      startTransition(() => {
-                        setFilteredValue({
-                          ...filteredValue,
-                          guest: e.currentTarget.valueAsNumber,
-                        });
+                      setFilteredValue({
+                        ...filteredValue,
+                        guest: e.currentTarget.valueAsNumber,
                       });
                     }}
                   />

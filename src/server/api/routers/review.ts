@@ -6,7 +6,7 @@ export const reviewRouter = createTRPCRouter({
   createReview: publicProcedure
     .input(reviewValidation)
     .mutation(async (context) => {
-      const createReview = await context.ctx.prisma.review.create({
+      const createReview = await context.ctx.prisma.spaceReview.create({
         data: {
           userId: context.input.userId,
           content: context.input.content,
@@ -18,7 +18,7 @@ export const reviewRouter = createTRPCRouter({
   deleteReview: publicProcedure
     .input(idReviewValidation)
     .mutation(async (context) => {
-      const deleteReview = await context.ctx.prisma.review.delete({
+      const deleteReview = await context.ctx.prisma.spaceReview.delete({
         where: {
           id: context.input.id,
         },

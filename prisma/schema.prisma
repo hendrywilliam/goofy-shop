@@ -22,7 +22,6 @@ model Space {
   longitude         Float?
   latitude          Float?
   reviews           SpaceReview[]
-  amenity           Amenity[]
   availableDates    DateRange
   bookedDates       DateTime[]
   createdAt         DateTime  @default(now()) @map(name: "created_at")
@@ -47,8 +46,6 @@ model SpaceReview {
 model Amenity {
   id          String    @id @default(auto()) @map(name: "_id") @db.ObjectId
   name        String
-  space       Space     @relation(fields: [spaceId], references: [id])
-  spaceId     String    @db.ObjectId
   createdAt   DateTime  @default(now()) @map(name:"created_at")
   updatedAt   DateTime  @default(now()) @map(name:"updated_at")
 

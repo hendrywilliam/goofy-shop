@@ -1,4 +1,4 @@
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
 import {
   amenityValidation,
@@ -12,7 +12,6 @@ export const amenityRouter = createTRPCRouter({
       const createAmenity = await context.ctx.prisma.amenity.create({
         data: {
           name: context.input.name,
-          spaceId: context.input.spaceId,
         },
       });
 
@@ -31,4 +30,19 @@ export const amenityRouter = createTRPCRouter({
       });
       return deleteAmenity;
     }),
+  getAllAmenities: protectedProcedure.query(async ({ ctx }) => {
+    const allAmenities = await ctx.prisma.amenity.findMany({
+      orderBy: {
+        name: "asc",
+      },
+    });
+
+    if (!allAmenities) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "No amenity data found.",
+      });
+    }
+    return allAmenities;
+  }),
 });

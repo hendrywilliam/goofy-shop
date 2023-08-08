@@ -259,9 +259,8 @@ AlertDialogHeader.displayName = "AlertDialogHeader";
  * |--AlertDialogTrigger
  * |--AlertDialogContent (include overlay)
  * |----AlertDialogHeader
- * |----AlertDialogClose
+ * |------AlertDialogClose
  * |----AlertDialogMainContent
- * |----AlertDialogFooter
  */
 
 /**

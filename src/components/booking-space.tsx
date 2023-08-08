@@ -9,13 +9,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { localizedDate } from "@/lib/utils";
 import { api } from "@/lib/api/api";
 import { Skeleton } from "@/components/ui/skeleton";
-import { formatCurrency, getEachDayOfInterval } from "@/lib/utils";
+import {
+  formatCurrency,
+  getEachDayOfInterval,
+  captureError,
+  localizedDate,
+} from "@/lib/utils";
 import { toast } from "sonner";
 import { Calendar } from "@/components/ui/calendar";
-import { captureError } from "@/lib/utils";
 
 interface BookingSpace {
   spaceId: string;

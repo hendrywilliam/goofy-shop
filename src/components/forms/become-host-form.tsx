@@ -33,6 +33,8 @@ import { useUploadThing } from "@/lib/uploadthing";
 import { captureError } from "@/lib/utils";
 import { type DateRange } from "react-day-picker";
 import { Calendar } from "@/components/ui/calendar";
+import { SpaceAmenitySelector } from "@/components/space-amenity-selector";
+import { Skeleton } from "@/components/ui/skeleton";
 
 import "leaflet/dist/leaflet.css";
 
@@ -55,6 +57,7 @@ export default function BecomeHostForm() {
       from: new Date(),
     }
   );
+  const [selectedAmenity, setSelectedAmenity] = React.useState<string[]>([]);
 
   //custom hooks
   const { latitude, longitude, setLongitude, setLatitude } = useGeoLocation();
@@ -62,7 +65,7 @@ export default function BecomeHostForm() {
   const { startUpload } = useUploadThing("imageUploader");
 
   //react-query-hooks
-  const cities = api.city.getAllCity.useQuery();
+  const { data: cityData, status } = api.city.getAllCity.useQuery();
   const mutateSpace = api.space.createSpace.useMutation();
 
   //react-hook-form
@@ -166,21 +169,26 @@ export default function BecomeHostForm() {
             </div>
             <div className="flex flex-col w-full">
               <FormLabel htmlFor="cityId">Select City</FormLabel>
-              <select
-                className="p-2 border rounded-md focus:ring-2 ring-muted outline-none text-sm"
-                {...register("cityId")}
-                name="cityId"
-                id="cityId"
-              >
-                <option value="">(Select city)</option>
-                {cities.data?.map((item) => {
-                  return (
-                    <option value={item.id} key={item.id}>
-                      {item.name}
-                    </option>
-                  );
-                })}
-              </select>
+              {status === "success" ? (
+                <select
+                  className="p-2 border rounded-md focus:ring-2 ring-muted outline-none text-sm"
+                  {...register("cityId")}
+                  name="cityId"
+                  id="cityId"
+                >
+                  <option value="">(Select city)</option>
+                  {cityData?.map((item) => {
+                    return (
+                      <option value={item.id} key={item.id}>
+                        {item.name}
+                      </option>
+                    );
+                  })}
+                </select>
+              ) : (
+                <Skeleton custom="w-full h-[38px]" />
+              )}
+
               {errors.cityId?.message && (
                 <FormMessage variant="error">
                   {errors.cityId?.message}
@@ -316,6 +324,13 @@ export default function BecomeHostForm() {
               </Map>
             )}
           </div>
+          <FormField custom="gap-1">
+            <FormLabel>Select amenities</FormLabel>
+            <SpaceAmenitySelector
+              setSelectedAmenity={setSelectedAmenity}
+              selectedAmenity={selectedAmenity}
+            />
+          </FormField>
           <FormField className="flex flex-row w-full justify-between gap-2">
             <div className="flex flex-col w-full">
               <FormLabel htmlFor="description">Description</FormLabel>

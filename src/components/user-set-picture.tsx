@@ -71,7 +71,7 @@ export default function UserSetPicture() {
         toast.error("Something went wrong, please try again later.");
       }
     }
-  }, [croppedImage]);
+  }, [user, croppedImage]);
 
   React.useEffect(() => {
     return () => {
