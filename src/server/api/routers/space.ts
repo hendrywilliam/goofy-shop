@@ -23,6 +23,7 @@ export const spaceRouter = createTRPCRouter({
           longitude: input.longitude,
           availableDates: input.availableDates,
           latitude: input.latitude,
+          amenities: input.amenities,
           photos: input.photo,
         },
       });

@@ -15,15 +15,19 @@ import { IconLoading } from "@/components/icons/icon-loading";
 import { toast } from "sonner";
 import { captureError } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
+import { SpaceInput } from "@/components/forms/become-host-form";
+import { type UseFormSetValue } from "react-hook-form";
 
 interface SpaceAmenitySelector {
   selectedAmenity: string[];
   setSelectedAmenity: React.Dispatch<React.SetStateAction<string[]>>;
+  setValue: UseFormSetValue<SpaceInput>;
 }
 
 function SpaceAmenitySelector({
   selectedAmenity,
   setSelectedAmenity,
+  setValue,
 }: SpaceAmenitySelector) {
   const [newAmenity, setNewAmenity] = React.useState("");
   const [isPending, startTransition] = React.useTransition();
@@ -62,7 +66,19 @@ function SpaceAmenitySelector({
             ? data?.map((item) => {
                 return (
                   <CheckboxContainer key={item.id} id="checkbox_container">
-                    <Checkbox id={item.name} value={item.id} />
+                    <Checkbox
+                      id={item.name}
+                      value={item.id}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        setSelectedAmenity([
+                          ...selectedAmenity,
+                          e.currentTarget.value,
+                        ]);
+                        startTransition(() => {
+                          setValue("amenities", selectedAmenity);
+                        });
+                      }}
+                    />
                     <Label
                       htmlFor={item.name}
                       custom="text-muted cursor-pointer"
@@ -82,8 +98,8 @@ function SpaceAmenitySelector({
         </div>
       </div>
       <div className="flex w-full justify-center items-center">
-        <AlertDialog custom="col-auto">
-          <AlertDialogTrigger type="button" custom="mt-2">
+        <AlertDialog custom="w-full">
+          <AlertDialogTrigger type="button" custom="mt-2 w-full">
             Add new amenity
           </AlertDialogTrigger>
           <AlertDialogContent custom="w-[90%] lg:w-[500px] h-max gap-2">

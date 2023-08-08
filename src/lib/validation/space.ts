@@ -32,6 +32,12 @@ export const spaceValidation = z.object({
   }),
   numberBathrooms: z.number().positive().min(1).default(1),
   maxGuest: z.number().positive().default(0).default(1),
+  amenities: z
+    .string()
+    .array()
+    .refine((data) => data.length > 0, {
+      message: "Please atleast select 1 amenity",
+    }),
   price: z.number().positive(),
   longitude: z.number(),
   latitude: z.number(),

@@ -97,6 +97,7 @@ export default function BecomeHostForm() {
           maxGuest: data.maxGuest,
           numberRooms: data.numberRooms,
           availableDates: data.availableDates,
+          amenities: data.amenities,
           photo: uploadedFiles,
         });
         toast("Success created a new place.");
@@ -327,6 +328,7 @@ export default function BecomeHostForm() {
           <FormField custom="gap-1">
             <FormLabel>Select amenities</FormLabel>
             <SpaceAmenitySelector
+              setValue={setValue}
               setSelectedAmenity={setSelectedAmenity}
               selectedAmenity={selectedAmenity}
             />
