@@ -7,6 +7,7 @@ import {
   SignedOutAuthObject,
   getAuth,
 } from "@clerk/nextjs/server";
+import { ZodError } from "zod";
 
 interface AuthContext {
   auth: SignedInAuthObject | SignedOutAuthObject;
@@ -50,6 +51,19 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
+  errorFormatter(opts) {
+    const { shape, error } = opts;
+    return {
+      ...shape,
+      data: {
+        ...shape.data,
+        zodError:
+          error.code === "BAD_REQUEST" && error.cause instanceof ZodError
+            ? error.cause.flatten()
+            : null,
+      },
+    };
+  },
 });
 
 /**

@@ -1,4 +1,5 @@
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
+import { TRPCError } from "@trpc/server";
 
 export const helloRouter = createTRPCRouter({
   hello: publicProcedure.query((opts) => {

@@ -4,7 +4,6 @@ import { getSpecificSpace, getSpecificCity } from "@/app/_actions/space";
 import Image from "next/image";
 import BookingSpace from "@/components/booking-space";
 import { localizedDate } from "@/lib/utils";
-import { notFound } from "next/navigation";
 
 export default async function RoomPage({
   params,
@@ -12,11 +11,6 @@ export default async function RoomPage({
   params: { slug: string };
 }) {
   const space = await getSpecificSpace(params.slug);
-
-  if (!space) {
-    notFound();
-  }
-
   const city = await getSpecificCity(space?.cityId!);
 
   return (

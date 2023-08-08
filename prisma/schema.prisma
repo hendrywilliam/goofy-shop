@@ -22,6 +22,7 @@ model Space {
   longitude         Float?
   latitude          Float?
   reviews           SpaceReview[]
+  amenities         String[]
   availableDates    DateRange
   bookedDates       DateTime[]
   createdAt         DateTime  @default(now()) @map(name: "created_at")

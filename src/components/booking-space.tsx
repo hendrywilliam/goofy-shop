@@ -56,13 +56,18 @@ export default function BookingSpace({ spaceId }: BookingSpace) {
           throw new Error("Please select dates to book.");
         } else {
           const datesSequence = getEachDayOfInterval(dateRange as DateRange);
-          const updated = await updateBookDates.mutateAsync({
-            id: spaceId,
-            bookedDates: datesSequence as Date[],
-          });
-          toast(updated.bookedDates.toString());
-          //refetch to achieve booked dates
-          refetch();
+          const updated = await updateBookDates.mutateAsync(
+            {
+              id: spaceId,
+              bookedDates: datesSequence as Date[],
+            },
+            {
+              onSuccess() {
+                toast(updated.bookedDates.toString());
+                refetch();
+              },
+            }
+          );
         }
       } catch (err) {
         captureError(err);
