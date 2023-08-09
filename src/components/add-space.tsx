@@ -7,6 +7,8 @@ import Image from "next/image";
 import { toast } from "sonner";
 import { IconDelete } from "./icons/icon-delete";
 import { Button } from "@/components/ui/button";
+import { type UseFormSetValue } from "react-hook-form";
+import { type SpaceInput } from "@/components/forms/become-host-form";
 
 interface AddSpace {
   setFile: React.Dispatch<React.SetStateAction<FileWithPreview[]>>;
@@ -14,6 +16,7 @@ interface AddSpace {
   maxFiles?: number;
   accept?: Accept;
   maxSize?: number;
+  setValue: UseFormSetValue<SpaceInput>;
 }
 
 export default function AddSpace({
@@ -26,16 +29,21 @@ export default function AddSpace({
   maxFiles = 3,
   // bytes binary 4MB
   maxSize = 1024 * 1024 * 4,
+  setValue,
 }: AddSpace) {
+  const [isPending, startTransition] = React.useTransition();
+
   const onDrop = React.useCallback(
     (acceptedFiles: File[]) => {
-      setFile(
-        acceptedFiles.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          })
-        )
+      const fileWithPreviews = acceptedFiles.map((file) =>
+        Object.assign(file, {
+          preview: URL.createObjectURL(file),
+        })
       );
+      setFile(fileWithPreviews);
+      startTransition(() => {
+        setValue("photo", fileWithPreviews);
+      });
     },
     //eslint-disable-next-line react-hooks/exhaustive-deps
     [setFile, files]
