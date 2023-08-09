@@ -4,6 +4,8 @@ import { getSpecificSpace, getSpecificCity } from "@/app/_actions/space";
 import Image from "next/image";
 import BookingSpace from "@/components/booking-space";
 import { localizedDate } from "@/lib/utils";
+import AmenitiesListDialog from "@/components/amenities-list-dialog";
+import { getAllAmenities } from "@/app/_actions/space";
 
 export default async function RoomPage({
   params,
@@ -12,10 +14,14 @@ export default async function RoomPage({
 }) {
   const space = await getSpecificSpace(params.slug);
   const city = await getSpecificCity(space?.cityId!);
+  const amenities = await getAllAmenities(space?.amenities!);
+
+  const topTenAmenities =
+    amenities.length > 10 ? amenities.slice(0, 10) : amenities;
 
   return (
-    <Shell custom="border px-2 lg:px-20">
-      <div className="min-h-screen h-full pt-4 w-full lg:w-2/3 mx-auto">
+    <Shell custom="border min-h-screen h-full px-2 lg:px-20">
+      <div className="flex flex-col min-h-screen h-full pt-4 w-full lg:w-2/3 mx-auto">
         <div className="flex flex-col my-4">
           <h1 className="font-calsans text-xl">{space?.name}</h1>
           <p className="text-muted">{city?.name}</p>
@@ -50,8 +56,8 @@ export default async function RoomPage({
               : null}
           </div>
         </div>
-        <div className="flex flex-col lg:flex-row w-full h-[800px] gap-2">
-          <section className="w-full h-full lg:w-1/2">
+        <div className="flex flex-col lg:flex-row w-full h-max lg:h-[800px] gap-2">
+          <section className="w-full h-max lg:w-1/2">
             <div className="flex flex-col border-y w-full h-[200px] justify-center">
               <h1 className="font-calsans text-xl">
                 {/* please change later */}
@@ -93,10 +99,18 @@ export default async function RoomPage({
               <h1 className="font-calsans text-xl">About this space</h1>
               <p className="text-muted">{space?.description}</p>
             </div>
-            <div className="flex flex-col border-b w-full h-[200px] justify-center">
+            <div className="flex flex-col border-b w-full min-h-[200px] h-max py-8 justify-center gap-2">
               <h1 className="font-calsans text-xl">What this place offers</h1>
-              {/* <p>{space?.description}</p> */}
-              <p>Add amenities later</p>
+              <ul className="grid grid-cols-2 gap-2 text-muted">
+                {topTenAmenities.map((item) => {
+                  return (
+                    <li className="p-2 border rounded-md" key={item.id}>
+                      {item.name}
+                    </li>
+                  );
+                })}
+              </ul>
+              <AmenitiesListDialog data={amenities} />
             </div>
           </section>
           <section className="flex flex-col w-full h-full lg:w-1/2">

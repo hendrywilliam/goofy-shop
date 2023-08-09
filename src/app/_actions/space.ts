@@ -94,3 +94,16 @@ export async function getOwnedSpaces() {
   });
   return ownedSpaces;
 }
+
+//get amenities for specific page
+//id comes from getSpecific amenities result
+export async function getAllAmenities(amenitiesId: string[]) {
+  const amenities = await prisma.amenity.findMany({
+    where: {
+      id: {
+        in: amenitiesId,
+      },
+    },
+  });
+  return amenities;
+}

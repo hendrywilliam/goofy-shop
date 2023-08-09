@@ -77,7 +77,7 @@ export default function BookingSpace({ spaceId }: BookingSpace) {
   }, [dateRange]);
 
   return (
-    <div className="sticky flex flex-col top-56 mt-4 h-max w-2/3 gap-2 justify-center p-4 border rounded-md self-center shadow-md">
+    <div className="lg:sticky flex flex-col top-56 mt-4 h-max w-full lg:w-2/3 gap-2 justify-center p-4 border rounded-md self-center shadow-md">
       <div className="w-full flex justify-center">
         {status === "success" ? (
           <p>
@@ -90,7 +90,7 @@ export default function BookingSpace({ spaceId }: BookingSpace) {
           <Skeleton custom="h-10 w-1/2" />
         )}
       </div>
-      <DropdownMenuRoot custom="gap-4 w-3/4 self-center">
+      <DropdownMenuRoot custom="gap-4 w-full lg:w-3/4 self-center">
         <DropdownMenuTrigger custom="w-full">
           <p>Pick available date here</p>
           <div className="w-full h-full rounded-md">
@@ -130,7 +130,7 @@ export default function BookingSpace({ spaceId }: BookingSpace) {
         </DropdownMenuContent>
       </DropdownMenuRoot>
       <Button
-        custom="w-3/4 self-center"
+        custom="w-full lg:w-3/4 self-center"
         onClick={onSubmit}
         disabled={isPending}
         type="button"
