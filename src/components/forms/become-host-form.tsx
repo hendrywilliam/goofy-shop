@@ -68,6 +68,8 @@ export default function BecomeHostForm() {
   const { data: cityData, status } = api.city.getAllCity.useQuery();
   const mutateSpace = api.space.createSpace.useMutation();
 
+  console.log("re-render become host ofrm");
+
   //react-hook-form
   const {
     register,
@@ -112,7 +114,6 @@ export default function BecomeHostForm() {
     toast(firstError.message?.toString());
   }
 
-  //latitude longitude integrate react hook form
   React.useEffect(() => {
     setValue("latitude", latitude);
     setValue("longitude", longitude);
@@ -120,21 +121,14 @@ export default function BecomeHostForm() {
   }, [latitude, longitude]);
 
   React.useEffect(() => {
-    setValue("authorId", userId as string);
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId]);
-
-  //integrate files into photo field in react hook form
-  React.useEffect(() => {
-    setValue("photo", files);
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [files]);
-
-  //integrate dates with react hook form
-  React.useEffect(() => {
     setValue("availableDates", selectedDate as DateRange);
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDate]);
+
+  React.useEffect(() => {
+    setValue("authorId", userId as string);
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId]);
 
   return (
     <>
@@ -369,7 +363,11 @@ export default function BecomeHostForm() {
                   </div>
                   <AlertDialogClose />
                 </AlertDialogHeader>
-                <AddSpace setFile={setFiles} files={files} />
+                <AddSpace
+                  setValue={setValue}
+                  setFile={setFiles}
+                  files={files}
+                />
               </AlertDialogContent>
             </AlertDialog>
           </FormField>

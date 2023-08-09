@@ -6,7 +6,6 @@ export const useIsMounted = function () {
   //ensure the component is hydrated/mounted (client side)
   React.useEffect(() => {
     setMounted(true);
-
     return () => {
       setMounted(false);
     };
