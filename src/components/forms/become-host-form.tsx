@@ -77,16 +77,7 @@ export default function BecomeHostForm() {
     setValue,
     formState: { errors },
   } = useForm<SpaceInput>({
-    // resolver: zodResolver(spaceValidation),
-    resolver: async (data, context, options) => {
-      // you can debug your validation schema here
-      console.log("formData", data);
-      console.log(
-        "validation result",
-        await zodResolver(spaceValidation)(data, context, options)
-      );
-      return zodResolver(spaceValidation)(data, context, options);
-    },
+    resolver: zodResolver(spaceValidation),
   });
 
   function onSubmit(data: SpaceInput) {
