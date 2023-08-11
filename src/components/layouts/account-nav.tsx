@@ -41,16 +41,16 @@ export default function AccountNavigationMenu() {
           <IconHamburger className="self-center ml-3" />
           <Avatar src={user?.imageUrl} />
         </DropdownMenuTrigger>
-        <DropdownMenuContent custom="mt-4 lg:mt-2">
+        <DropdownMenuContent custom="mt-4 lg:mt-2 w-[14em]">
           <DropdownMenuHeader>
             {!isSignedIn ? (
-              <div className="flex flex-col p-2">
+              <div className="flex flex-col p-2 text-center w-full">
                 <p className="text-sm">Welcome, guest!</p>
               </div>
             ) : (
               <div className="flex flex-col p-2">
                 <p className="text-xs text-start">You are signed in as:</p>
-                <p className="font-bold text-sm">
+                <p className="font-bold text-sm truncate">
                   {user?.emailAddresses[0].emailAddress}
                 </p>
               </div>

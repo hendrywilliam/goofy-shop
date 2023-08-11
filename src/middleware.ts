@@ -10,6 +10,8 @@ export default authMiddleware({
     "/online-experiences",
     "/api/(.*)",
     "/rooms/(.*)",
+    "/forget-password",
+    "/forget-password/(.*)",
   ],
 });
 

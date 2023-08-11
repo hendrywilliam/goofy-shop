@@ -1,14 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  Form,
-  FormField,
-  FormLabel,
-  FormInput,
-  FormMessage,
-  FormTextarea,
-} from "@/components/ui/form";
+import { Form, FormField, FormLabel, FormInput } from "@/components/ui/form";
 import { Avatar } from "@/components/ui/avatar";
 import {
   AlertDialog,
@@ -25,7 +18,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { isClerkAPIResponseError } from "@clerk/nextjs";
 import { captureError } from "@/lib/utils";
 
 type ProfileInput = z.infer<typeof profileValidation>;
@@ -73,7 +65,7 @@ export default function ManageAccountForm() {
 
   function onError(error: FieldErrors<ProfileInput>) {
     const firstError = Object.values(error)[0];
-    toast(firstError.message?.toString());
+    toast(firstError?.message?.toString());
   }
 
   return (

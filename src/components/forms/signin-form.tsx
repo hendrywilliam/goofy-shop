@@ -55,6 +55,9 @@ export default function SignInForm() {
   return (
     <>
       <Form onSubmit={handleSubmit(onSubmit)}>
+        <FormField>
+          <h1 className="font-calsans">Login</h1>
+        </FormField>
         <FormField className="flex flex-col">
           <FormLabel className="text-sm" htmlFor="email">
             Email
@@ -86,6 +89,14 @@ export default function SignInForm() {
           type="submit"
           value="Login"
         />
+        <FormField custom="w-full flex items-center">
+          <Link
+            className="text-sm mt-4 text-destructive"
+            href="/forget-password"
+          >
+            Forget Password
+          </Link>
+        </FormField>
       </Form>
     </>
   );

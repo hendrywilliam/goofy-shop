@@ -77,7 +77,8 @@ const FormInputVariant = tv({
   base: "p-2 rounded-md",
   variants: {
     color: {
-      primary: "border focus:ring-2 ring-muted outline-none",
+      primary:
+        "border focus:ring-2 ring-muted outline-none disabled:opacity-75",
       error: "border border-destructive focus:ring-2 ring-muted outline-none",
     },
     font: {
@@ -122,8 +123,8 @@ const formMessageVariant = tv({
   base: "text-base mt-2",
   variants: {
     variant: {
-      error: "text-destructive",
-      muted: "text-muted",
+      error: "text-destructive text-sm",
+      muted: "text-muted text-sm",
     },
     size: {
       sm: "text-sm",
