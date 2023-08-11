@@ -1,5 +1,21 @@
 import BecomeHostForm from "@/components/forms/become-host-form";
 import { Shell } from "@/components/ui/shell";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Host spaces",
+  description: "Host your places and spaces",
+  applicationName: "spaceshop",
+  referrer: "origin-when-cross-origin",
+  keywords: ["Next.js", "React", "Typescript", "Fureya"],
+  authors: [{ name: "yrdneh", url: "https://www.instagram.com/jkt48.freya" }],
+  creator: "yrdneh",
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+  },
+};
 
 export default function BecomeAHostPage() {
   return (

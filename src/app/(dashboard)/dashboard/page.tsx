@@ -3,6 +3,12 @@ import { currentUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { IconAccount } from "@/components/icons/icon-account";
 import { IconPlace } from "@/components/icons/icon-place";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description: "Control your spaces, manage your account.",
+};
 
 export default async function DashboardPage() {
   const user = await currentUser();

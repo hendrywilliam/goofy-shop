@@ -11,7 +11,6 @@ import Image from "next/image";
 import { type FilteredValue } from "@/types";
 import { getSpaces } from "@/app/_actions/space";
 import Link from "next/link";
-import { Skeleton } from "@/components/ui/skeleton";
 
 export default async function IndexPage({
   params,
