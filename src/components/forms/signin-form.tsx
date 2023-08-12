@@ -12,10 +12,11 @@ import { authValidation } from "@/lib/validation/user";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { isClerkAPIResponseError, useSignIn } from "@clerk/nextjs";
+import { useSignIn } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { captureError } from "@/lib/utils";
+import { OAuthLogin } from "@/components/auth/oauth-login";
 
 type Input = z.infer<typeof authValidation>;
 
@@ -57,6 +58,10 @@ export default function SignInForm() {
       <Form onSubmit={handleSubmit(onSubmit)}>
         <FormField>
           <h1 className="font-calsans">Login</h1>
+        </FormField>
+        <FormField custom="flex flex-col gap-2 my-2">
+          <FormLabel className="text-sm">Login with socials</FormLabel>
+          <OAuthLogin />
         </FormField>
         <FormField className="flex flex-col">
           <FormLabel className="text-sm" htmlFor="email">

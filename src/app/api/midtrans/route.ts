@@ -4,8 +4,8 @@ export async function POST(req: Request) {
   let parameter = {
     payment_type: "gopay",
     transaction_details: {
-      order_id: "order-id-123",
-      gross_amount: 100000,
+      order_id: "order-id-1213312",
+      gross_amount: 6969,
     },
     customer_details: {
       first_name: "Budi",
