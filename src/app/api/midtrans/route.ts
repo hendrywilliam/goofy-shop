@@ -1,4 +1,4 @@
-import { coreApi } from "@/lib/midtrans";
+import { coreAPI } from "@/lib/midtrans";
 
 export async function POST(req: Request) {
   let parameter = {
@@ -28,9 +28,9 @@ export async function POST(req: Request) {
     },
   };
 
-  const ngab = coreApi.charge(parameter).then((chargeResponse) => {
+  const rez = coreAPI.charge(parameter).then((chargeResponse) => {
     console.log("chargeResponse");
     console.log(chargeResponse);
   });
-  return ngab;
+  return rez;
 }
