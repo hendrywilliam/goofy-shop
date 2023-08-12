@@ -68,8 +68,6 @@ export default function BecomeHostForm() {
   const { data: cityData, status } = api.city.getAllCity.useQuery();
   const mutateSpace = api.space.createSpace.useMutation();
 
-  console.log("re-render become host ofrm");
-
   //react-hook-form
   const {
     register,
