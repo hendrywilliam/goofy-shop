@@ -29,7 +29,6 @@ const oAuthProvider = [
 function OAuthLogin() {
   const { signIn, isLoaded } = useSignIn();
   const [isLoading, setIsLoading] = React.useState<OAuthStrategy | null>(null);
-  const [isPending, startTransition] = React.useTransition();
 
   async function signInWith(strategy: OAuthStrategy) {
     try {
