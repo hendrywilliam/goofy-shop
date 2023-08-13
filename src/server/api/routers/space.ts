@@ -95,7 +95,7 @@ export const spaceRouter = createTRPCRouter({
       return deleteSpaceData;
     }),
   //get all dates (available, and booked dates)
-  getSpaceDetails: protectedProcedure
+  getSpaceDetails: publicProcedure
     .input(idSpaceValidation)
     .query(async ({ ctx, input }) => {
       const dates = await ctx.prisma.space.findFirst({

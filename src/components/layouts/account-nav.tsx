@@ -45,7 +45,7 @@ export default function AccountNavigationMenu() {
           <DropdownMenuHeader>
             {!isSignedIn ? (
               <div className="flex flex-col p-2 text-center w-full">
-                <p className="text-sm">Welcome, guest!</p>
+                <p className="font-bold text-sm">Welcome, guest!</p>
               </div>
             ) : (
               <div className="flex flex-col p-2">

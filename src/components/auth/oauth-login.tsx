@@ -6,6 +6,8 @@ import { IconGoogle } from "@/components/icons/icon-google";
 import { OAuthStrategy } from "@clerk/types";
 import { IconGithub } from "@/components/icons/icon-github";
 import { useSignIn } from "@clerk/nextjs";
+import { IconLoading } from "@/components/icons/icon-loading";
+import { captureError } from "@/lib/utils";
 
 const oAuthProvider = [
   {
@@ -26,15 +28,22 @@ const oAuthProvider = [
 
 function OAuthLogin() {
   const { signIn, isLoaded } = useSignIn();
+  const [isLoading, setIsLoading] = React.useState<OAuthStrategy | null>(null);
+  const [isPending, startTransition] = React.useTransition();
 
-  function signInWith(strategy: OAuthStrategy) {
-    if (!isLoaded) return;
-
-    return signIn.authenticateWithRedirect({
-      strategy,
-      redirectUrl: "/sso-callback",
-      redirectUrlComplete: "/",
-    });
+  async function signInWith(strategy: OAuthStrategy) {
+    try {
+      if (!isLoaded) return;
+      setIsLoading(strategy);
+      await signIn.authenticateWithRedirect({
+        strategy,
+        redirectUrl: "/sso-callback",
+        redirectUrlComplete: "/",
+      });
+    } catch (err) {
+      setIsLoading(null);
+      captureError(err);
+    }
   }
 
   return (
@@ -42,11 +51,17 @@ function OAuthLogin() {
       {oAuthProvider.map((item, index) => {
         return (
           <Button
+            type="button"
             custom="flex flex-row gap-2"
             key={index}
             onClick={() => signInWith(item.strategy)}
           >
-            {item.icon} {item.name}
+            {isLoading === item.strategy ? (
+              <IconLoading className="flex self-center" />
+            ) : (
+              item.icon
+            )}
+            {item.name}
           </Button>
         );
       })}

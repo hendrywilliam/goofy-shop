@@ -12,6 +12,7 @@ export default authMiddleware({
     "/rooms/(.*)",
     "/forget-password",
     "/forget-password/(.*)",
+    "/sso-callback",
   ],
 });
 
