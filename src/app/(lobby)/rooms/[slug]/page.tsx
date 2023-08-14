@@ -2,7 +2,7 @@ import * as React from "react";
 import { Shell } from "@/components/ui/shell";
 import { getSpecificSpace, getSpecificCity } from "@/app/_actions/space";
 import Image from "next/image";
-import BookingSpace from "@/components/booking-space";
+import BookingSpaceInformation from "@/components/booking-space-information";
 import { localizedDate } from "@/lib/utils";
 import AmenitiesListDialog from "@/components/amenities-list-dialog";
 import { getAllAmenities } from "@/app/_actions/space";
@@ -16,7 +16,7 @@ export default async function RoomPage({
   const city = await getSpecificCity(space?.cityId!);
   const amenities = await getAllAmenities(space?.amenities!);
 
-  const topTenAmenities =
+  const firstTenAmenities =
     amenities.length > 10 ? amenities.slice(0, 10) : amenities;
 
   return (
@@ -57,7 +57,7 @@ export default async function RoomPage({
           </div>
         </div>
         <div className="flex flex-col lg:flex-row w-full h-max lg:h-[800px] gap-2">
-          <section className="w-full h-max lg:w-1/2">
+          <section className="w-full h-max xl:w-1/2">
             <div className="flex flex-col border-y w-full h-[200px] justify-center">
               <h1 className="font-calsans text-xl">
                 {/* please change later */}
@@ -102,7 +102,7 @@ export default async function RoomPage({
             <div className="flex flex-col border-b w-full min-h-[200px] h-max py-8 justify-center gap-2">
               <h1 className="font-calsans text-xl">What this place offers</h1>
               <ul className="grid grid-cols-2 gap-2 text-muted">
-                {topTenAmenities.map((item) => {
+                {firstTenAmenities.map((item) => {
                   return (
                     <li className="p-2 border rounded-md" key={item.id}>
                       {item.name}
@@ -113,8 +113,8 @@ export default async function RoomPage({
               <AmenitiesListDialog data={amenities} />
             </div>
           </section>
-          <section className="flex flex-col w-full h-full lg:w-1/2">
-            <BookingSpace spaceId={params.slug} />
+          <section className="flex flex-col w-full h-full xl:w-1/2">
+            <BookingSpaceInformation spaceId={params.slug} />
           </section>
         </div>
         <div className="flex flex-col w-full h-[200px] justify-center">

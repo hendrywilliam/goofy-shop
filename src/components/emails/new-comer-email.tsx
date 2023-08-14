@@ -2,7 +2,6 @@ import { Head } from "@react-email/head";
 import { Html } from "@react-email/html";
 import { Text } from "@react-email/text";
 import { Body } from "@react-email/body";
-import { render } from "@react-email/render";
 
 export function NewComerEmail() {
   return (

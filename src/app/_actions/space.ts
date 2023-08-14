@@ -107,3 +107,27 @@ export async function getAllAmenities(amenitiesId: string[]) {
   });
   return amenities;
 }
+
+export async function isSpaceBookable(spaceId: string, dateSequence: Date[]) {
+  const result = await prisma.space.findFirst({
+    where: {
+      id: spaceId,
+    },
+    select: {
+      bookedDates: true,
+    },
+  });
+
+  //first element found in intersection will return false
+  const convertedDates = result?.bookedDates?.map((item) => {
+    return item.toDateString();
+  });
+
+  for (const date of dateSequence) {
+    if (convertedDates?.includes(date.toDateString())) {
+      return false;
+    }
+  }
+
+  return true;
+}

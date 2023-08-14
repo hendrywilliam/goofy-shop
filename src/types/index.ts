@@ -26,7 +26,7 @@ export interface FilteredValue {
 
 export type ClerkDataUser = Pick<
   SignUpResource,
-  "createdUserId" | "firstName" | "lastName" | "emailAddress"
+  "createdUserId" | "firstName" | "lastName"
 >;
 
 export type DisabledDays = DateRange | Date | Date[] | string;
