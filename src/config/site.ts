@@ -81,22 +81,4 @@ export const siteConfig = {
       ],
     },
   ] satisfies FooterNavItem[],
-  paymentChannels: [
-    {
-      name: "Permata",
-      bank: "permata",
-    },
-    {
-      name: "BCA",
-      bank: "bca",
-    },
-    {
-      name: "BNI",
-      bank: "bca",
-    },
-    {
-      name: "BRI",
-      bank: "bri",
-    },
-  ] satisfies Record<string, string>[],
 };

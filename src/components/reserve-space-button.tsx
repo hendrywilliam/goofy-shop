@@ -9,9 +9,6 @@ import { localizedDate } from "@/lib/utils";
 interface ReserveSpaceButton {
   spaceId: string;
   dateRange: DateRange;
-  refetch: () => void;
-  setIsBookable: React.Dispatch<React.SetStateAction<boolean>>;
-  setDateRange: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
   totalPayment: number;
 }
 

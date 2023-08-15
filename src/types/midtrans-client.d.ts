@@ -302,25 +302,34 @@ declare interface APILimitExceeded {
   message: string;
 }
 
-declare interface ChargeParameters {
+export declare interface ChargeParameters {
   payment_type: string;
   transaction_details: {
     order_id: string;
     gross_amount: number;
   };
-  customer_details: {
-    first_name: string;
-    last_name: string;
-    email: string;
-    phone: string;
-    customer_details_required_fields: string[];
+  bank_transfer: {
+    bank: string;
+  };
+  item_details?: {
+    id?: string;
+    price?: number;
+    quantity?: number;
+    name?: string;
+  }[];
+  customer_details?: {
+    first_name?: string;
+    last_name?: string;
+    email?: string;
+    phone?: string;
+    customer_details_required_fields?: string[];
   };
   custom_field1?: string;
   custom_field2?: string;
   custom_field3?: string;
-  custom_expiry: {
-    expiry_duration: number;
-    unit: string;
+  custom_expiry?: {
+    expiry_duration?: number;
+    unit?: string;
   };
   metadata?: {
     [key: string]: string;

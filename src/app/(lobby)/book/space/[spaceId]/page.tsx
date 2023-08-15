@@ -2,10 +2,8 @@ import * as React from "react";
 import { Shell } from "@/components/ui/shell";
 import { getSpecificSpace } from "@/app/_actions/space";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/utils";
-
-//achieve searchparams
+import PaymentController from "@/components/payment-controller";
 
 export default async function BookingPage({
   params,
@@ -20,7 +18,7 @@ export default async function BookingPage({
 
   return (
     <Shell custom="flex min-h-screen h-full px-2 lg:px-20 justify-center">
-      <div className="border w-full xl:w-1/2 h-max text-sm p-2 rounded-md mt-12">
+      <div className="border w-full xl:w-1/2 h-max text-sm p-4 rounded-md my-12">
         <h1 className="font-calsans mt-2 text-xl">Complete Payment</h1>
         <div className="flex flex-col gap-2">
           <div className="relative w-full h-[300px] rounded-md my-4">
@@ -58,7 +56,11 @@ export default async function BookingPage({
             </ul>
           </div>
           <div className="w-full h-max border p-4 rounded-md">
-            <h1>Please select payment channels</h1>
+            <h1 className="font-calsans text-xl">Select payment channels</h1>
+            <PaymentController
+              totalPayment={total}
+              spaceName={spaceInfo?.name as string}
+            />
           </div>
         </div>
       </div>
