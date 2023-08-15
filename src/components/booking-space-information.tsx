@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { api } from "@/lib/api/api";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/components/ui/button";
 import {
   formatCurrency,
   getEachDayOfInterval,
@@ -115,6 +114,7 @@ export default function BookingSpaceInformation({ spaceId }: BookingSpace) {
           spaceId={spaceId}
           setIsBookable={setIsBookable}
           setDateRange={setDateRange}
+          totalPayment={totalChargeCalculation}
         />
       ) : (
         <CheckAvailabilityButton

@@ -1,12 +1,10 @@
-"use client";
-
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { type DateRange } from "react-day-picker";
-import { getEachDayOfInterval } from "@/lib/utils";
-import { api } from "@/lib/api/api";
-import { toast } from "sonner";
 import { captureError } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import { searchParamsBuilder } from "@/lib/utils";
+import { localizedDate } from "@/lib/utils";
 
 interface ReserveSpaceButton {
   spaceId: string;
@@ -14,17 +12,16 @@ interface ReserveSpaceButton {
   refetch: () => void;
   setIsBookable: React.Dispatch<React.SetStateAction<boolean>>;
   setDateRange: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
+  totalPayment: number;
 }
 
 export const ReserveSpaceButton = React.memo(function ReserveSpaceButton({
   spaceId,
   dateRange,
-  refetch,
-  setIsBookable,
-  setDateRange,
+  totalPayment,
 }: ReserveSpaceButton) {
   const [isPending, startTransition] = React.useTransition();
-  const updateBookDates = api.space.updateBookingDates.useMutation();
+  const router = useRouter();
 
   const onSubmit = React.useCallback(() => {
     startTransition(async () => {
@@ -32,21 +29,18 @@ export const ReserveSpaceButton = React.memo(function ReserveSpaceButton({
         if (typeof dateRange === "undefined") {
           throw new Error("Please select dates to book.");
         }
-        const datesSequence = getEachDayOfInterval(dateRange as DateRange);
-        await updateBookDates.mutateAsync(
-          {
-            id: spaceId,
-            bookedDates: datesSequence as Date[],
-          },
-          {
-            onSuccess() {
-              toast("Success add new booking for space.");
-              setDateRange(undefined);
-              setIsBookable(false);
-              refetch();
-            },
-          }
-        );
+
+        const searchParams = searchParamsBuilder({
+          start: localizedDate(dateRange.from as Date),
+          end: dateRange.to
+            ? localizedDate(dateRange.to)
+            : localizedDate(dateRange?.from as Date),
+          total: totalPayment,
+        });
+
+        router.push(`/book/space/${spaceId}?${searchParams}`, {
+          scroll: true,
+        });
       } catch (err) {
         captureError(err);
       }

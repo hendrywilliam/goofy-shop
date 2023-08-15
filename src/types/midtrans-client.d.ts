@@ -31,14 +31,14 @@ declare module "midtrans-client" {
           phone: string
         ];
       };
-      custom_field1: string;
-      custom_field2: string;
-      custom_field3: string;
+      custom_field1?: string;
+      custom_field2?: string;
+      custom_field3?: string;
       custom_expiry: {
         expiry_duration: number;
         unit: string;
       };
-      metadata: Record<string, unknown>;
+      metadata?: Record<string, unknown>;
     }): Promise<
       | ResultSuccess
       | DuplicateOrderId
@@ -315,14 +315,14 @@ declare interface ChargeParameters {
     phone: string;
     customer_details_required_fields: string[];
   };
-  custom_field1: string;
-  custom_field2: string;
-  custom_field3: string;
+  custom_field1?: string;
+  custom_field2?: string;
+  custom_field3?: string;
   custom_expiry: {
     expiry_duration: number;
     unit: string;
   };
-  metadata: {
+  metadata?: {
     [key: string]: string;
   };
 }

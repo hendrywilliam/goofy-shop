@@ -7,12 +7,14 @@ import isSameDay from "date-fns/isSameDay";
 import { TRPCError } from "@trpc/server";
 import { isClerkAPIResponseError } from "@clerk/nextjs";
 
-export function searchParamsBuilder(filteredValue: FilteredValue) {
+export function searchParamsBuilder(entity: Record<string, any>) {
   const searchParams = new URLSearchParams();
 
-  for (const [key, value] of Object.entries(filteredValue)) {
+  for (const [key, value] of Object.entries(entity)) {
+    //value -> value as string
     searchParams.set(key, value);
   }
+  //without toString - URLSearchParams { 'a' => '10', 'b' => '20' }
   return searchParams.toString();
 }
 
@@ -56,7 +58,8 @@ export function getEachDayOfInterval({ from, to }: DateRange) {
 }
 
 export function localizedDate(date: Date) {
-  return date ? date.toLocaleDateString() : null;
+  //https://www.iso.org/iso-8601-date-and-time-format.html
+  return date ? date.toISOString().slice(0, 10) : null;
 }
 
 export function formatCurrency(n: number) {

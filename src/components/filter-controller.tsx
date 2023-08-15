@@ -26,18 +26,21 @@ export default function FilterController() {
 
   const generateSearchParams = React.useCallback(() => {
     let urlSearchParams = `${pathname}?`;
-    try {
-      //zod validation before proceed (parsed)
-      const parsedFilteredValue = spaceFilterValidation.parse(filteredValue);
-      //generate search params
-      const generateSearchParams = searchParamsBuilder(parsedFilteredValue);
-      //final urlSearchParams
-      const final = urlSearchParams.concat(generateSearchParams);
-      //navigate to url with searchParams
-      router.push(final);
-    } catch (err) {
-      captureError(err);
-    }
+    startTransition(() => {
+      try {
+        //zod validation before proceed (parsed)
+        const parsedFilteredValue = spaceFilterValidation.parse(filteredValue);
+        //generate search params
+        const generateSearchParams = searchParamsBuilder(parsedFilteredValue);
+        //final urlSearchParams
+        const final = urlSearchParams.concat(generateSearchParams);
+        //navigate to url with searchParams
+        router.push(final);
+      } catch (err) {
+        captureError(err);
+      }
+    });
+
     /* eslint-disable-next-line */
   }, [filteredValue]);
 

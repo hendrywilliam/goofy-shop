@@ -13,6 +13,7 @@ export default authMiddleware({
     "/forget-password",
     "/forget-password/(.*)",
     "/sso-callback",
+    "/book/(.*)",
   ],
 });
 
