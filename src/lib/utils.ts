@@ -75,11 +75,11 @@ export function formatCurrency(n: number) {
 }
 
 export function orderNumberGenerator() {
-  //[MIDTRANS][DATE ORDERED][RANDOM 4DIGIT]
+  //pattern: [MIDTRANS][DATE ORDERED][RANDOM 4DIGIT]
   //this will fill date ordered in iso format YYYYMMDD
   const date = new Date().toISOString().slice(0, 10).replaceAll("-", "");
-  //generate 4 random digits
+  //generate 4/3 random digits
   const random4Digits = Math.floor(Math.random() * 10000);
 
-  return `MIDTRANS${date}${random4Digits}`;
+  return `MIDTRANS-${date}-${random4Digits}`;
 }

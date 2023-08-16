@@ -135,7 +135,7 @@ export default function PaymentController({
         </p>
       </div>
       <div className="w-full h-max mt-2">
-        <h1 className="font-calsans text-xl">Input your personal datas</h1>
+        <h1 className="font-calsans text-xl">2. Input your personal data</h1>
         <ul className="flex flex-col gap-2">
           <li>
             <Label htmlFor="email" custom="text-muted">
@@ -201,12 +201,13 @@ export default function PaymentController({
         </ul>
       </div>
       <div className="w-full h-max mt-4">
+        <h1 className="font-calsans text-xl">3. Confirm booking</h1>
         <Button
           onClick={confirmPayment}
           custom="flex flex-row justify-center gap-2"
         >
           {isLoading && <IconLoading className="flex self-center" />}Confirm
-          Payment
+          booking
         </Button>
       </div>
     </div>

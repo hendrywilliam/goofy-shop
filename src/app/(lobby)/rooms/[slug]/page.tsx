@@ -33,7 +33,7 @@ export default async function RoomPage({
             <Image
               src={space?.photos[0].fileUrl!}
               fill
-              style={{ objectFit: "fill" }}
+              style={{ objectFit: "cover" }}
               alt={`${space?.name}'s photos.`}
               className="rounded-md"
             />

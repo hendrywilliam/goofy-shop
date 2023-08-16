@@ -65,7 +65,6 @@ export async function getSpecificSpace(id: string) {
     });
     return result;
   } catch (err) {
-    //@todo make it fancier
     notFound();
   }
 }

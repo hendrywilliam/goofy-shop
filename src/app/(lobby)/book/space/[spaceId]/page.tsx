@@ -77,15 +77,15 @@ export default async function BookingPage({ params, searchParams }: PageProps) {
                 <p className="text-muted">{end}</p>
               </li>
               <li>
-                <p>Total payment</p>
-                <p className="text-muted">
+                <h1 className="font-calsans text-xl">Total payment</h1>
+                <p className="text-muted text-xl">
                   {total ? formatCurrency(parseInt(total)) : 0}
                 </p>
               </li>
             </ul>
           </div>
           <div className="w-full h-max border p-4 rounded-md">
-            <h1 className="font-calsans text-xl">Select payment channels</h1>
+            <h1 className="font-calsans text-xl">1. Select payment channels</h1>
             <PaymentController
               totalPayment={total}
               spaceName={spaceInfo?.name as string}
