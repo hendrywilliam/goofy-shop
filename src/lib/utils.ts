@@ -21,14 +21,15 @@ export function searchParamsBuilder(entity: Record<string, any>) {
 export function captureError(err: unknown) {
   const unknownError = "Something went wrong, please try again later.";
 
-  if (err instanceof Error) {
-    toast.error(err.message);
-  } else if (isClerkAPIResponseError(err)) {
+  if (isClerkAPIResponseError(err)) {
     toast.error(err.errors[0].message ?? unknownError);
   } else if (err instanceof z.ZodError) {
     toast.error(err.issues[0].message);
   } else if (err instanceof TRPCError) {
     toast.error(`${err.cause?.cause} ${err.message}`);
+    //move instance error to the bottom so it wont be checked first
+  } else if (err instanceof Error) {
+    toast.error(err.message);
   } else {
     toast.error(unknownError);
   }
@@ -71,4 +72,14 @@ export function formatCurrency(n: number) {
     return formatter.format(n);
   }
   return 0;
+}
+
+export function orderNumberGenerator() {
+  //[MIDTRANS][DATE ORDERED][RANDOM 4DIGIT]
+  //this will fill date ordered in iso format YYYYMMDD
+  const date = new Date().toISOString().slice(0, 10).replaceAll("-", "");
+  //generate 4 random digits
+  const random4Digits = Math.floor(Math.random() * 10000);
+
+  return `MIDTRANS${date}${random4Digits}`;
 }

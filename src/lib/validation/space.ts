@@ -67,3 +67,18 @@ export const updateBookingDates = z.object({
   id: z.string({ required_error: "ID is required" }),
   bookedDates: z.date().array(),
 });
+
+export const userPaymentValidation = z.object({
+  email: z.string().email({
+    message: "Email invalid.",
+  }),
+  firstName: z.string().min(1, {
+    message: "First name invalid",
+  }),
+  lastName: z.string().min(1, {
+    message: "Last name invalid",
+  }),
+  phoneNumber: z.string().min(5, {
+    message: "Phone number invalid",
+  }),
+});

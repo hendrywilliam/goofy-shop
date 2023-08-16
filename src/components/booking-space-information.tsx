@@ -110,10 +110,7 @@ export default function BookingSpaceInformation({ spaceId }: BookingSpace) {
       {isBookable ? (
         <ReserveSpaceButton
           dateRange={dateRange as DateRange}
-          refetch={refetch}
           spaceId={spaceId}
-          setIsBookable={setIsBookable}
-          setDateRange={setDateRange}
           totalPayment={totalChargeCalculation}
         />
       ) : (

@@ -7,10 +7,15 @@ import { type ChargeParameters } from "@/types/midtrans-client";
 import { toast } from "sonner";
 import { useUser } from "@clerk/nextjs";
 import { IconLoading } from "@/components/icons/icon-loading";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { userPaymentValidation } from "@/lib/validation/space";
+import { captureError, orderNumberGenerator } from "@/lib/utils";
 
 interface PaymentController {
   totalPayment: string;
   spaceName: string;
+  spaceId: string;
 }
 
 export default function PaymentController({
@@ -20,55 +25,86 @@ export default function PaymentController({
   const [selectedBank, setSelectedBank] = React.useState<string>();
   const { isLoaded, isSignedIn, user } = useUser();
   const [isLoading, setIsLoading] = React.useState(false);
+  const [userData, setPaymentData] = React.useState<{
+    email: string;
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
+  }>({
+    email: "",
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+  });
 
   const confirmPayment = React.useCallback(async () => {
     setIsLoading(true);
-    if (typeof selectedBank === "undefined") {
-      setIsLoading(false);
-      return toast.error("Please select channel payment first before proceed.");
-    }
+    console.log(userData);
+    try {
+      if (typeof selectedBank === "undefined") {
+        setIsLoading(false);
+        return toast.error(
+          "Please select channel payment first before proceed."
+        );
+      }
 
-    if (!isLoaded) {
-      return setIsLoading(false);
-    }
+      if (!isLoaded) {
+        return setIsLoading(false);
+      }
+      //any error occurs will throw an error
+      const parsedData = userPaymentValidation.parse(userData);
 
-    const params = {
-      payment_type: "bank_transfer",
-      transaction_details: {
-        order_id: "MIDTRANS696969",
-        gross_amount: parseInt(totalPayment),
-      },
-      bank_transfer: {
-        bank: selectedBank,
-      },
-      item_details: [
-        {
-          name: spaceName,
-          id: "MIDTRANS696969",
-          price: parseInt(totalPayment),
-          quantity: 1,
+      const {
+        email,
+        firstName: first_name,
+        lastName: last_name,
+        phoneNumber: phone,
+      } = parsedData;
+
+      const params = {
+        payment_type: "bank_transfer",
+        transaction_details: {
+          order_id: orderNumberGenerator(),
+          gross_amount: parseInt(totalPayment),
         },
-      ],
-      customer_details: {
-        email: user?.emailAddresses ? user.emailAddresses[0].emailAddress : "",
-        first_name: user?.firstName ? user.firstName : "",
-        last_name: user?.lastName ? user.lastName : "",
-        //string sequence of emails, first_name, phone
-        customer_details_required_fields: [
-          user?.emailAddresses[0].emailAddress ?? "",
-          user?.firstName ?? "",
+        bank_transfer: {
+          bank: selectedBank,
+        },
+        item_details: [
+          {
+            name: spaceName,
+            id: "392392392",
+            price: parseInt(totalPayment),
+            quantity: 1,
+          },
         ],
-      },
-    } satisfies ChargeParameters;
+        customer_details: {
+          email,
+          first_name,
+          last_name,
+          phone,
+          //string sequence of emails, first_name, phone
+          customer_details_required_fields: [email, first_name, phone],
+        },
+      } satisfies ChargeParameters;
 
-    //@todo add new field for firstname, lastname, phone number in sign up form
-    const attemptPayment = await fetch("/api/midtrans", {
-      method: "POST",
-      body: JSON.stringify(params),
-    });
-    console.log(attemptPayment);
-    setIsLoading(false);
-  }, [selectedBank]);
+      const attemptPayment = await fetch("/api/midtrans", {
+        method: "POST",
+        body: JSON.stringify(params),
+      });
+
+      const res = await attemptPayment.json();
+      console.log(res);
+
+      if (res.data.status_code === "201") {
+        toast("Booking success.");
+      }
+      setIsLoading(false);
+    } catch (err) {
+      captureError(err);
+      setIsLoading(false);
+    }
+  }, [selectedBank, isLoaded, spaceName, totalPayment, userData]);
 
   return (
     <div className="flex flex-col w-full h-max">
@@ -97,6 +133,72 @@ export default function PaymentController({
           )}
           )
         </p>
+      </div>
+      <div className="w-full h-max mt-2">
+        <h1 className="font-calsans text-xl">Input your personal datas</h1>
+        <ul className="flex flex-col gap-2">
+          <li>
+            <Label htmlFor="email" custom="text-muted">
+              Email
+            </Label>
+            <Input
+              name="email"
+              custom="w-full xl:w-1/2"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setPaymentData({
+                  ...userData,
+                  email: e.target.value,
+                })
+              }
+            />
+          </li>
+          <li>
+            <Label htmlFor="firstname" custom="text-muted">
+              First Name
+            </Label>
+            <Input
+              name="firstname"
+              custom="w-full xl:w-1/2"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setPaymentData({
+                  ...userData,
+                  firstName: e.target.value,
+                })
+              }
+            />
+          </li>
+          <li>
+            <Label htmlFor="lastname" custom="text-muted">
+              Last Name
+            </Label>
+            <Input
+              name="lastname"
+              custom="w-full xl:w-1/2"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setPaymentData({
+                  ...userData,
+                  lastName: e.target.value,
+                })
+              }
+            />
+          </li>
+          <li>
+            <Label htmlFor="phonenumber" custom="text-muted">
+              Phone Number
+            </Label>
+            <Input
+              name="phonenumber"
+              custom="w-full xl:w-1/2"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setPaymentData({
+                  ...userData,
+                  phoneNumber: e.target.value.toString(),
+                })
+              }
+              type="number"
+            />
+          </li>
+        </ul>
       </div>
       <div className="w-full h-max mt-4">
         <Button
