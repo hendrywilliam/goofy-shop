@@ -1,13 +1,13 @@
 import { PropsWithChildren } from "react";
 import SiteHeader from "@/components/layouts/site-header";
 import SiteFooter from "@/components/layouts/site-footer";
-import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
+import { currentUser } from "@clerk/nextjs";
 
 export default async function DashboardLayout({ children }: PropsWithChildren) {
-  const { userId } = await auth();
+  const user = await currentUser();
 
-  if (!userId) {
+  if (!user) {
     redirect("/sign-in");
   }
 

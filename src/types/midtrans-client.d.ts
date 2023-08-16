@@ -302,7 +302,7 @@ declare interface APILimitExceeded {
   message: string;
 }
 
-export declare interface ChargeParameters {
+declare interface ChargeParameters {
   payment_type: string;
   transaction_details: {
     order_id: string;
