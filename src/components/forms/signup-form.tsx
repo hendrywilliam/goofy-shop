@@ -18,6 +18,7 @@ import { FieldErrors } from "react-hook-form";
 import { toast } from "sonner";
 import { addUserToDatabase } from "@/app/_actions/auth";
 import { ClerkDataUser } from "@/types";
+import { redirect } from "next/navigation";
 
 type RegistrationInput = z.infer<typeof authValidation>;
 
@@ -54,7 +55,8 @@ export default function RegistrationForm() {
       if (res) {
         await addUserToDatabase(userData);
       }
-      toast(`Account created. You may log in now.`);
+      toast(`Account created. Redirecting to homepage.`);
+      redirect("/");
     } catch (error) {
       captureError(error);
     }

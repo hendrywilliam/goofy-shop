@@ -3,7 +3,6 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { paymentChannels } from "@/config/payment";
-import { type ChargeParameters } from "@/types/midtrans-client";
 import { toast } from "sonner";
 import { useUser } from "@clerk/nextjs";
 import { IconLoading } from "@/components/icons/icon-loading";
