@@ -6,12 +6,42 @@ import BookingSpaceInformation from "@/components/booking-space-information";
 import { localizedDate } from "@/lib/utils";
 import AmenitiesListDialog from "@/components/amenities-list-dialog";
 import { getAllAmenities } from "@/app/_actions/space";
+import { type Metadata, type ResolvingMetadata } from "next";
 
-export default async function RoomPage({
-  params,
-}: {
+interface RoomPageProps {
   params: { slug: string };
-}) {
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+
+export async function generateMetadata(
+  { params, searchParams }: RoomPageProps,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const spaceInfo = await getSpecificSpace(params.slug);
+
+  return {
+    title: `Stay - ${spaceInfo?.name}`,
+    description: `All information about ${spaceInfo?.name}`,
+    keywords: [
+      "Next.js",
+      "React",
+      "Typescript",
+      "Freya",
+      "Nashifa",
+      "Jayawardana",
+    ],
+    authors: [{ name: "yrdneh", url: "https://www.instagram.com/jkt48.freya" }],
+    creator: "Freyanashifa Jayawardana",
+    applicationName: "spaceshop",
+    viewport: {
+      width: "device-width",
+      initialScale: 1,
+      maximumScale: 1,
+    },
+  };
+}
+
+export default async function RoomPage({ params }: RoomPageProps) {
   const space = await getSpecificSpace(params.slug);
   const city = await getSpecificCity(space?.cityId!);
   const amenities = await getAllAmenities(space?.amenities!);

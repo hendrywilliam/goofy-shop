@@ -4,8 +4,8 @@ import { redirect } from "next/navigation";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Manage account",
-  description: "Manage your account, change password and avatar.",
+  title: "Login",
+  description: "Login page",
   applicationName: "spaceshop",
   referrer: "origin-when-cross-origin",
   keywords: ["Next.js", "React", "Typescript", "Fureya"],

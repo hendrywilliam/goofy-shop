@@ -4,7 +4,7 @@ import { getSpecificSpace } from "@/app/_actions/space";
 import Image from "next/image";
 import { formatCurrency } from "@/lib/utils";
 import PaymentController from "@/components/payment-controller";
-import { type Metadata, ResolvingMetadata } from "next";
+import { type Metadata, type ResolvingMetadata } from "next";
 
 interface PageProps {
   params: { spaceId: string };
@@ -32,6 +32,7 @@ export async function generateMetadata(
     ],
     authors: [{ name: "yrdneh", url: "https://www.instagram.com/jkt48.freya" }],
     creator: "Freyanashifa Jayawardana",
+    applicationName: "spaceshop",
     viewport: {
       width: "device-width",
       initialScale: 1,
