@@ -1,3 +1,8 @@
+//Type definitions for midtrans-client ^1.3.1
+//Project: https://github.com/hendrywilliam/ss
+//Definitions by: yrdneh https://www.instagram.com/jkt48.freya/?hl=en
+
+//NOTE: please improve later at the end :)
 declare module "midtrans-client" {
   declare class CoreApi {
     constructor({
@@ -56,6 +61,47 @@ declare module "midtrans-client" {
       | AuthorizationError
       | APILimitExceeded
     >;
+
+    /**
+     * Register card for payment method
+     * @param parameter {object}
+     * @returns {Promise} Promise object that returns transaction_id, status_code
+     * saved_token_id, and masked_card
+     */
+
+    cardRegister(parameter: {
+      card_number: string;
+      card_exp_month: string;
+      card_exp_year: string;
+      client_key: string;
+      callback: string;
+    }): Promise<{
+      transaction_id: string;
+      status_code: string;
+      saved_token_id: string;
+      masked_card: string;
+    }>;
+
+    /**
+     * Token id is a unique value that is associated with
+     * customer's credit card
+     * @param parameter {object}
+     * @returns {Promise}
+     */
+
+    cardToken(parameter: {
+      card_number: string;
+      card_cvv: string;
+      card_exp_month: string;
+      card_exp_year: string;
+      token_id: string;
+    }): Promise<{
+      status_code: "200" | "400";
+      status_message: string;
+      validation_messages: string;
+      token_id: string;
+      hash: string;
+    }>;
   }
 
   declare class Iris {
@@ -256,82 +302,87 @@ declare module "midtrans-client" {
         }
     >;
   }
-}
 
-declare interface ResultSuccess {
-  status_code: string;
-  status_message: string;
-  transaction_id: string;
-  order_id: string;
-  merchant_id: string;
-  gross_amount: string;
-  currency: string;
-  payment_type: string;
-  transaction_time: string;
-  transaction_status: string;
-  fraud_status: string;
-  actions: {
-    name: string;
-    method: string;
-    url: string;
-  };
-  qr_string: string;
-  acquirer: string;
-  expire_time: string;
-}
+  declare class MidtransError extends Error {
+    constructor();
+  }
 
-declare interface DuplicateOrderId {
-  status_code: string;
-  status_message: string;
-  id: string;
-}
-
-declare interface ValidationError {
-  status_code: string;
-  status_message: string;
-  validation_messages: string[];
-  id: string;
-}
-
-declare interface AuthorizationError {
-  status_code: string;
-  status_message: string;
-}
-
-declare interface APILimitExceeded {
-  message: string;
-}
-
-declare interface ChargeParameters {
-  payment_type: string;
-  transaction_details: {
+  declare interface ResultSuccess {
+    status_code: string;
+    status_message: string;
+    transaction_id: string;
     order_id: string;
-    gross_amount: number;
-  };
-  bank_transfer: {
-    bank: string;
-  };
-  item_details?: {
+    merchant_id: string;
+    gross_amount: string;
+    currency: string;
+    payment_type: string;
+    transaction_time: string;
+    transaction_status: string;
+    fraud_status: string;
+    actions: {
+      name: string;
+      method: string;
+      url: string;
+    };
+    qr_string: string;
+    acquirer: string;
+    expire_time: string;
+  }
+
+  declare interface DuplicateOrderId {
+    status_code: string;
+    status_message: string;
+    id: string;
+  }
+
+  declare interface ValidationError {
+    status_code: string;
+    status_message: string;
+    validation_messages: string[];
+    id: string;
+  }
+
+  declare interface AuthorizationError {
+    status_code: string;
+    status_message: string;
     id?: string;
-    price?: number;
-    quantity?: number;
-    name?: string;
-  }[];
-  customer_details?: {
-    first_name?: string;
-    last_name?: string;
-    email?: string;
-    phone?: string;
-    customer_details_required_fields?: string[];
-  };
-  custom_field1?: string;
-  custom_field2?: string;
-  custom_field3?: string;
-  custom_expiry?: {
-    expiry_duration?: number;
-    unit?: string;
-  };
-  metadata?: {
-    [key: string]: string;
-  };
+  }
+
+  declare interface APILimitExceeded {
+    message: string;
+  }
+
+  declare interface ChargeParameters {
+    payment_type: string;
+    transaction_details: {
+      order_id: string;
+      gross_amount: number;
+    };
+    bank_transfer: {
+      bank: string;
+    };
+    item_details?: {
+      id?: string;
+      price?: number;
+      quantity?: number;
+      name?: string;
+    }[];
+    customer_details?: {
+      first_name?: string;
+      last_name?: string;
+      email?: string;
+      phone?: string;
+      customer_details_required_fields?: string[];
+    };
+    custom_field1?: string;
+    custom_field2?: string;
+    custom_field3?: string;
+    custom_expiry?: {
+      expiry_duration?: number;
+      unit?: string;
+    };
+    metadata?: {
+      [key: string]: string;
+    };
+  }
 }
