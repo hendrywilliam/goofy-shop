@@ -11,7 +11,6 @@ export async function POST(req: NextRequest) {
       data: result,
     });
   } catch (err) {
-    console.log(err);
     return NextResponse.json({
       success: false,
       message: err instanceof Error ? err.message : "Unknown error occured.",

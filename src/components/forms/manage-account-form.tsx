@@ -17,7 +17,6 @@ import { profileValidation } from "@/lib/validation/user";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import { captureError } from "@/lib/utils";
 
 type ProfileInput = z.infer<typeof profileValidation>;
@@ -25,7 +24,6 @@ type ProfileInput = z.infer<typeof profileValidation>;
 export default function ManageAccountForm() {
   const { user, isSignedIn, isLoaded } = useUser();
   const [isPending, startTransition] = React.useTransition();
-  const router = useRouter();
 
   //react hook form
   const {
@@ -70,7 +68,7 @@ export default function ManageAccountForm() {
 
   return (
     <div className="w-full lg:w-1/2 lg:h-[600px]">
-      <h1 className="font-calsans text-3xl">Manage your account</h1>
+      <h1 className="text-3xl font-bold">Manage your account</h1>
       <Avatar custom="w-24 h-24 mt-2" src={user?.imageUrl} />
       <AlertDialog>
         <AlertDialogTrigger custom="mt-4" type="button">
@@ -89,30 +87,30 @@ export default function ManageAccountForm() {
         className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4"
       >
         <FormField>
-          <FormLabel>First Name</FormLabel>
+          <FormLabel className="text-muted">First Name</FormLabel>
           <FormInput
             {...register("firstName")}
             defaultValue={user?.firstName ?? ""}
           />
         </FormField>
         <FormField>
-          <FormLabel>Last Name</FormLabel>
+          <FormLabel className="text-muted">Last Name</FormLabel>
           <FormInput
             {...register("lastName")}
             defaultValue={user?.lastName ?? ""}
           />
         </FormField>
         <FormField>
-          <FormLabel>New Password</FormLabel>
+          <FormLabel className="text-muted">New Password</FormLabel>
           <FormInput {...register("newPassword")} type="password" />
         </FormField>
         <FormField>
-          <FormLabel>Confirm New Password</FormLabel>
+          <FormLabel className="text-muted">Confirm New Password</FormLabel>
           <FormInput {...register("confirmPassword")} type="password" />
         </FormField>
         <FormField custom="col-span-full">
           <FormInput
-            custom="w-full"
+            custom="w-full disabled:text-muted"
             type="submit"
             value="Submit Changes"
             disabled={isPending}

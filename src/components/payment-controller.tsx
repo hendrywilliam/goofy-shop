@@ -88,7 +88,7 @@ export default function PaymentController({
         },
       } satisfies ChargeParameters;
 
-      const attemptPayment = await fetch("/api/midtrans", {
+      const attemptPayment = await fetch("/api/payment", {
         method: "POST",
         body: JSON.stringify(params),
       });
