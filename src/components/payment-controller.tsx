@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { userPaymentValidation } from "@/lib/validation/space";
 import { captureError, orderNumberGenerator } from "@/lib/utils";
+import { type ChargeParameters } from "midtrans-client";
 
 interface PaymentController {
   totalPayment: string;
