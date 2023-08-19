@@ -65,7 +65,6 @@ model City {
 
 model User {
   id            String    @id @default(auto()) @map(name: "_id") @db.ObjectId
-  reservation   Reservation[]
   clerkId       String    @map(name: "clerk_id")
   firstName     String?   @map(name: "first_name")
   lastName      String?   @map(name: "last_name")
@@ -78,29 +77,19 @@ model User {
 
 model Reservation {
   id            String              @id @default(auto()) @map(name: "_id") @db.ObjectId
-  guestId       String              @map(name: "guest_id") @db.ObjectId
-  user          User                @relation(fields: [guestId], references: [id])
+  guestId       String              @map(name: "guest_id")
   placeId       String              @map(name: "place_id")
   totalPrice    Int                 @map(name: "total_price")
   startDate     DateTime            @map(name: "start_date")
   endDate       DateTime            @map(name: "end_date")
   createdAt     DateTime            @default(now()) @map(name: "created_at")
   updatedAt     DateTime            @default(now()) @map(name: "updated_at")
-  status        ReservationStatus   @map(name: "reservation_status")
-  invoice       Invoice?            
+  //distinguish each reservations
+  transactionId String              @map(name: "transaction_id") 
+  status        ReservationStatus   @map(name: "reservation_status") @default(ACTIVE)
+  paymentStatus PaymentStatus       @map(name: "payment_status") @default(NOT_PAID)        
 
   @@map(name: "reservations")
-}
-
-model Invoice {
-  id            String        @id @default(auto()) @map(name: "_id") @db.ObjectId
-  reservationId String        @map(name: "reservation_id") @db.ObjectId @unique
-  reservation   Reservation   @relation(fields: [reservationId], references: [id])
-  createdAt     DateTime      @map(name: "created_at")
-  updatedAt     DateTime      @map(name: "updated_at")
-  invoiceStatus InvoiceStatus @default(NOT_PAID) @map(name: "invoice_status")
-
-  @@map(name: "invoice_reservations")
 }
 
 type UploadedFile {
@@ -119,7 +108,7 @@ enum ReservationStatus {
   COMPLETED
 }
 
-enum InvoiceStatus {
+enum PaymentStatus {
   PAID
   NOT_PAID
 }
