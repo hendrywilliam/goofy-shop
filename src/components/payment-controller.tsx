@@ -11,16 +11,23 @@ import { Label } from "@/components/ui/label";
 import { userPaymentValidation } from "@/lib/validation/space";
 import { captureError, orderNumberGenerator } from "@/lib/utils";
 import { type ChargeParameters } from "midtrans-client";
+import { api } from "@/lib/api/api";
 
 interface PaymentController {
   totalPayment: string;
   spaceName: string;
   spaceId: string;
+  //date time for reservation
+  start: string;
+  end: string;
 }
 
 export default function PaymentController({
   totalPayment,
   spaceName,
+  spaceId,
+  end,
+  start,
 }: PaymentController) {
   const [selectedBank, setSelectedBank] = React.useState<string>();
   const { isLoaded, isSignedIn, user } = useUser();
@@ -86,24 +93,33 @@ export default function PaymentController({
           //string sequence of emails, first_name, phone
           customer_details_required_fields: [email, first_name, phone],
         },
+        //insert additional information for reservation creation
+        //convert startDate and endDate later since schema is using DateTime
+        //for both types.
+        metadata: {
+          guestId: user?.id as string,
+          spaceId,
+          startDate: start,
+          endDate: end,
+        },
       } satisfies ChargeParameters;
 
-      const attemptPayment = await fetch("/api/payment", {
+      const attemptPayment = await fetch("/api/midtrans/payment", {
         method: "POST",
         body: JSON.stringify(params),
       });
 
       const res = await attemptPayment.json();
-      console.log(res);
 
       if (res.data.status_code === "201") {
-        toast("Booking success.");
+        toast("Reservation created. Please complete your payment.");
       }
       setIsLoading(false);
     } catch (err) {
       captureError(err);
       setIsLoading(false);
     }
+    // eslint-disable-next-line
   }, [selectedBank, isLoaded, spaceName, totalPayment, userData]);
 
   return (

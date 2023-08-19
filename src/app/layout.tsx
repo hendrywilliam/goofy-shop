@@ -33,7 +33,7 @@ export default function RootLayout({
             className={`${inter.className} ${calsans.variable} antialiased`}
           >
             {children}
-            <Toaster position="bottom-right" />
+            <Toaster position="top-center" />
           </body>
         </html>
       </TRPCProvider>

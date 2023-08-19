@@ -29,10 +29,12 @@ export const CheckAvailabilityButton = React.memo(
           const res = await isSpaceBookable(spaceId, dateSequence as Date[]);
           if (!res) {
             setIsBookable(false);
-            toast("Space is not available for that specific time.");
+            toast.error(
+              "Space is not available for now. Try switching to available dates"
+            );
           } else {
             setIsBookable(true);
-            toast("Space is available for that specific time.");
+            toast.success("Space is available to book.");
           }
         } else {
           setIsBookable(false);

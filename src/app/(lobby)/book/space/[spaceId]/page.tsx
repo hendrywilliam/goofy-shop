@@ -91,6 +91,8 @@ export default async function BookingPage({ params, searchParams }: PageProps) {
               totalPayment={total}
               spaceName={spaceInfo?.name as string}
               spaceId={spaceId}
+              end={end}
+              start={start}
             />
           </div>
         </div>
