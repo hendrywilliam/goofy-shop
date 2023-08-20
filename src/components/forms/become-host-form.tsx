@@ -354,7 +354,7 @@ export default function BecomeHostForm() {
               <AlertDialogTrigger custom="w-full" type="button">
                 Select image
               </AlertDialogTrigger>
-              <AlertDialogContent custom="w-[500px] h-max">
+              <AlertDialogContent custom="w-full lg:w-[500px] h-max">
                 <AlertDialogHeader>
                   <div className="flex">
                     <p className="self-center">Select image</p>
