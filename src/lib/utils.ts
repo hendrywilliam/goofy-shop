@@ -74,12 +74,7 @@ export function formatCurrency(n: number) {
   return 0;
 }
 
-export function orderNumberGenerator() {
-  //pattern: [MIDTRANS][DATE ORDERED][RANDOM 4DIGIT]
-  //this will fill date ordered in iso format YYYYMMDD
+export function orderNumberGenerator(reservation_id: string) {
   const date = new Date().toISOString().slice(0, 10).replaceAll("-", "");
-  //generate 4/3 random digits
-  const random4Digits = Math.floor(Math.random() * 10000);
-
-  return `MIDTRANS-${date}-${random4Digits}`;
+  return `MIDTRANS-${date}-${reservation_id}`;
 }

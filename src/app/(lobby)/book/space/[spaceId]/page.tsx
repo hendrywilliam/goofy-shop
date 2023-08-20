@@ -88,7 +88,7 @@ export default async function BookingPage({ params, searchParams }: PageProps) {
           <div className="w-full h-max border p-4 rounded-md">
             <h1 className="font-calsans text-xl">1. Select payment channels</h1>
             <PaymentController
-              totalPayment={total}
+              totalPrice={total}
               spaceName={spaceInfo?.name as string}
               spaceId={spaceId}
               end={end}

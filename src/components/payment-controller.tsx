@@ -11,10 +11,14 @@ import { Label } from "@/components/ui/label";
 import { userPaymentValidation } from "@/lib/validation/space";
 import { captureError, orderNumberGenerator } from "@/lib/utils";
 import { type ChargeParameters } from "midtrans-client";
-import { api } from "@/lib/api/api";
+import {
+  createReservation,
+  updateReservation,
+} from "@/app/_actions/reservation";
+import { useRouter } from "next/navigation";
 
 interface PaymentController {
-  totalPayment: string;
+  totalPrice: string;
   spaceName: string;
   spaceId: string;
   //date time for reservation
@@ -23,15 +27,16 @@ interface PaymentController {
 }
 
 export default function PaymentController({
-  totalPayment,
+  totalPrice,
   spaceName,
   spaceId,
   end,
   start,
 }: PaymentController) {
-  const [selectedBank, setSelectedBank] = React.useState<string>();
+  const router = useRouter();
   const { isLoaded, isSignedIn, user } = useUser();
   const [isLoading, setIsLoading] = React.useState(false);
+  const [selectedBank, setSelectedBank] = React.useState<string>();
   const [userData, setPaymentData] = React.useState<{
     email: string;
     firstName: string;
@@ -58,8 +63,24 @@ export default function PaymentController({
       if (!isLoaded) {
         return setIsLoading(false);
       }
+
+      if (!isSignedIn) {
+        router.push("/sign-in");
+        return toast.error(
+          "You are not logged in, redirecting to sign in page."
+        );
+      }
+
       //any error occurs will throw an error
       const parsedData = userPaymentValidation.parse(userData);
+
+      const currentReservation = await createReservation({
+        endDate: end,
+        guestId: user?.id as string,
+        spaceId,
+        startDate: start,
+        totalPrice,
+      });
 
       const {
         email,
@@ -71,8 +92,8 @@ export default function PaymentController({
       const params = {
         payment_type: "bank_transfer",
         transaction_details: {
-          order_id: orderNumberGenerator(),
-          gross_amount: parseInt(totalPayment),
+          order_id: orderNumberGenerator(currentReservation.id),
+          gross_amount: parseInt(totalPrice),
         },
         bank_transfer: {
           bank: selectedBank,
@@ -80,8 +101,8 @@ export default function PaymentController({
         item_details: [
           {
             name: spaceName,
-            id: "392392392",
-            price: parseInt(totalPayment),
+            id: spaceId,
+            price: parseInt(totalPrice),
             quantity: 1,
           },
         ],
@@ -93,15 +114,6 @@ export default function PaymentController({
           //string sequence of emails, first_name, phone
           customer_details_required_fields: [email, first_name, phone],
         },
-        //insert additional information for reservation creation
-        //convert startDate and endDate later since schema is using DateTime
-        //for both types.
-        metadata: {
-          guestId: user?.id as string,
-          spaceId,
-          startDate: start,
-          endDate: end,
-        },
       } satisfies ChargeParameters;
 
       const attemptPayment = await fetch("/api/midtrans/payment", {
@@ -112,6 +124,11 @@ export default function PaymentController({
       const res = await attemptPayment.json();
 
       if (res.data.status_code === "201") {
+        await updateReservation({
+          id: currentReservation.id,
+          transaction_id: res.transaction_id,
+        });
+
         toast("Reservation created. Please complete your payment.");
       }
       setIsLoading(false);
@@ -120,7 +137,7 @@ export default function PaymentController({
       setIsLoading(false);
     }
     // eslint-disable-next-line
-  }, [selectedBank, isLoaded, spaceName, totalPayment, userData]);
+  }, [selectedBank, isLoaded, spaceName, totalPrice, userData]);
 
   return (
     <div className="flex flex-col w-full h-max">
