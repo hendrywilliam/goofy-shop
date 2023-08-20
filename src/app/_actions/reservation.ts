@@ -1,4 +1,5 @@
 "use server";
+
 import { prisma } from "@/server/db";
 
 export async function createReservation({
@@ -26,7 +27,11 @@ export async function createReservation({
       id: true,
     },
   });
-  return reservationId;
+  return {
+    success: true,
+    message: "Reservation created",
+    data: reservationId,
+  };
 }
 
 export async function updateReservation({
@@ -44,5 +49,22 @@ export async function updateReservation({
       transactionId: transaction_id,
     },
   });
-  return;
+  return {
+    success: true,
+    message: "Reservation updated",
+    data: {},
+  };
+}
+
+export async function deleteReservation(reservation_id: string) {
+  await prisma.reservation.delete({
+    where: {
+      id: reservation_id,
+    },
+  });
+  return {
+    success: true,
+    message: "Reservation Deleted",
+    data: {},
+  };
 }

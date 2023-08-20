@@ -6,8 +6,14 @@ export async function POST(req: Request) {
   console.log(body);
 
   try {
-    const { order_id, status_code, gross_amount, signature_key, fraud_status } =
-      body;
+    const {
+      order_id,
+      status_code,
+      gross_amount,
+      signature_key,
+      fraud_status,
+      transaction_status,
+    } = body;
 
     //verify signature
     const hashedData = CryptoJS.SHA512(
@@ -25,7 +31,7 @@ export async function POST(req: Request) {
       throw new Error("Transaction rejected, signature key is not valid.");
     }
 
-    if (body.transaction_status === "settlement") {
+    if (transaction_status === "settlement") {
       const reservationId = order_id.split("-")[2];
 
       await prisma.reservation.update({

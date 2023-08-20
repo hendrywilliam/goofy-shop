@@ -14,6 +14,7 @@ import { type ChargeParameters } from "midtrans-client";
 import {
   createReservation,
   updateReservation,
+  deleteReservation,
 } from "@/app/_actions/reservation";
 import { useRouter } from "next/navigation";
 
@@ -51,7 +52,6 @@ export default function PaymentController({
 
   const confirmPayment = React.useCallback(async () => {
     setIsLoading(true);
-    console.log(userData);
     try {
       if (typeof selectedBank === "undefined") {
         setIsLoading(false);
@@ -71,10 +71,9 @@ export default function PaymentController({
         );
       }
 
-      //any error occurs will throw an error
       const parsedData = userPaymentValidation.parse(userData);
 
-      const currentReservation = await createReservation({
+      const { data: currentReservation } = await createReservation({
         endDate: end,
         guestId: user?.id as string,
         spaceId,
@@ -111,7 +110,6 @@ export default function PaymentController({
           first_name,
           last_name,
           phone,
-          //string sequence of emails, first_name, phone
           customer_details_required_fields: [email, first_name, phone],
         },
       } satisfies ChargeParameters;
@@ -123,14 +121,21 @@ export default function PaymentController({
 
       const res = await attemptPayment.json();
 
+      //success
       if (res.data.status_code === "201") {
         await updateReservation({
           id: currentReservation.id,
-          transaction_id: res.transaction_id,
+          transaction_id: res.data.transaction_id,
         });
-
         toast("Reservation created. Please complete your payment.");
       }
+
+      //fails then delete the existing reservation entity related.
+      const successCodes = ["201", "200"];
+      if (!successCodes.includes(res.data.status_code)) {
+        await deleteReservation(currentReservation.id);
+      }
+
       setIsLoading(false);
     } catch (err) {
       captureError(err);
@@ -238,6 +243,7 @@ export default function PaymentController({
         <Button
           onClick={confirmPayment}
           custom="flex flex-row justify-center gap-2"
+          disabled={isLoading}
         >
           {isLoading && <IconLoading className="flex self-center" />}Confirm
           booking
