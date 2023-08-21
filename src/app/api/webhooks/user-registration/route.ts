@@ -11,6 +11,7 @@ export async function POST(req: Request) {
     if (type === "user.created" && object === "event") {
       await prisma.user.create({
         data: {
+          email: data.email_addresses[0].email_address,
           clerkId: data.id,
           description: "",
           isPartner: false,

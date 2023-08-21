@@ -68,6 +68,7 @@ model User {
   clerkId       String    @map(name: "clerk_id")
   firstName     String?   @map(name: "first_name")
   lastName      String?   @map(name: "last_name")
+  email         String    
   location      String    
   description   String
   isPartner     Boolean

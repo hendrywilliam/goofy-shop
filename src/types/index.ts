@@ -45,14 +45,8 @@ export interface UserInterface extends Omit<User, UnwantedKeys> {
     email_address: string;
     id: string;
   }[];
-  primary_email_address_id: string;
   first_name: string;
   last_name: string;
-  primary_phone_number_id: string;
-  phone_numbers: {
-    phone_number: string;
-    id: string;
-  }[];
 }
 
 export type EventType = "user.created" | "user.updated" | "*";
