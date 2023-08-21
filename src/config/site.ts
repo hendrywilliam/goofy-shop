@@ -1,8 +1,4 @@
 import { FooterNavItem, MainNavItem } from "@/types";
-import { IconAccount } from "@/components/icons/icon-account";
-import { IconPlace } from "@/components/icons/icon-place";
-import { IconBilling } from "@/components/icons/icon-billing";
-import { SVGProps } from "react";
 
 export type SiteConfiguration = typeof siteConfig;
 
