@@ -41,3 +41,29 @@ export const stepTwoCodeValidation = z
     message: "New password does not match with new confirm password.",
     path: ["confirmPassword"],
   });
+
+export const userBillingInformation = z.object({
+  email: z
+    .string({
+      required_error: "Email is required",
+    })
+    .email({
+      message: "Please input a valid email.",
+    }),
+  name: z
+    .string({
+      required_error: "Name is required.",
+    })
+    .min(1, {
+      message: "Invalid name.",
+    }),
+  //number -> string
+  account: z
+    .number({
+      required_error: "Account number is required.",
+    })
+    .min(1),
+  bank: z.string({
+    required_error: "Select bank before proceed.",
+  }),
+});

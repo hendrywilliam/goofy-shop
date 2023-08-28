@@ -5,12 +5,10 @@ import { prisma } from "@/server/db";
 import { currentUser } from "@clerk/nextjs";
 import { notFound } from "next/navigation";
 
-//@todo make it fancier
 export async function getSpaces(searchParams: FilteredValue) {
   if (Object.keys(searchParams).length > 0) {
     let queries = [];
 
-    //searchParams returns a plain javascript object.
     for (const [key, value] of Object.entries(searchParams)) {
       if (key === "min_price") {
         queries.push({

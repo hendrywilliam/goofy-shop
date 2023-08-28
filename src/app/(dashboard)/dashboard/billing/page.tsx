@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Shell } from "@/components/ui/shell";
 import { formatCurrency } from "@/lib/utils";
+import ConnectPaymentDialog from "@/components/connect-payment-dialog";
 
 export default function DashboardBillingPage() {
   return (
@@ -26,9 +27,10 @@ export default function DashboardBillingPage() {
         </div>
         <div className="flex flex-col w-full border mt-4 rounded-md p-4">
           <h1 className="text-3xl font-bold">Billing Status</h1>
-          <p className="text-muted text-sm">
+          <p className="text-muted text-sm mb-2">
             Join as a Partner and start accepting payment.
           </p>
+          <ConnectPaymentDialog />
         </div>
       </div>
     </Shell>

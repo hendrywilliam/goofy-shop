@@ -15,7 +15,6 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
     <>
       <SiteHeader />
       {children}
-      <SiteFooter />
     </>
   );
 }

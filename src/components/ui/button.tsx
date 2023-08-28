@@ -2,7 +2,7 @@ import { ButtonHTMLAttributes, forwardRef } from "react";
 import { tv, type VariantProps } from "tailwind-variants";
 
 export const buttonVariants = tv({
-  base: "px-4 py-2 rounded-md hover:opacity-80 antialiased cursor-pointer",
+  base: "px-4 py-2 rounded-md hover:opacity-80 antialiased cursor-pointer disabled:opacity-75",
   variants: {
     variant: {
       primary: "bg-primary text-white",
