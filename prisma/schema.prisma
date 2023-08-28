@@ -64,16 +64,20 @@ model City {
 }
 
 model User {
-  id            String    @id @default(auto()) @map(name: "_id") @db.ObjectId
-  clerkId       String    @map(name: "clerk_id")
-  firstName     String?   @map(name: "first_name")
-  lastName      String?   @map(name: "last_name")
-  email         String    
-  location      String    
-  description   String
-  isPartner     Boolean
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @default(now()) @map(name: "updated_at")
+  id                  String    @id @default(auto()) @map(name: "_id") @db.ObjectId
+  clerkId             String    @map(name: "clerk_id")
+  firstName           String?   @map(name: "first_name")
+  lastName            String?   @map(name: "last_name")
+  email               String    
+  location            String    
+  description         String
+  isPartner           Boolean
+  balance             Int       
+  totalTransaction    Int       @map(name: "total_transaction")
+  //alias name iris for update
+  payoutId            String    @map(name: "payout_id")
+  createdAt           DateTime  @default(now()) @map(name: "created_at")
+  updatedAt           DateTime  @default(now()) @map(name: "updated_at")
 
   @@map(name: "user_profiles")
 }

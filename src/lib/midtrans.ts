@@ -8,5 +8,5 @@ export const coreAPI = new CoreApi({
 
 export const coreIris = new Iris({
   isProduction: false,
-  serverKey: process.env.MIDTRANS_SERVER_KEY as string,
+  serverKey: process.env.PAYOUT_CREATOR as string,
 });

@@ -244,6 +244,7 @@ export default function PaymentController({
           onClick={confirmPayment}
           custom="flex flex-row justify-center gap-2"
           disabled={isLoading}
+          type="button"
         >
           {isLoading && <IconLoading className="flex self-center" />}Confirm
           booking

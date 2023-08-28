@@ -51,7 +51,7 @@ export async function POST(req: Request) {
       });
     }
 
-    return new Response("Verification failed.", {
+    return new Response("Something went wrong.", {
       status: 400,
     });
   }
