@@ -79,7 +79,8 @@ const FormInputVariant = tv({
     color: {
       primary:
         "border focus:ring-2 ring-muted outline-none disabled:opacity-75",
-      error: "border border-destructive focus:ring-2 ring-muted outline-none",
+      error:
+        "border focus:ring-2 ring-1 ring-destructive ring-offset-1 outline-none",
     },
     font: {
       sm: "text-sm",

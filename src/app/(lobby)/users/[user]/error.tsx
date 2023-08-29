@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
-export default function UsersErrorPage({
+export default function HostErrorPage({
   error,
   reset,
 }: {

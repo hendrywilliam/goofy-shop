@@ -16,12 +16,13 @@ import Link from "next/link";
 import { captureError } from "@/lib/utils";
 import { FieldErrors } from "react-hook-form";
 import { toast } from "sonner";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 type RegistrationInput = z.infer<typeof authValidation>;
 
 export default function RegistrationForm() {
   const { isLoaded, signUp } = useSignUp();
+  const router = useRouter();
 
   //react-hook-form
   const {
@@ -29,6 +30,8 @@ export default function RegistrationForm() {
     handleSubmit,
     formState: { errors },
   } = useForm<RegistrationInput>({
+    mode: "onSubmit",
+    reValidateMode: "onChange",
     resolver: zodResolver(authValidation),
   });
 
@@ -39,11 +42,13 @@ export default function RegistrationForm() {
       const res = await signUp.create({
         emailAddress: data.email,
         password: data.password,
+        firstName: data.first_name,
+        lastName: data.last_name,
       });
 
       if (res.status === "complete") {
+        router.push("/");
         toast(`Account created. Redirecting to homepage.`);
-        redirect("/");
       }
     } catch (error) {
       captureError(error);
@@ -55,9 +60,12 @@ export default function RegistrationForm() {
     toast(firstError.message?.toString());
   }
   return (
-    <Form className="w-full" onSubmit={handleSubmit(onSubmit, onError)}>
+    <Form
+      className="flex-col w-full gap-2"
+      onSubmit={handleSubmit(onSubmit, onError)}
+    >
       <FormField>
-        <h1 className="font-calsans">Register</h1>
+        <h1 className="font-bold text-3xl">Register</h1>
       </FormField>
       <FormField className="flex flex-col">
         <FormLabel className="text-sm" htmlFor="email">
@@ -70,15 +78,9 @@ export default function RegistrationForm() {
           color={errors.email?.message ? "error" : "primary"}
           custom="w-full"
         />
-        {errors.email ? (
-          <FormMessage variant="error" size="sm">
-            {errors.email.message}
-          </FormMessage>
-        ) : (
-          <FormMessage size="sm" variant="muted">
-            (e.g: cutielofigirl@gmail.com)
-          </FormMessage>
-        )}
+        <FormMessage size="sm" variant="muted">
+          (e.g: cutielofigirl@gmail.com)
+        </FormMessage>
       </FormField>
       <FormField className="flex flex-col">
         <FormLabel className="text-sm" htmlFor="password">
@@ -91,15 +93,37 @@ export default function RegistrationForm() {
           color={errors.password?.message ? "error" : "primary"}
           custom="w-full"
         />
-        {errors.password ? (
-          <FormMessage variant="error" size="sm">
-            {errors.password?.message}
-          </FormMessage>
-        ) : (
-          <FormMessage size="sm" variant="muted">
-            (Password minimum 8 characters & atleast 1 number.)
-          </FormMessage>
-        )}
+        <FormMessage size="sm" variant="muted">
+          (Password must contains atleast 8 characters (with 1 number))
+        </FormMessage>
+      </FormField>
+      <FormField className="flex flex-col">
+        <FormLabel className="text-sm" htmlFor="first_name">
+          First Name
+        </FormLabel>
+        <FormInput
+          {...register("first_name")}
+          name="first_name"
+          color={errors.first_name?.message ? "error" : "primary"}
+          custom="w-full"
+        />
+        <FormMessage size="sm" variant="muted">
+          (e.g Lofi)
+        </FormMessage>
+      </FormField>
+      <FormField className="flex flex-col">
+        <FormLabel className="text-sm" htmlFor="lastName">
+          Last Name
+        </FormLabel>
+        <FormInput
+          {...register("last_name")}
+          name="last_name"
+          color={errors.last_name?.message ? "error" : "primary"}
+          custom="w-full"
+        />
+        <FormMessage size="sm" variant="muted">
+          (e.g Girl)
+        </FormMessage>
       </FormField>
       <FormField>
         <p className="text-sm my-2">

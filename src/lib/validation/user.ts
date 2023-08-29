@@ -8,6 +8,20 @@ export const authValidation = z.object({
   password: z.string().regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, {
     message: "Password must contains atleast 8 characters, with one number.",
   }),
+  first_name: z
+    .string({
+      required_error: "Last name is required",
+      invalid_type_error: "Invalid type",
+    })
+    .min(1, {
+      message: "First name must atleast contains 1 character",
+    }),
+  last_name: z
+    .string({
+      required_error: "Last name is required",
+      invalid_type_error: "Invalid type",
+    })
+    .min(1),
 });
 
 export const profileValidation = z

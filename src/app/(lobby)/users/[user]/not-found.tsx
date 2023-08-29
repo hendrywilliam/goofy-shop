@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 
-export default function UserNotFoundPage() {
+export default function HostNotFoundPage() {
   return (
     <div className="relative flex w-full h-screen justify-center items-center">
       <div className="absolute flex flex-col rounded-md p-10 top-20 text-center gap-2">
