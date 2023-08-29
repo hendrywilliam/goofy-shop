@@ -24,9 +24,8 @@ export default function AddBillingInformationForm() {
 
   const submitBillingInfo = form.handleSubmit(
     (data) => {
-      //asign alias name for unique identifier of payout
-
       startTransition(async () => {
+        //asign alias name for unique identifier of payout
         const aliasName = `${data.name.replaceAll(" ", "")}${data.bank}`;
         const payoutData = Object.assign(data, {
           //pattern: name+bank+id
@@ -79,7 +78,9 @@ export default function AddBillingInformationForm() {
                   key={i}
                   type="button"
                   onClick={() => {
-                    form.setValue("bank", item.code);
+                    startTransition(() => {
+                      form.setValue("bank", item.code);
+                    });
                   }}
                 >
                   {item.code.toUpperCase()}

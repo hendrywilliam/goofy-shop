@@ -16,8 +16,6 @@ import Link from "next/link";
 import { captureError } from "@/lib/utils";
 import { FieldErrors } from "react-hook-form";
 import { toast } from "sonner";
-import { addUserToDatabase } from "@/app/_actions/auth";
-import { ClerkDataUser } from "@/types";
 import { redirect } from "next/navigation";
 
 type RegistrationInput = z.infer<typeof authValidation>;
@@ -38,25 +36,15 @@ export default function RegistrationForm() {
     if (!isLoaded) return;
 
     try {
-      //add user to vendor
       const res = await signUp.create({
         emailAddress: data.email,
         password: data.password,
       });
 
-      //passing plain object (serialization)
-      const userData = {
-        createdUserId: res.createdUserId,
-        firstName: res.firstName,
-        lastName: res.lastName,
-      } satisfies ClerkDataUser;
-
-      //add user to database
-      if (res) {
-        await addUserToDatabase(userData);
+      if (res.status === "complete") {
+        toast(`Account created. Redirecting to homepage.`);
+        redirect("/");
       }
-      toast(`Account created. Redirecting to homepage.`);
-      redirect("/");
     } catch (error) {
       captureError(error);
     }

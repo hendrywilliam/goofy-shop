@@ -28,12 +28,12 @@ export function Calendar({
       disabled={disabled}
       classNames={{
         caption_label: "text-center text-xl w-full font-calsans",
-        tbody: "w-full h-full",
-        root: "flex flex-row w-full h-full items-center justify-center",
+        tbody: "w-10 h-full",
+        root: "flex flex-row w-full h-full items-center justify-center left-1/2",
         table: "w-full h-full border-collapse",
         day_selected: "rounded-full w-full bg-black text-white",
         day_disabled: "text-muted line-through",
-        day: "h-8 w-8 p-0",
+        day: "h-10 w-10",
         row: "w-full h-max",
         nav: "flex flex-row py-4 justify-between",
         month: "h-full w-max",
