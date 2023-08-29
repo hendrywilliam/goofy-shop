@@ -68,6 +68,7 @@ model User {
   clerkId             String    @map(name: "clerk_id")
   firstName           String?   @map(name: "first_name")
   lastName            String?   @map(name: "last_name")
+  avatar              String
   email               String    
   location            String    
   description         String
@@ -98,7 +99,7 @@ model Reservation {
   startDate     DateTime            @map(name: "start_date")
   endDate       DateTime            @map(name: "end_date")
   //distinguish each reservations
-  transactionId String?              @map(name: "transaction_id") 
+  transactionId String?             @map(name: "transaction_id") 
   status        ReservationStatus   @map(name: "reservation_status") @default(ACTIVE)
   paymentStatus PaymentStatus       @map(name: "payment_status") @default(NOT_PAID)        
   createdAt     DateTime            @default(now()) @map(name: "created_at")

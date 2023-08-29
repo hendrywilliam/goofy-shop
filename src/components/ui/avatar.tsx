@@ -4,14 +4,6 @@ import { type StaticImport } from "next/dist/shared/lib/get-img-props";
 import LofiGirl from "/public/images/image-lofi-girl.webp";
 import { tv, type VariantProps } from "tailwind-variants";
 
-/**
- * replace original src (only accepts string | undefined) with our new "src"
- * that accepts a StaticImport
- * example:
- * import LofiGirl from "/public/images/image-lofi-girl.webp"
- * <Avatar src={LofiGirl} alt="lofi-girl"/>
- */
-
 export interface Avatar
   extends Omit<ImgHTMLAttributes<HTMLImageElement>, "src">,
     VariantProps<typeof avatarImageVariant> {

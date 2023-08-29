@@ -1,7 +1,6 @@
 import { FileWithPath } from "react-dropzone";
 import { type SignUpResource } from "@clerk/types";
 import { DateRange } from "react-day-picker";
-import { type ClerkAPIError } from "@clerk/types";
 import { type User } from "@clerk/nextjs/api";
 
 export interface FooterNavItem {
@@ -47,6 +46,7 @@ export interface UserInterface extends Omit<User, UnwantedKeys> {
   }[];
   first_name: string;
   last_name: string;
+  image_url: string;
 }
 
 export type EventType = "user.created" | "user.updated" | "*";

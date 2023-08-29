@@ -66,7 +66,7 @@ export default function FilterController() {
                     custom="w-full"
                     type="number"
                     defaultValue={15000}
-                    onChange={(e: React.FormEvent<HTMLInputElement>) => {
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       setFilteredValue({
                         ...filteredValue,
                         min_price: e.currentTarget.valueAsNumber,
@@ -80,7 +80,7 @@ export default function FilterController() {
                     custom="w-full"
                     type="number"
                     defaultValue={21000000}
-                    onChange={(e: React.FormEvent<HTMLInputElement>) => {
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       setFilteredValue({
                         ...filteredValue,
                         max_price: e.currentTarget.valueAsNumber,
@@ -98,7 +98,7 @@ export default function FilterController() {
                     defaultValue={1}
                     min={1}
                     type="number"
-                    onChange={(e: React.FormEvent<HTMLInputElement>) => {
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       setFilteredValue({
                         ...filteredValue,
                         rooms: e.currentTarget.valueAsNumber,
@@ -113,7 +113,7 @@ export default function FilterController() {
                     defaultValue={1}
                     min={1}
                     type="number"
-                    onChange={(e: React.FormEvent<HTMLInputElement>) => {
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       setFilteredValue({
                         ...filteredValue,
                         bathrooms: e.currentTarget.valueAsNumber,

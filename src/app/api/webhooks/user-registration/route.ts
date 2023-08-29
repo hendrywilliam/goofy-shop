@@ -18,6 +18,7 @@ export async function POST(req: Request) {
           location: "",
           firstName: data.first_name ?? "",
           lastName: data.last_name ?? "",
+          avatar: data.image_url,
         },
       });
       return new Response("User created", { status: 201 });
