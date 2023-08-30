@@ -27,6 +27,7 @@ export const spaceRouter = createTRPCRouter({
           photos: input.photo,
         },
       });
+      console.log(space);
       return space;
     }),
   updateSpace: publicProcedure

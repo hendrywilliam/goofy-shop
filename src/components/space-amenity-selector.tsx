@@ -24,7 +24,7 @@ interface SpaceAmenitySelector {
   setValue: UseFormSetValue<SpaceInput>;
 }
 
-function SpaceAmenitySelector({
+const SpaceAmenitySelector = React.memo(function SpaceAmenitySelector({
   selectedAmenity,
   setSelectedAmenity,
   setValue,
@@ -131,6 +131,6 @@ function SpaceAmenitySelector({
       </div>
     </div>
   );
-}
+});
 
 export { SpaceAmenitySelector };

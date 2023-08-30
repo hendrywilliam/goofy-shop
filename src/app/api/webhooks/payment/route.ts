@@ -47,23 +47,37 @@ export async function POST(req: Request) {
           guestId: true,
           spaceId: true,
           id: true,
+          totalPrice: true,
         },
       });
-      const { guestId, spaceId, id } = reservationData;
+      const { guestId, spaceId, id, totalPrice } = reservationData;
 
       //obtain space details from db
-      const spaceName = await prisma.space.findFirst({
+      const spaceData = await prisma.space.findFirst({
         where: {
           id: spaceId,
         },
         select: {
           name: true,
+          authorId: true,
         },
       });
 
-      if (!spaceName) {
+      if (!spaceData) {
         throw new Error("Unable to find space");
       }
+
+      //pinjam dulu seratus
+      const netIncome =
+        (Number(process.env.APPLICATION_FEE) * totalPrice) / 100;
+      await prisma.user.update({
+        where: {
+          id: spaceData.authorId,
+        },
+        data: {
+          balance: netIncome,
+        },
+      });
 
       //obtain guest data from db
       const guestData = await prisma.user.findFirst({
@@ -85,7 +99,7 @@ export async function POST(req: Request) {
         subject: "Thanks my G!🎉",
         react: ReservationSuccessEmail({
           fullName: guestData?.firstName as string,
-          itemName: spaceName?.name,
+          itemName: spaceData?.name,
           orderId: id,
         }),
       });
