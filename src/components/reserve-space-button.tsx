@@ -47,7 +47,7 @@ export const ReserveSpaceButton = React.memo(function ReserveSpaceButton({
 
   return (
     <Button
-      custom="w-full lg:w-3/4 self-center"
+      custom="w-full self-center"
       onClick={onSubmit}
       disabled={isPending}
       type="button"

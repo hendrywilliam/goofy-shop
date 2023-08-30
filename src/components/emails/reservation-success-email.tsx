@@ -7,23 +7,40 @@ import { Container } from "@react-email/container";
 import { Heading } from "@react-email/heading";
 import { Section } from "@react-email/section";
 
-//tailwind render its way too slow
-//move to the og - css
-
-function NewComerEmail({ fullName }: { fullName: string }) {
+export function ReservationSuccessEmail({
+  fullName,
+  orderId,
+  itemName,
+}: {
+  fullName: string;
+  orderId: string;
+  itemName: string;
+}) {
   return (
     <Html>
       <Head>
-        <title>New Comer Email</title>
+        <title>Reservation</title>
       </Head>
       <Body style={customStyle.body}>
         <Container style={customStyle.container}>
           <Heading as="h1">Spaceshop8</Heading>
-          <Text style={customStyle.text}>Glad you made it! {fullName}</Text>
+
+          <Text style={customStyle.text}>Thank you, {fullName}!</Text>
           <Text>
-            Thanks for choosing us as a platform to host your own places. Make
-            sure to join partnership and start accepting payment.
+            Your reservation is confirmed, and we are getting ready! Here is
+            your reservation details
           </Text>
+          <Section
+            style={{
+              ...customStyle.section,
+              margin: 0,
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <Text style={customStyle["text-muted"]}>Order ID #{orderId}</Text>
+            <Text style={customStyle.text}>{itemName}</Text>
+          </Section>
           <Hr />
           <Section>
             <Text style={customStyle.text}>Ayerf Anadrawayaj</Text>
@@ -38,7 +55,7 @@ function NewComerEmail({ fullName }: { fullName: string }) {
   );
 }
 
-type StyleElement = "body" | "container" | "text" | "text-muted";
+type StyleElement = "body" | "container" | "text" | "text-muted" | "section";
 
 const customStyle: Record<StyleElement, React.CSSProperties> = {
   body: {
@@ -60,6 +77,7 @@ const customStyle: Record<StyleElement, React.CSSProperties> = {
     color: "hsl(0, 0%, 67%)",
     margin: "0",
   },
+  section: {
+    display: "grid",
+  },
 };
-
-export { NewComerEmail };

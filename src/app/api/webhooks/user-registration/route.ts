@@ -1,5 +1,7 @@
 import { prisma } from "@/server/db";
 import { Event } from "@/types";
+import { resend } from "@/lib/resend";
+import { NewComerEmail } from "@/components/emails/new-comer-email";
 
 export async function POST(req: Request) {
   try {
@@ -9,7 +11,7 @@ export async function POST(req: Request) {
     const { type, data, object } = event;
 
     if (type === "user.created" && object === "event") {
-      await prisma.user.create({
+      const userCreated = await prisma.user.create({
         data: {
           email: data.email_addresses[0].email_address,
           clerkId: data.id,
@@ -21,6 +23,16 @@ export async function POST(req: Request) {
           avatar: data.image_url,
         },
       });
+
+      const { firstName, lastName } = userCreated;
+
+      await resend.sendEmail({
+        from: "nurdana@resend.dev",
+        to: "hendriwilliam29@gmail.com",
+        subject: "Welcome my G!🎉",
+        react: NewComerEmail({ fullName: `${firstName} ${lastName}` }),
+      });
+
       return new Response("User created", { status: 201 });
     }
 
