@@ -68,7 +68,7 @@ export async function POST(req: Request) {
       //obtain guest data from db
       const guestData = await prisma.user.findFirst({
         where: {
-          id: guestId,
+          clerkId: guestId,
         },
         select: {
           firstName: true,
@@ -79,7 +79,7 @@ export async function POST(req: Request) {
         throw new Error("Unable to find guest data");
       }
 
-      const email = await resend.sendEmail({
+      await resend.sendEmail({
         from: "nurdana@resend.dev",
         to: "hendriwilliam29@gmail.com",
         subject: "Thanks my G!🎉",
@@ -89,7 +89,6 @@ export async function POST(req: Request) {
           orderId: id,
         }),
       });
-      console.log(email);
     }
 
     return new Response(null, { status: 200 });

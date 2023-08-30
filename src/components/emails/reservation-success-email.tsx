@@ -38,13 +38,15 @@ export function ReservationSuccessEmail({
               flexDirection: "column",
             }}
           >
-            <Text style={customStyle["text-muted"]}>Order ID #{orderId}</Text>
+            <Text style={customStyle["text-muted"]}>
+              Reservation ID #{orderId}
+            </Text>
             <Text style={customStyle.text}>{itemName}</Text>
           </Section>
           <Hr />
           <Section>
             <Text style={customStyle.text}>Ayerf Anadrawayaj</Text>
-            <Text style={customStyle["text-muted"]}>CEO. PT Gadis Koleris</Text>
+            <Text style={customStyle["text-muted"]}>CEO PT. Gadis Koleris</Text>
           </Section>
           <Section>
             <Text>Spaceshop8 - All rights reserved</Text>

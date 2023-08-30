@@ -7,8 +7,8 @@ import { Container } from "@react-email/container";
 import { Heading } from "@react-email/heading";
 import { Section } from "@react-email/section";
 
-//tailwind render its way too slow
-//move to the og - css
+//tailwind -> slow render
+//move to the og -> css
 
 function NewComerEmail({ fullName }: { fullName: string }) {
   return (
@@ -27,7 +27,7 @@ function NewComerEmail({ fullName }: { fullName: string }) {
           <Hr />
           <Section>
             <Text style={customStyle.text}>Ayerf Anadrawayaj</Text>
-            <Text style={customStyle["text-muted"]}>CEO. PT Gadis Koleris</Text>
+            <Text style={customStyle["text-muted"]}>CEO PT. Gadis Koleris</Text>
           </Section>
           <Section>
             <Text>Spaceshop8 - All rights reserved</Text>
