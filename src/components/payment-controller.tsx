@@ -53,6 +53,13 @@ export default function PaymentController({
   const confirmPayment = React.useCallback(async () => {
     setIsLoading(true);
     try {
+      if (!isSignedIn) {
+        router.push("/sign-in");
+        return toast.error(
+          "You are not logged in, redirecting to sign in page."
+        );
+      }
+
       if (typeof selectedBank === "undefined") {
         setIsLoading(false);
         return toast.error(
@@ -62,13 +69,6 @@ export default function PaymentController({
 
       if (!isLoaded) {
         return setIsLoading(false);
-      }
-
-      if (!isSignedIn) {
-        router.push("/sign-in");
-        return toast.error(
-          "You are not logged in, redirecting to sign in page."
-        );
       }
 
       const parsedData = userPaymentValidation.parse(userData);
