@@ -70,13 +70,6 @@ export default function PaymentController({
         );
       }
 
-      if (!isSignedIn) {
-        router.push("/sign-in");
-        return toast.error(
-          "You are not logged in, redirecting to sign in page."
-        );
-      }
-
       const parsedData = userPaymentValidation.parse(userData);
 
       const { data: currentReservation } = await createReservation({

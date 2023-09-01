@@ -68,8 +68,11 @@ export async function POST(req: Request) {
       }
 
       //pinjam dulu seratus
-      const netIncome =
+      const applicationFee =
         (Number(process.env.APPLICATION_FEE) * totalPrice) / 100;
+
+      const netIncome = totalPrice - applicationFee;
+
       await prisma.user.update({
         where: {
           id: spaceData.authorId,
